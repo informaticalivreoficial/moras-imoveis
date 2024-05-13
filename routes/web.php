@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\{
-    AdminController
+    AdminController,
+    EmailController,
+    UserController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -89,7 +91,6 @@ Route::prefix('admin')->middleware('auth')->group( function(){
 
     //*********************** Usuários *******************************************/
     Route::match(['get', 'post'], 'usuarios/pesquisa', [UserController::class, 'search'])->name('users.search');
-    Route::match(['post', 'get'], 'usuarios/fetchCity', [UserController::class, 'fetchCity'])->name('users.fetchCity');
     Route::delete('usuarios/deleteon', [UserController::class, 'deleteon'])->name('users.deleteon');
     Route::get('usuarios/set-status', [UserController::class, 'userSetStatus'])->name('users.userSetStatus');
     Route::get('usuarios/delete', [UserController::class, 'delete'])->name('users.delete');
@@ -100,6 +101,12 @@ Route::prefix('admin')->middleware('auth')->group( function(){
     Route::get('usuarios/create', [UserController::class, 'create'])->name('users.create');
     Route::post('usuarios/store', [UserController::class, 'store'])->name('users.store');
     Route::get('clientes', [UserController::class, 'index'])->name('users.index');  
+
+    //*********************** Email **********************************************/
+    Route::get('email/suporte', [EmailController::class, 'suporte'])->name('email.suporte');
+    Route::match(['post', 'get'], 'email/enviar-email', [EmailController::class, 'send'])->name('email.send');
+    Route::post('email/sendEmail', [EmailController::class, 'sendEmail'])->name('email.sendEmail');
+    Route::match(['post', 'get'], 'email/success', [EmailController::class, 'success'])->name('email.success');
 
 });
 
