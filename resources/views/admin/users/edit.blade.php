@@ -89,7 +89,7 @@
                                                     <div class="form-group">
                                                         <label class="labelforms text-muted"><b>*Data de Nascimento</b></label>
                                                         <div class="input-group">
-                                                            <input type="text" class="form-control datepicker-here" data-language='pt-BR' name="nasc" value="{{ old('nasc') ?? $user->nasc }}"/>
+                                                            <input type="text" class="form-control datepicker-here" data-language='pt-BR' name="birthday" value="{{ old('birthday') ?? \Carbon\Carbon::parse($user->birthday)->format('d/m/Y') }}"/>
                                                             <div class="input-group-append">
                                                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                                             </div>
@@ -99,22 +99,22 @@
                                                 <div class="col-12 col-md-6 col-lg-4 mb-2"> 
                                                     <div class="form-group">
                                                         <label class="labelforms text-muted"><b>*Genero</b></label>
-                                                        <select class="form-control" name="genero">
-                                                            <option value="masculino" {{(old('genero') == 'masculino' ? 'selected' : ($user->genero == 'masculino' ? 'selected' : '')) }}>Masculino</option>
-                                                            <option value="feminino" {{(old('genero') == 'feminino' ? 'selected' : ($user->genero == 'feminino' ? 'selected' : '')) }}>Feminino</option>
+                                                        <select class="form-control" name="gender">
+                                                            <option value="masculino" {{(old('gender') == 'masculino' ? 'selected' : ($user->gender == 'masculino' ? 'selected' : '')) }}>Masculino</option>
+                                                            <option value="feminino" {{(old('gender') == 'feminino' ? 'selected' : ($user->gender == 'feminino' ? 'selected' : '')) }}>Feminino</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                  <div class="col-12 col-md-6 col-lg-4 mb-2"> 
                                                     <div class="form-group">
                                                         <label class="labelforms text-muted"><b>*Estado Civil</b></label>
-                                                        <select class="form-control" name="estado_civil">
+                                                        <select class="form-control" name="civil_status">
                                                             <optgroup label="Cônjuge Obrigatório">
-                                                                <option value="casado" {{ (old('estado_civil') == 'casado' ? 'selected' : ($user->estado_civil == 'casado' ? 'selected' : '')) }}>Casado</option>
-                                                                <option value="separado" {{ (old('estado_civil') == 'separado' ? 'selected' : ($user->estado_civil == 'separado' ? 'selected' : '')) }}>Separado</option>
-                                                                <option value="solteiro" {{ (old('estado_civil') == 'solteiro' ? 'selected' : ($user->estado_civil == 'solteiro' ? 'selected' : '')) }}>Solteiro</option>
-                                                                <option value="divorciado" {{ (old('estado_civil') == 'divorciado' ? 'selected' : ($user->estado_civil == 'divorciado' ? 'selected' : '')) }}>Divorciado</option>
-                                                                <option value="viuvo" {{ (old('estado_civil') == 'viuvo' ? 'selected' : ($user->estado_civil == 'viuvo' ? 'selected' : '')) }}>Viúvo(a)</option>
+                                                                <option value="casado" {{ (old('civil_status') == 'casado' ? 'selected' : ($user->civil_status == 'casado' ? 'selected' : '')) }}>Casado</option>
+                                                                <option value="separado" {{ (old('civil_status') == 'separado' ? 'selected' : ($user->civil_status == 'separado' ? 'selected' : '')) }}>Separado</option>
+                                                                <option value="solteiro" {{ (old('civil_status') == 'solteiro' ? 'selected' : ($user->civil_status == 'solteiro' ? 'selected' : '')) }}>Solteiro</option>
+                                                                <option value="divorciado" {{ (old('civil_status') == 'divorciado' ? 'selected' : ($user->civil_status == 'divorciado' ? 'selected' : '')) }}>Divorciado</option>
+                                                                <option value="viuvo" {{ (old('civil_status') == 'viuvo' ? 'selected' : ($user->civil_status == 'viuvo' ? 'selected' : '')) }}>Viúvo(a)</option>
                                                             </optgroup>
                                                         </select>
                                                     </div>
@@ -134,13 +134,13 @@
                                                 <div class="col-12 col-md-6 col-lg-4 mb-2"> 
                                                     <div class="form-group">
                                                         <label class="labelforms text-muted"><b>Órgão Expedidor</b></label>
-                                                        <input type="text" class="form-control" placeholder="Expedição" name="rg_expedicao" value="{{ old('rg_expedicao') ?? $user->rg_expedicao }}">
+                                                        <input type="text" class="form-control" placeholder="Expedição" name="rg_expedition" value="{{ old('rg_expedition') ?? $user->rg_expedition }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-6 col-lg-4 mb-2"> 
                                                     <div class="form-group">
                                                         <label class="labelforms text-muted"><b>Naturalidade</b></label>
-                                                        <input type="text" class="form-control" placeholder="Cidade de Nascimento" name="naturalidade" value="{{ old('naturalidade') ?? $user->naturalidade }}">
+                                                        <input type="text" class="form-control" placeholder="Cidade de Nascimento" name="naturalness" value="{{ old('naturalness') ?? $user->naturalness }}">
                                                     </div>
                                                 </div>
                                             </div>                                           
@@ -148,40 +148,7 @@
                                         
                                     </div>
 
-                                    <div id="accordion">   
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h4>                          
-                                                    <a style="border:none;color: #555;" data-toggle="collapse" data-parent="#accordion" href="#collapseRenda">
-                                                        <i class="nav-icon fas fa-plus mr-2"></i> Renda
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseRenda" class="panel-collapse collapse show">
-                                                <div class="card-body">
-                                                    <div class="row mb-2">
-                                                        <div class="col-12 col-md-4 col-lg-4"> 
-                                                            <div class="form-group">
-                                                                <label class="labelforms text-muted"><b>Profissão:</b></label>
-                                                                <input type="text" class="form-control" placeholder="Profissão do Cliente" name="profissao" value="{{old('profissao') ?? $user->profissao}}">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 col-md-4 col-lg-4"> 
-                                                            <div class="form-group">
-                                                                <label class="labelforms text-muted"><b>Renda:</b></label>
-                                                                <input type="text" class="form-control mask-money" placeholder="Valores em Reais" name="renda" value="{{old('renda') ?? $user->renda}}">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12 col-md-4 col-lg-4"> 
-                                                            <div class="form-group">
-                                                                <label class="labelforms text-muted"><b>Empresa:</b></label>
-                                                                <input type="text" class="form-control" placeholder="Contratante" name="profissao_empresa" value="{{old('profissao_empresa') ?? $user->profissao_empresa}}">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div id="accordion"> 
                                         <div class="card">
                                             <div class="card-header">
                                                 <h4>
@@ -196,25 +163,25 @@
                                                         <div class="col-12 col-md-2 col-lg-2"> 
                                                             <div class="form-group">
                                                                 <label class="labelforms text-muted"><b>CEP:</b></label>
-                                                                <input type="text" id="cep" class="form-control mask-zipcode" placeholder="Digite o CEP" name="cep" value="{{old('cep') ?? $user->cep}}">
+                                                                <input type="text" id="cep" class="form-control mask-zipcode" placeholder="Digite o CEP" name="postcode" value="{{old('postcode') ?? $user->postcode}}">
                                                             </div>
                                                         </div>
                                                         <div class="col-12 col-md-3 col-lg-3"> 
                                                             <div class="form-group">
                                                                 <label class="labelforms text-muted"><b>Estado:</b></label>
-                                                                <input type="text" class="form-control" id="uf" name="uf" value="{{old('uf') ?? $user->uf}}">
+                                                                <input type="text" class="form-control" id="uf" name="state" value="{{old('state') ?? $user->state}}">
                                                             </div>
                                                         </div>
                                                         <div class="col-12 col-md-4 col-lg-4"> 
                                                             <div class="form-group">
                                                                 <label class="labelforms text-muted"><b>Cidade:</b></label>
-                                                                <input type="text" class="form-control" id="cidade" name="cidade" value="{{old('cidade') ?? $user->cidade}}">
+                                                                <input type="text" class="form-control" id="cidade" name="city" value="{{old('city') ?? $user->city}}">
                                                             </div>
                                                         </div>
                                                         <div class="col-12 col-md-4 col-lg-3"> 
                                                             <div class="form-group">
                                                                 <label class="labelforms text-muted"><b>Bairro:</b></label>
-                                                                <input type="text" class="form-control" placeholder="Bairro" id="bairro" name="bairro" value="{{old('bairro') ?? $user->bairro}}">
+                                                                <input type="text" class="form-control" placeholder="Bairro" id="bairro" name="neighborhood" value="{{old('neighborhood') ?? $user->neighborhood}}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -222,19 +189,19 @@
                                                         <div class="col-12 col-md-6 col-lg-5"> 
                                                             <div class="form-group">
                                                                 <label class="labelforms text-muted"><b>Rua/Av:</b></label>
-                                                                <input type="text" class="form-control" id="rua" name="rua" value="{{old('rua') ?? $user->rua}}">
+                                                                <input type="text" class="form-control" id="rua" name="street" value="{{old('street') ?? $user->street}}">
                                                             </div>
                                                         </div>
                                                         <div class="col-12 col-md-6 col-lg-2"> 
                                                             <div class="form-group">
                                                                 <label class="labelforms text-muted"><b>Número:</b></label>
-                                                                <input type="text" class="form-control" placeholder="Número do Endereço" name="num" value="{{old('num') ?? $user->num}}">
+                                                                <input type="text" class="form-control" placeholder="Número do Endereço" name="number" value="{{old('number') ?? $user->number}}">
                                                             </div>
                                                         </div>
                                                         <div class="col-12 col-md-6 col-lg-3"> 
                                                             <div class="form-group">
                                                                 <label class="labelforms text-muted"><b>Complemento:</b></label>
-                                                                <input type="text" class="form-control" placeholder="Complemento (Opcional)" name="complemento" value="{{old('complemento') ?? $user->complemento}}">
+                                                                <input type="text" class="form-control" placeholder="Complemento (Opcional)" name="complement" value="{{old('complement') ?? $user->complement}}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -255,13 +222,13 @@
                                                         <div class="col-12 col-md-6 col-lg-4"> 
                                                             <div class="form-group">
                                                                 <label class="labelforms text-muted"><b>Residencial:</b></label>
-                                                                <input type="text" class="form-control telefonemask" placeholder="Número do Telefone com DDD" name="telefone" value="{{old('telefone') ?? $user->telefone}}">
+                                                                <input type="text" class="form-control telefonemask" placeholder="Número do Telefone com DDD" name="phone" value="{{old('phone') ?? $user->phone}}">
                                                             </div>
                                                         </div>
                                                         <div class="col-12 col-md-6 col-lg-4"> 
                                                             <div class="form-group">
                                                                 <label class="labelforms text-muted"><b>*Celular:</b></label>
-                                                                <input type="text" class="form-control celularmask" placeholder="Número do Celular com DDD" name="celular" value="{{old('celular') ?? $user->celular}}">
+                                                                <input type="text" class="form-control celularmask" placeholder="Número do Celular com DDD" name="cell_phone" value="{{old('cell_phone') ?? $user->cell_phone}}">
                                                             </div>
                                                         </div>
                                                         <div class="col-12 col-md-6 col-lg-4"> 
@@ -273,7 +240,7 @@
                                                         <div class="col-12 col-md-6 col-lg-4"> 
                                                             <div class="form-group">
                                                                 <label class="labelforms text-muted"><b>E-mail Alternativo:</b></label>
-                                                                <input type="text" class="form-control" placeholder="Email Alternativo" name="email1" value="{{old('email1') ?? $user->email1}}">
+                                                                <input type="text" class="form-control" placeholder="Email Alternativo" name="additional_email" value="{{old('additional_email') ?? $user->additional_email}}">
                                                             </div>
                                                         </div>
                                                         <div class="col-12 col-md-6 col-lg-4"> 
@@ -313,7 +280,7 @@
                                                             <div class="form-group">
                                                                 <label class="labelforms text-muted"><b>*Senha:</b></label>
                                                                 <div class="input-group">
-                                                                    <input type="password" class="form-control" id="senha" name="password" value="{{ old('senha') ?? $user->senha }}"/>
+                                                                    <input type="password" class="form-control" id="senha" name="password" value="{{ old('code') ?? $user->code }}"/>
                                                                     <div class="input-group-append" id="olho">
                                                                         <div class="input-group-text"><i class="fa fa-eye"></i></div>
                                                                     </div>
@@ -364,12 +331,6 @@
                                             <div class="form-group">
                                                 <label class="labelforms text-muted"><b>Instagram:</b></label>
                                                 <input type="text" class="form-control text-muted" placeholder="Instagram" name="instagram" value="{{old('instagram') ?? $user->instagram}}">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-6 col-lg-4"> 
-                                            <div class="form-group">
-                                                <label class="labelforms text-muted"><b>Vimeo:</b></label>
-                                                <input type="text" class="form-control text-muted" placeholder="Vimeo" name="vimeo" value="{{old('vimeo') ?? $user->vimeo}}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6 col-lg-4"> 

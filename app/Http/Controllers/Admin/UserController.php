@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\UserRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
@@ -84,7 +85,8 @@ class UserController extends Controller
         $user->setClientAttribute($request->client);
         $user->setSuperAdminAttribute($request->superadmin);
 
-        $nasc = Carbon::createFromFormat('d/m/Y', $request->nasc)->format('d-m-Y');        
+        $nasc = Carbon::createFromFormat('d/m/Y', $request->birthday)->format('d-m-Y'); 
+        
         
         if(Carbon::parse($nasc)->age < 18){
             return Redirect::back()->with(['color' => 'danger', 'message' => 'Data de nascimento inválida!']);
@@ -100,7 +102,6 @@ class UserController extends Controller
         if(!empty($request->file('avatar'))){
             $user->avatar = $request->file('avatar')->storeAs(env('AWS_PASTA') . 'user', Str::slug($request->name)  . '-' . str_replace('.', '', microtime(true)) . '.' . $request->file('avatar')->extension());
         }
-
         if(!$user->save()){
             return Redirect::back()->withInput()->withErrors('erro');
         }

@@ -154,7 +154,7 @@ return [
         'address'   => 'endereço',
         'age'       => 'idade',
         'body'      => 'conteúdo',
-        'cell'      => 'celular',
+        'cell_phone'      => 'celular',
         'city'      => 'cidade',
         'country'   => 'país',
         'date'      => 'data',
@@ -166,7 +166,7 @@ return [
         'last_name' => 'sobrenome',
         'message'   => 'mensagem',
         'minute'    => 'minuto',
-        'mobile'    => 'celular',
+        'whatsapp'    => 'whatsapp',
         'month'     => 'mês',
         'name'      => 'nome',
         'neighborhood' => 'bairro',
@@ -187,7 +187,7 @@ return [
         'password_confirmation' => 'confirmação da senha',
         'current_password' => 'senha atual',
 
-        'nasc' => 'data de nascimento',
+        'birthday' => 'data de nascimento',
         'cpf' => 'CPF',
 
         'dormitorios' => 'Leitos',

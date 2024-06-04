@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'cpf' => fake()->cpf,
             'rg' => fake()->rg,
-            'birthday' => now()->subYears(25)->format('Y-m-d'),
+            //'birthday' => now()->subYears(25)->format('Y-m-d'),
             'cell_phone' => '(12)' . fake()->cellphone,
             'whatsapp' => '(12)' . fake()->cellphone,
             'additional_email' => fake()->safeEmail(),

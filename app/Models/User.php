@@ -28,7 +28,7 @@ class User extends Authenticatable
         //Contact
         'phone', 'cell_phone', 'whatsapp', 'skype', 'telegram', 'email', 'additional_email',
         //Social
-        'facebook', 'twitter', 'instagram',
+        'facebook', 'twitter', 'instagram', 'youtube', 'fliccr', 'linkedin',
         //Function
         'admin', 'client', 'editor', 'superadmin',
         'status',
@@ -94,13 +94,12 @@ class User extends Authenticatable
         }
     }
 
-    public function getAvatarAttribute()
+    public function getUrlAvatarAttribute()
     {
-        return $this->attributes['avatar'] ? Storage::url($this->attributes['avatar']) : url(asset('backend/assets/images/image.jpg'));
-        // if(!empty($this->avatar) || !Storage::disk()->exists($this->avatar)) {
-        //     return url(asset('backend/assets/images/image.jpg'));
-        // } 
-        // return Storage::url($this->avatar);
+        if (!empty($this->avatar)) {
+            return Storage::url($this->avatar);
+        }
+        return '';
     }
 
     public function setCellPhoneAttribute($value)
