@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('config', function (Blueprint $table) {
             $table->increments('id');      
-            $table->string('name')->unique();
+            $table->string('app_name')->unique();
             $table->string('social_name')->nullable();
             $table->string('alias_name')->nullable();
             $table->string('slug')->nullable();
@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('domain')->nullable();
             $table->string('subdomain')->nullable();
             $table->string('template')->nullable();
-            $table->string('template_exclusive')->nullable();
 
             /** imagens */
             $table->string('logo')->nullable();

@@ -25,6 +25,7 @@ services:
             - phpmyadmin
             - mailpit
             - memcached
+            - minio
     mariadb:
         image: 'mariadb:10'
         ports:
@@ -70,9 +71,28 @@ services:
             - '${FORWARD_MEMCACHED_PORT:-11211}:11211'
         networks:
             - sail
+    minio:
+        image: 'minio/minio:latest'
+        ports:
+        - '${FORWARD_MINIO_PORT:-9000}:9000'
+        - '${FORWARD_MINIO_CONSOLE_PORT:-8900}:8900'
+        networks:
+        - sail
+        volumes:
+        - 'sail_minio:/data/minio'
+        environment:
+        - MINIO_ROOT_USER='${AWS_ACCESS_KEY_ID}'
+        - MINIO_ROOT_PASSWORD='${AWS_SECRET_ACCESS_KEY}'
+        command: minio server /data/minio --console-address ":8900"
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+            timeout: 5s
+            retries: 5
 networks:
     sail:
         driver: bridge
 volumes:
     sail-mariadb:
+        driver: local
+    sail_minio:
         driver: local

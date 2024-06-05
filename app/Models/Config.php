@@ -14,62 +14,50 @@ class Config extends Model
 
     protected $fillable = [
         'status',
-        'ano_de_inicio',
-        'nomedosite',
-        'politicas_de_privacidade',
+        'init_date',
+        'app_name',        
+        'social_name',
+        'alias_name',
+        'slug',
         'cnpj',
         'ie',
-        'dominio',
+        'domain',
+        'subdomain',
         'template',
+
         //Imagens
-        'logomarca',
-        'logomarca_admin',        
-        'logomarca_footer',
+        'logo',
+        'logo_admin',        
+        'logo_footer',
         'favicon',        
         'metaimg',
         'imgheader',
-        'marcadagua',
-        //SMTP
-        'smtp_host',
-        'smtp_port',
-        'smtp_user',
-        'smtp_pass',
-        //Contato
-        'telefone1',
-        'telefone2',
-        'telefone3',
+        'watermark',
+
+        //contact 
+        'phone',
+        'cell_phone',
         'whatsapp',
         'skype',
+        'telegram',
         'email',
-        'email1',
-        //Endereço
-        'cep',
-        'rua',
-        'num',
-        'complemento',
-        'bairro',
-        'uf',
-        'cidade',
-        //Social links
-        'facebook',
-        'twitter',
-        'youtube',
-        'instagram',
-        'linkedin',
-        'vimeo',
-        'fliccr',
-        'soundclound',
-        'snapchat',
+        'additional_email',
+         
+        //Address      
+        'postcode', 'street', 'number', 'complement', 'neighborhood', 'state', 'city',
+
+        //Social
+        'facebook', 'twitter', 'instagram', 'youtube', 'fliccr', 'linkedin',
+
         //Seo
-        'descricao',
-        'mapa_google',
-        'metatags',
-        'rss',
-        'rss_data',
-        'sitemap',
+        'information', 
+        'privacy_policy',
+        'maps_google', 
+        'metatags', 'rss', 
+        'rss_data', 
+        'sitemap', 
         'sitemap_data',
-        'analytics_view',
-        'tagmanager_id'
+        'analytics_id'
     ];
 
     /**

@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Admin\{
     AdminController,
+    ConfigController,
     EmailController,
+    ImovelController,
     UserController
 };
 use Illuminate\Support\Facades\Route;
@@ -47,9 +49,8 @@ Route::prefix('admin')->middleware('auth')->group( function(){
     Route::get('assinatura', [AssinaturaController::class, 'assinatura'])->name('assinatura')->middleware(['subscribed']);
 
     //****************************** Configurações ***************************************/
-    Route::match(['post', 'get'], 'configuracoes/fetchCity', [TenantClientConfigController::class, 'fetchCity'])->name('configuracoes.fetchCity');
-    Route::put('configuracoes/{config}', [TenantClientConfigController::class, 'update'])->name('configuracoes.update');
-    Route::get('configuracoes', [TenantClientConfigController::class, 'editar'])->name('configuracoes.editar');
+    Route::put('configuracoes/{config}', [ConfigController::class, 'update'])->name('configuracoes.update');
+    Route::get('configuracoes', [ConfigController::class, 'editar'])->name('configuracoes.editar');
 
     
     //******************* Slides ************************************************/
