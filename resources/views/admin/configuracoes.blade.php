@@ -98,7 +98,7 @@ $config1 = [
                                     <!-- checkbox -->
                                     <div class="form-group p-3 mb-0">
                                         <h5 class="mr-3"><b>Informações Gerais</b></h5>  
-                                        <p>{{ getPrimeiroNome(\Illuminate\Support\Facades\Auth::user()->name) }} aqui você pode configurar as informações do sistema.</p>                                          
+                                        <p>{{ \App\Helpers\Renato::getPrimeiroNome(\Illuminate\Support\Facades\Auth::user()->name) }} aqui você pode configurar as informações do sistema.</p>                                          
                                     </div>
                                 </div>
                             </div>
@@ -109,7 +109,7 @@ $config1 = [
                                         <div class="col-12 col-md-6 col-sm-6 col-lg-6 mb-2">
                                             <div class="form-group">
                                                 <label class="labelforms text-muted"><b>Nome do site</b></label>
-                                                <input type="text" class="form-control text-muted" placeholder="Nome do site" name="name" value="{{ old('name') ?? $config->name }}">
+                                                <input type="text" class="form-control text-muted" placeholder="Nome do site" name="app_name" value="{{ old('app_name') ?? $config->app_name }}">
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6 col-sm-6 col-lg-6 mb-2">
@@ -117,7 +117,7 @@ $config1 = [
                                                 <div class="form-group">
                                                     <label class="labelforms text-muted"><b>URL do site</b></label>
                                                     <div class="input-group">
-                                                        <input type="text" class="form-control text-muted" placeholder="URL do site" name="dominio" value="{{ old('dominio') ?? $config->dominio }}" disabled/>
+                                                        <input type="text" class="form-control text-muted" placeholder="URL do site" name="domain" value="{{ old('domain') ?? $config->domain }}"/>
                                                         <div class="input-group-append">
                                                             <div class="input-group-text">
                                                             <a href="javascript:void(0)" title="QrCode" data-toggle="modal" data-target="#modal-qrcode"><i class="fa fa-qrcode"></i></a>
@@ -129,7 +129,7 @@ $config1 = [
                                                 <div class="form-group">
                                                     <label class="labelforms text-muted"><b>URL do site</b></label>
                                                     <div class="input-group">
-                                                        <input type="text" class="form-control text-muted" placeholder="URL do site" name="dominio" value="{{ old('dominio') ?? $config->dominio }}" disabled>
+                                                        <input type="text" class="form-control text-muted" placeholder="URL do site" name="domain" value="{{ old('domain') ?? $config->domain }}" disabled>
                                                         <div class="input-group-append">
                                                             <div class="input-group-text">
                                                             <a href="javascript:void(0)" title="QrCode" data-toggle="modal" data-target="#modal-qrcode"><i class="fa fa-qrcode"></i></a>
@@ -154,67 +154,50 @@ $config1 = [
                                         </h4>
                                     </div>
                                     <div id="collapseEndereco" class="panel-collapse collapse show">
-                                        <div class="card-body text-muted">
+                                        <div class="card-body">
                                             <div class="row mb-2">
-                                                <div class="col-12 col-md-4 col-lg-4"> 
+                                                <div class="col-12 col-md-2 col-lg-2"> 
                                                     <div class="form-group">
-                                                        <label class="labelforms"><b>Estado:</b></label>
-                                                        <select id="state-dd" class="form-control text-muted" name="uf">
-                                                            @if(!empty($estados))
-                                                                <option value="">Selecione o Estado</option>
-                                                                @foreach($estados as $estado)
-                                                                    <option value="{{$estado->estado_id}}" {{ (old('uf') == $estado->estado_id ? 'selected' : ($config->uf == $estado->estado_id ? 'selected' : '')) }}>{{$estado->estado_nome}}</option>
-                                                                @endforeach                                                                        
-                                                            @endif
-                                                        </select>
+                                                        <label class="labelforms text-muted"><b>CEP:</b></label>
+                                                        <input type="text" id="cep" class="form-control mask-zipcode" placeholder="Digite o CEP" name="postcode" value="{{old('postcode') ?? $config->postcode}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-3 col-lg-3"> 
+                                                    <div class="form-group">
+                                                        <label class="labelforms text-muted"><b>Estado:</b></label>
+                                                        <input type="text" class="form-control" id="uf" name="state" value="{{old('state') ?? $config->state}}">
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-4 col-lg-4"> 
                                                     <div class="form-group">
-                                                        <label class="labelforms"><b>Cidade:</b></label>
-                                                        <select id="city-dd" class="form-control text-muted" name="cidade">
-                                                            @if(!empty($cidades) && !empty($config->cidade) && $config->uf != null)
-                                                                @foreach($cidades as $cidade)
-                                                                <option value="{{$cidade->cidade_id}}" 
-                                                                        {{ (old('cidade') == $cidade->cidade_id ? 'selected' : 
-                                                                        ($config->cidade == $cidade->cidade_id ? 'selected' : '')) }}>{{$cidade->cidade_nome}}</option>
-                                                                @endforeach
-                                                            @else  
-                                                            <option value="">Selecione o Estado</option>
-                                                            @endif
-                                                        </select>
+                                                        <label class="labelforms text-muted"><b>Cidade:</b></label>
+                                                        <input type="text" class="form-control" id="cidade" name="city" value="{{old('city') ?? $config->city}}">
                                                     </div>
                                                 </div>
-                                                <div class="col-12 col-md-4 col-lg-4"> 
+                                                <div class="col-12 col-md-4 col-lg-3"> 
                                                     <div class="form-group">
-                                                        <label class="labelforms"><b>Bairro:</b></label>
-                                                        <input type="text" class="form-control text-muted" placeholder="Bairro" name="bairro" value="{{old('bairro') ?? $config->bairro}}">
+                                                        <label class="labelforms text-muted"><b>Bairro:</b></label>
+                                                        <input type="text" class="form-control" placeholder="Bairro" id="bairro" name="neighborhood" value="{{old('neighborhood') ?? $config->neighborhood}}">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row mb-2">
                                                 <div class="col-12 col-md-6 col-lg-5"> 
                                                     <div class="form-group">
-                                                        <label class="labelforms"><b>Endereço:</b></label>
-                                                        <input type="text" class="form-control text-muted" placeholder="Endereço Completo" name="rua" value="{{old('rua') ?? $config->rua}}">
+                                                        <label class="labelforms text-muted"><b>Rua/Av:</b></label>
+                                                        <input type="text" class="form-control" id="rua" name="street" value="{{old('street') ?? $config->street}}">
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-6 col-lg-2"> 
                                                     <div class="form-group">
-                                                        <label class="labelforms"><b>Número:</b></label>
-                                                        <input type="text" class="form-control text-muted" placeholder="Número do Endereço" name="num" value="{{old('num') ?? $config->num}}">
+                                                        <label class="labelforms text-muted"><b>Número:</b></label>
+                                                        <input type="text" class="form-control" placeholder="Número do Endereço" name="number" value="{{old('number') ?? $config->number}}">
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-6 col-lg-3"> 
                                                     <div class="form-group">
-                                                        <label class="labelforms"><b>Complemento:</b></label>
-                                                        <input type="text" class="form-control text-muted" placeholder="Completo (Opcional)" name="complemento" value="{{old('complemento') ?? $config->complemento}}">
-                                                    </div>
-                                                </div>
-                                                <div class="col-12 col-md-6 col-lg-2"> 
-                                                    <div class="form-group">
-                                                        <label class="labelforms"><b>CEP:</b></label>
-                                                        <input type="text" class="form-control text-muted mask-zipcode" placeholder="Digite o CEP" name="cep" value="{{old('cep') ?? $config->cep}}">
+                                                        <label class="labelforms text-muted"><b>Complemento:</b></label>
+                                                        <input type="text" class="form-control" placeholder="Complemento (Opcional)" name="complement" value="{{old('complement') ?? $config->complement}}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -247,7 +230,7 @@ $config1 = [
                                                 <div class="col-12 col-md-4 col-sm-4 col-lg-4"> 
                                                     <div class="form-group">
                                                         <label class="labelforms"><b>Ano de ínicio</b></label>
-                                                        <input type="text" class="form-control text-muted" placeholder="Ano de ínicio" name="ano_de_inicio" value="{{old('ano_de_inicio') ?? $config->ano_de_inicio}}">
+                                                        <input type="text" class="form-control text-muted" placeholder="Ano de ínicio" name="init_date" value="{{old('init_date') ?? $config->init_date}}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -258,7 +241,7 @@ $config1 = [
                                 <div class="row mb-2">
                                     <div class="col-12">   
                                         <label class="labelforms text-muted"><b>Política de Privacidade</b></label>
-                                        <x-adminlte-text-editor name="politicas_de_privacidade" v placeholder="Política de Privacidade..." :config="$config1">{{ old('politicas_de_privacidade') ?? $config->politicas_de_privacidade }}</x-adminlte-text-editor>                                                                                     
+                                        <x-adminlte-text-editor name="privacy_policy" v placeholder="Política de Privacidade..." :config="$config1">{{ old('privacy_policy') ?? $config->privacy_policy }}</x-adminlte-text-editor>                                                                                     
                                     </div>                                    
                                 </div>
                             </div> 
@@ -291,38 +274,14 @@ $config1 = [
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-6"> 
                                     <div class="form-group">
-                                        <label class="labelforms"><b>Flickr:</b></label>
-                                        <input type="text" class="form-control text-muted" placeholder="Flickr" name="fliccr" value="{{old('fliccr') ?? $config->fliccr}}">
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-6"> 
-                                    <div class="form-group">
                                         <label class="labelforms"><b>Instagram:</b></label>
                                         <input type="text" class="form-control text-muted" placeholder="Instagram" name="instagram" value="{{old('instagram') ?? $config->instagram}}">
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-6"> 
                                     <div class="form-group">
-                                        <label class="labelforms"><b>Vimeo:</b></label>
-                                        <input type="text" class="form-control text-muted" placeholder="Vimeo" name="vimeo" value="{{old('vimeo') ?? $config->vimeo}}">
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-6"> 
-                                    <div class="form-group">
                                         <label class="labelforms"><b>Linkedin:</b></label>
-                                        <input type="text" class="form-control text-muted" placeholder="Linkedin" name="linkedin" value="{{old('linkedin') ?? $config->linkedin}}">
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-6"> 
-                                    <div class="form-group">
-                                        <label class="labelforms"><b>Sound Cloud:</b></label>
-                                        <input type="text" class="form-control text-muted" placeholder="Linkedin" name="soundclound" value="{{old('soundclound') ?? $config->soundclound}}">
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-6"> 
-                                    <div class="form-group">
-                                        <label class="labelforms"><b>SnapChat:</b></label>
-                                        <input type="text" class="form-control text-muted" placeholder="SnapChat" name="snapchat" value="{{old('snapchat') ?? $config->snapchat}}">
+                                        <input type="text" class="form-control text-muted" placeholder="linkedin" name="linkedin" value="{{old('linkedin') ?? $config->linkedin}}">
                                     </div>
                                 </div>
                             </div>
@@ -339,13 +298,13 @@ $config1 = [
                                 <div class="col-12 col-md-6 col-lg-4"> 
                                     <div class="form-group">
                                         <label class="labelforms"><b>Telefone Fixo:</b></label>
-                                        <input type="text" class="form-control text-muted" placeholder="Telefone fixo com DDD" name="telefone" value="{{old('telefone') ?? $config->telefone}}">
+                                        <input type="text" class="form-control text-muted" placeholder="Telefone fixo com DDD" name="phone" value="{{old('phone') ?? $config->phone}}">
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-4"> 
                                     <div class="form-group">
                                         <label class="labelforms"><b>Telefone Móvel:</b></label>
-                                        <input type="text" class="form-control text-muted" placeholder="Telefone móvel com DDD" name="celular" value="{{old('celular') ?? $config->celular}}">
+                                        <input type="text" class="form-control text-muted" placeholder="Telefone móvel com DDD" name="cell_phone" value="{{old('cell_phone') ?? $config->cell_phone}}">
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-4"> 
@@ -363,7 +322,7 @@ $config1 = [
                                 <div class="col-12 col-md-6 col-lg-4"> 
                                     <div class="form-group">
                                         <label class="labelforms"><b>Email Adicional:</b></label>
-                                        <input type="text" class="form-control text-muted" placeholder="Email Alternativo" name="email1" value="{{old('email1') ?? $config->email1}}">
+                                        <input type="text" class="form-control text-muted" placeholder="Email Alternativo" name="additional_email" value="{{old('additional_email') ?? $config->additional_email}}">
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-4"> 
@@ -383,12 +342,12 @@ $config1 = [
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 col-sm-6 col-lg-12 mapa-google mb-3"> 
-                                    {!! old('mapa_google') ?? $config->mapa_google !!}
+                                    {!! old('maps_google') ?? $config->maps_google !!}
                                 </div>
                                 <div class="col-12 col-md-6 col-sm-6 col-lg-12">   
                                     <div class="form-group">
                                         <label class="labelforms"><b>Mapa do Google</b> <small class="text-info">(Copie o código de incorporação do Google Maps e cole abaixo)</small></label>
-                                        <textarea id="inputDescription" class="form-control" rows="5" name="mapa_google">{{ old('mapa_google') ?? $config->mapa_google }}</textarea> 
+                                        <textarea id="inputDescription" class="form-control" rows="5" name="maps_google">{{ old('maps_google') ?? $config->maps_google }}</textarea> 
                                     </div>                                                     
                                 </div>                                         
                             </div> 
@@ -406,8 +365,8 @@ $config1 = [
                                     <div class="form-group">
                                         <label class="labelforms"><b>Logomarca do site</b> - {{env('LOGOMARCA_WIDTH')}}x{{env('LOGOMARCA_HEIGHT')}} pixels</label>
                                         <div class="thumb_user_admin">                                                    
-                                            <img id="preview2" src="{{$config->getlogomarca()}}" alt="{{ old('dominio') ?? $config->dominio }}" title="{{ old('dominio') ?? $config->dominio }}"/>
-                                            <input id="img-logomarca" type="file" name="logomarca">
+                                            <img id="preview2" src="{{$config->getlogomarca()}}" alt="{{ old('domain') ?? $config->domain }}" title="{{ old('domain') ?? $config->domain }}"/>
+                                            <input id="img-logomarca" type="file" name="logo">
                                         </div>
                                     </div>
                                 </div>
@@ -415,8 +374,8 @@ $config1 = [
                                     <div class="form-group">
                                         <label class="labelforms"><b>Logomarca do Gerenciador</b> - {{env('LOGOMARCA_GERENCIADOR_WIDTH')}}x{{env('LOGOMARCA_GERENCIADOR_HEIGHT')}} pixels</label>
                                         <div class="thumb_user_admin">                                                    
-                                            <img id="preview3" src="{{$config->getlogoadmin()}}" alt="{{ old('dominio') ?? $config->dominio }}" title="{{ old('dominio') ?? $config->dominio }}"/>
-                                            <input id="img-logomarcaadmin" type="file" name="logomarca_admin">
+                                            <img id="preview3" src="{{$config->getlogoadmin()}}" alt="{{ old('domain') ?? $config->domain }}" title="{{ old('domain') ?? $config->domain }}"/>
+                                            <input id="img-logomarcaadmin" type="file" name="logo_admin">
                                         </div>
                                     </div>
                                 </div>
@@ -424,7 +383,7 @@ $config1 = [
                                     <div class="form-group">
                                         <label class="labelforms"><b>Favicon</b> - {{env('FAVEICON_WIDTH')}}x{{env('FAVEICON_HEIGHT')}} pixels</label>
                                         <div class="thumb_user_admin">                                                    
-                                            <img id="preview4" src="{{$config->getfaveicon()}}" alt="{{ old('dominio') ?? $config->dominio }}" title="{{ old('dominio') ?? $config->dominio }}"/>
+                                            <img id="preview4" src="{{$config->getfaveicon()}}" alt="{{ old('domain') ?? $config->domain }}" title="{{ old('domain') ?? $config->domain }}"/>
                                             <input id="img-favicon" type="file" name="favicon">
                                         </div>
                                     </div>
@@ -433,8 +392,8 @@ $config1 = [
                                     <div class="form-group">
                                         <label class="labelforms"><b>Marca D´agua</b> - {{env('MARCADAGUA_WIDTH')}}x{{env('MARCADAGUA_HEIGHT')}} pixels</label>
                                         <div class="thumb_user_admin">                                                    
-                                            <img id="preview5" src="{{$config->getmarcadagua()}}" alt="{{ old('dominio') ?? $config->dominio }}" title="{{ old('dominio') ?? $config->dominio }}"/>
-                                            <input id="img-marcadagua" type="file" name="marcadagua">
+                                            <img id="preview5" src="{{$config->getmarcadagua()}}" alt="{{ old('domain') ?? $config->domain }}" title="{{ old('domain') ?? $config->domain }}"/>
+                                            <input id="img-marcadagua" type="file" name="watermark">
                                         </div>
                                     </div>
                                 </div>
@@ -442,7 +401,7 @@ $config1 = [
                                     <div class="form-group">
                                         <label class="labelforms"><b>Topo do site</b> - {{env('IMGHEADER_WIDTH')}}x{{env('IMGHEADER_HEIGHT')}} pixels</label>
                                         <div class="thumb_user_admin">
-                                            <img id="preview6" src="{{$config->gettopodosite()}}" alt="{{ old('dominio') ?? $config->dominio }}" title="{{ old('dominio') ?? $config->dominio }}"/>
+                                            <img id="preview6" src="{{$config->gettopodosite()}}" alt="{{ old('domain') ?? $config->domain }}" title="{{ old('domain') ?? $config->domain }}"/>
                                             <input id="img-imgheader" type="file" name="imgheader">
                                         </div>
                                     </div>
@@ -460,18 +419,14 @@ $config1 = [
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <h5><b>Sitemap</b></h5>  
-                                        <p>Caminho: <a target="_blank" href="{{url(asset(\Str::slug($config->name)))}}_sitemap.xml">{{url(asset(\Str::slug($config->name)))}}_sitemap.xml</a></p>                                          
+                                        <p>Caminho: <a target="_blank" href="{{url(asset(\Str::slug($config->app_name)))}}_sitemap.xml">{{url(asset(\Str::slug($config->app_name)))}}_sitemap.xml</a></p>                                          
                                         <h5><b>Feed/RSS</b></h5>  
                                         <p>Caminho: <a target="_blank" href="{{route('web.feed')}}">{{route('web.feed')}}</a></p>                                          
                                     </div>
                                 </div>                                        
                                 <div class="col-4 mb-1 py-2"> 
-                                    <label class="labelforms"><b>Google Analytics (vista da propriedade):</b></label>
-                                    <input type="text" class="form-control text-muted" name="analytics_view" value="{{old('analytics_view') ?? $config->analytics_view}}">
-                                </div>
-                                <div class="col-4 mb-1 py-2"> 
-                                    <label class="labelforms"><b>Google Analytics (Tag Mananger Id):</b></label>
-                                    <input type="text" class="form-control text-muted" name="tagmanager_id" value="{{old('tagmanager_id') ?? $config->tagmanager_id}}">
+                                    <label class="labelforms"><b>Google Analytics Id:</b></label>
+                                    <input type="text" class="form-control text-muted" name="analytics_id" value="{{old('analytics_id') ?? $config->analytics_id}}">
                                 </div>
                                 <div class="col-4 mb-1 acoes text-right py-2"> 
                                     <a data-id="{{$config->id}}" href="javascript:void(0)" class="btn {{ ($diferenca >= 30 ? 'btn-warning' : 'btn-success disabled') }} btn-flat btn_sitemap">{!! ($diferenca >= 30 ? '<i class="fas fa-exclamation-triangle"></i> Sitemap Desatualizado' : '<i class="fas fa-check"></i> Sitemap Atualizado') !!}</a>
@@ -479,7 +434,7 @@ $config1 = [
                                 <div class="col-12 mb-1"> 
                                     <div class="form-group">
                                         <label class="labelforms"><b>Descrição do site</b></label>
-                                        <textarea class="form-control" rows="5" name="descricao">{{ old('descricao') ?? $config->descricao }}</textarea>
+                                        <textarea class="form-control" rows="5" name="information">{{ old('information') ?? $config->information }}</textarea>
                                     </div>
                                 </div>
                                 <div class="col-12 mb-1"> 
@@ -492,7 +447,7 @@ $config1 = [
                                     <div class="form-group">
                                         <label class="labelforms"><b>Meta Imagem: </b>(800X418) pixels</label>
                                         <div class="thumb_user_admin">                                                    
-                                            <img id="preview1" src="{{$config->getmetaimg()}}" alt="{{ old('dominio') ?? $config->dominio }}" title="{{ old('dominio') ?? $config->dominio }}"/>
+                                            <img id="preview1" src="{{$config->getmetaimg()}}" alt="{{ old('domain') ?? $config->domain }}" title="{{ old('domain') ?? $config->domain }}"/>
                                             <input id="img-input" type="file" name="metaimg">
                                         </div>
                                     </div>
@@ -514,9 +469,6 @@ $config1 = [
                                                 <input class="form-check-input" type="radio" name="template" value="{{$template->name}}" {{(old('template') == '1' ? $template->name : ($config->template == $template->name ? 'checked' : ''))}}>
                                                 <label class="form-check-label">{{$template->name}}</label>
                                             </div>
-                                            @if ($template->exclusivo == 1)
-                                                <div class="tag-2 bg-active">Exclusivo</div>
-                                            @endif
                                             <img src="{{$template->getimagem()}}" alt="{{$template->name}}">                                            
                                         </div>                                                                                
                                     @endforeach
@@ -536,6 +488,32 @@ $config1 = [
         </div>
     </div> 
 </form>
+
+<div class="modal fade" id="modal-qrcode">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Copiar QrCode</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">  
+                <p>Este QrCode direciona para: {{$config->domain}}</p>
+                @php 
+                    $qrcode = QRCode::url($config->domain)
+                            ->setSize(8)
+                            ->setMargin(2)
+                            ->svg();
+                @endphp             
+                <img src="{{$qrcode}}">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            </div>            
+        </div>        
+    </div>
+</div>
 
 @stop
 
@@ -594,7 +572,6 @@ $config1 = [
 @stop
 
 @section('plugins.Toastr', true)
-
 
 @section('js')
 <!--tags input-->
@@ -715,26 +692,7 @@ $config1 = [
         document.getElementById("img-imgheader").addEventListener("change", readImageImgheader, false);
                     
        
-        $('#state-dd').on('change', function () {
-            var idState = this.value;
-            $("#city-dd").html('');
-            $.ajax({
-                url: "{{route('configuracoes.fetchCity')}}",
-                type: "POST",
-                data: {
-                    estado_id: idState,
-                    _token: '{{csrf_token()}}'
-                },
-                dataType: 'json',
-                success: function (res) {
-                    $('#city-dd').html('<option value="">Selecione a cidade</option>');
-                    $.each(res.cidades, function (key, value) {
-                        $("#city-dd").append('<option value="' + value
-                            .cidade_id + '">' + value.cidade_nome + '</option>');
-                    });
-                }
-            });
-        });
+        
         
         //tag input
         function onAddTag(tag) {
@@ -754,6 +712,53 @@ $config1 = [
         });
         
         
+    });
+
+
+    $(document).ready(function() {
+
+        function limpa_formulário_cep() {
+            $("#rua").val("");
+            $("#bairro").val("");
+            $("#cidade").val("");
+            $("#uf").val("");
+        }
+
+        $("#cep").blur(function() {
+
+            var cep = $(this).val().replace(/\D/g, '');
+
+            if (cep != "") {
+                
+                var validacep = /^[0-9]{8}$/;
+
+                if(validacep.test(cep)) {
+                    
+                    $("#rua").val("Carregando...");
+                    $("#bairro").val("Carregando...");
+                    $("#cidade").val("Carregando...");
+                    $("#uf").val("Carregando...");
+                    
+                    $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+
+                        if (!("erro" in dados)) {
+                            $("#rua").val(dados.logradouro);
+                            $("#bairro").val(dados.bairro);
+                            $("#cidade").val(dados.localidade);
+                            $("#uf").val(dados.uf);
+                        } else {
+                            limpa_formulário_cep();
+                            alert("CEP não encontrado.");
+                        }
+                    });
+                } else {
+                    limpa_formulário_cep();
+                    alert("Formato de CEP inválido.");
+                }
+            } else {
+                limpa_formulário_cep();
+            }
+        });
     });
 </script>
 @stop

@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
     AdminController,
     ConfigController,
@@ -7,10 +9,18 @@ use App\Http\Controllers\Admin\{
     ImovelController,
     UserController
 };
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Web\{
+    FeedController,
+    Webcontroller
+};
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
+    Route::get('/', [Webcontroller::class, 'home'])->name('home');
+
+    /** FEED */
+    Route::get('feed', [FeedController::class, 'feed'])->name('feed');
+    Route::get('/politica-de-privacidade', [WebController::class, 'politica'])->name('politica');
+    Route::get('/sitemap', [WebController::class, 'sitemap'])->name('sitemap');
 });
 
 Route::prefix('admin')->middleware('auth')->group( function(){
@@ -113,5 +123,3 @@ Route::prefix('admin')->middleware('auth')->group( function(){
 
 
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

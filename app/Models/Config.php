@@ -47,7 +47,7 @@ class Config extends Model
         'postcode', 'street', 'number', 'complement', 'neighborhood', 'state', 'city',
 
         //Social
-        'facebook', 'twitter', 'instagram', 'youtube', 'fliccr', 'linkedin',
+        'facebook', 'twitter', 'instagram', 'youtube', 'linkedin',
 
         //Seo
         'information', 
