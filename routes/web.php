@@ -30,17 +30,7 @@ Route::prefix('admin')->middleware('auth')->group( function(){
     //******************************* Sitemap *********************************************/
     Route::get('gerarxml', [SitemapController::class, 'gerarxml'])->name('admin.gerarxml');
 
-    //******************************* Newsletter *********************************************/
-    Route::match(['post', 'get'], 'listas/padrao', [NewsletterController::class, 'padraoMark'])->name('listas.padrao');
-    Route::get('listas/set-status', [NewsletterController::class, 'listaSetStatus'])->name('listas.listaSetStatus');
-    Route::get('listas/delete', [NewsletterController::class, 'listaDelete'])->name('listas.delete');
-    Route::delete('listas/deleteon', [NewsletterController::class, 'listaDeleteon'])->name('listas.deleteon');
-    Route::put('listas/{id}', [NewsletterController::class, 'listasUpdate'])->name('listas.update');
-    Route::get('listas/{id}/editar', [NewsletterController::class, 'listasEdit'])->name('listas.edit');
-    Route::get('listas/cadastrar', [NewsletterController::class, 'listasCreate'])->name('listas.create');
-    Route::post('listas/store', [NewsletterController::class, 'listasStore'])->name('listas.store');
-    Route::get('listas', [NewsletterController::class, 'listas'])->name('listas');
-
+    
     Route::put('listas/email/{id}', [NewsletterController::class, 'newsletterUpdate'])->name('listas.newsletter.update');
     Route::get('listas/email/set-status', [NewsletterController::class, 'emailSetStatus'])->name('emails.emailSetStatus');
     Route::get('listas/email/delete', [NewsletterController::class, 'emailDelete'])->name('emails.delete');
@@ -50,29 +40,13 @@ Route::prefix('admin')->middleware('auth')->group( function(){
     Route::post('listas/email/store', [NewsletterController::class, 'newsletterStore'])->name('listas.newsletter.store');
     Route::get('listas/emails/categoria/{categoria}', [NewsletterController::class, 'newsletters'])->name('lista.newsletters');
 
-    //******************************* Assinatura *********************************************/
-    Route::get('assinar-plano/reativar', [AssinaturaController::class, 'resume'])->name('assinatura.resume');
-    Route::get('assinar-plano/cancela', [AssinaturaController::class, 'cancel'])->name('assinatura.cancel');
-    Route::get('assinar-plano/invoice/{invoice}', [AssinaturaController::class, 'downloadInvoice'])->name('assinatura.downloadInvoice');
-    Route::post('assinar-plano/store', [AssinaturaController::class, 'store'])->name('assinatura.store');
-    Route::get('assinar-plano/checkout', [AssinaturaController::class, 'index'])->name('assinatura.index');
-    Route::get('assinatura', [AssinaturaController::class, 'assinatura'])->name('assinatura')->middleware(['subscribed']);
-
+    
     //****************************** Configurações ***************************************/
     Route::put('configuracoes/{config}', [ConfigController::class, 'update'])->name('configuracoes.update');
     Route::get('configuracoes', [ConfigController::class, 'editar'])->name('configuracoes.editar');
 
     
-    //******************* Slides ************************************************/
-    Route::get('slides/set-status', [SlideController::class, 'slideSetStatus'])->name('slides.slideSetStatus');
-    Route::get('slides/delete', [SlideController::class, 'delete'])->name('slides.delete');
-    Route::delete('slides/deleteon', [SlideController::class, 'deleteon'])->name('slides.deleteon');
-    Route::put('slides/{slide}', [SlideController::class, 'update'])->name('slides.update');
-    Route::get('slides/{slide}/edit', [SlideController::class, 'edit'])->name('slides.edit');
-    Route::get('slides/create', [SlideController::class, 'create'])->name('slides.create');
-    Route::post('slides/store', [SlideController::class, 'store'])->name('slides.store');
-    Route::get('slides', [SlideController::class, 'index'])->name('slides.index');
-
+    
     //******************* Templates ************************************************/
     Route::get('templates/set-status', [TemplateController::class, 'templateSetStatus'])->name('templates.templateSetStatus');
     Route::get('templates/delete', [TemplateController::class, 'delete'])->name('templates.delete');
