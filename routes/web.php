@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\{
     ConfigController,
     EmailController,
     ImovelController,
+    TemplateController,
     UserController
 };
 use App\Http\Controllers\Web\{
@@ -86,6 +87,8 @@ Route::prefix('admin')->middleware('auth')->group( function(){
     Route::get('usuarios/create', [UserController::class, 'create'])->name('users.create');
     Route::post('usuarios/store', [UserController::class, 'store'])->name('users.store');
     Route::get('clientes', [UserController::class, 'index'])->name('users.index');  
+
+    Route::view('posts/create', 'admin.posts.create');
 
     //*********************** Email **********************************************/
     Route::get('email/suporte', [EmailController::class, 'suporte'])->name('email.suporte');

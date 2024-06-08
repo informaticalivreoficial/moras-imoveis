@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Imovel;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ImovelController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $imoveis = Imovel::orderBy('created_at', 'DESC')->orderBy('status', 'ASC')->paginate(50);
         return view('admin.imoveis.index', [
