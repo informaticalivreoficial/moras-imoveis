@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
-class Imovel extends Model
+class Property extends Model
 {
     use HasFactory;
 
-    protected $table = 'imoveis';
+    protected $table = 'properties';
 
     protected $fillable = [
         'sale',
@@ -66,8 +67,39 @@ class Imovel extends Model
     /**
      * Relationships
     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'owner', 'id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(PropertyGb::class, 'property', 'id')->orderBy('cover', 'ASC');
+    }
+
+    public function imagesmarkedwater()
+    {
+        return $this->hasMany(PropertyGb::class, 'property', 'id')->whereNull('watermark')->count();
+    }
 
     /**
      * Accerssors and Mutators
     */
+
+    public function cover()
+    {
+        $images = $this->images();
+        $cover = $images->where('cover', 1)->first(['path']);
+
+        if(!$cover) {
+            $images = $this->images();
+            $cover = $images->first(['path']);
+        }
+
+        if(empty($cover['path']) || !Storage::disk()->exists($cover['path'])) {
+            return url(asset('backend/assets/images/image.jpg'));
+        }
+
+        return Storage::url($cover['path']);
+    }
 }

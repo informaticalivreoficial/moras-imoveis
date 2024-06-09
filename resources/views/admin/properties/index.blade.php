@@ -17,7 +17,7 @@
 @stop
 
 @section('content')
-<livewire:admin.imovel /> 
+<livewire:admin.property /> 
 
 
 

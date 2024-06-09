@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('imoveis', function (Blueprint $table) {
+        Schema::create('properties', function (Blueprint $table) {
             $table->increments('id');
             $table->boolean('sale')->nullable();
             $table->boolean('location')->nullable();
@@ -131,6 +131,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('imoveis');
+        Schema::dropIfExists('properties');
     }
 };

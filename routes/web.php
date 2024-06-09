@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\{
     ConfigController,
     EmailController,
     ImovelController,
+    PropertyController,
     TemplateController,
     UserController
 };
@@ -59,19 +60,19 @@ Route::prefix('admin')->middleware('auth')->group( function(){
     Route::get('templates', [TemplateController::class, 'index'])->name('templates.index');
 
     /** Imóveis */
-    Route::match(['post', 'get'], 'imoveis/destaque', [ImovelController::class, 'destaqueMark'])->name('imoveis.destaque');
-    Route::get('imoveis/marcadagua', [ImovelController::class, 'imageWatermark'])->name('imoveis.marcadagua');
-    Route::match(['post', 'get'], 'imoveis/fetchCity', [ImovelController::class, 'fetchCity'])->name('imoveis.fetchCity');
-    Route::get('imoveis/delete', [ImovelController::class, 'delete'])->name('imoveis.delete');
-    Route::delete('imoveis/deleteon', [ImovelController::class, 'deleteon'])->name('imoveis.deleteon');
-    Route::post('imoveis/image-set-cover', [ImovelController::class, 'imageSetCover'])->name('imoveis.imageSetCover');
-    Route::get('imoveis/set-status', [ImovelController::class, 'imovelSetStatus'])->name('imoveis.imovelSetStatus');
-    Route::delete('imoveis/image-remove', [ImovelController::class, 'imageRemove'])->name('imoveis.imageRemove');
-    Route::put('imoveis/{imovel}', [ImovelController::class, 'update'])->name('imoveis.update');
-    Route::get('imoveis/{imovel}/edit', [ImovelController::class, 'edit'])->name('imoveis.edit');
-    Route::get('imoveis/create', [ImovelController::class, 'create'])->name('imoveis.create');
-    Route::post('imoveis/store', [ImovelController::class, 'store'])->name('imoveis.store');
-    Route::get('imoveis', [ImovelController::class, 'index'])->name('imoveis.index');
+    Route::match(['post', 'get'], 'imoveis/destaque', [PropertyController::class, 'destaqueMark'])->name('imoveis.destaque');
+    Route::get('imoveis/marcadagua', [PropertyController::class, 'imageWatermark'])->name('imoveis.marcadagua');
+    Route::match(['post', 'get'], 'imoveis/fetchCity', [PropertyController::class, 'fetchCity'])->name('imoveis.fetchCity');
+    Route::get('imoveis/delete', [PropertyController::class, 'delete'])->name('imoveis.delete');
+    Route::delete('imoveis/deleteon', [PropertyController::class, 'deleteon'])->name('imoveis.deleteon');
+    Route::post('imoveis/image-set-cover', [PropertyController::class, 'imageSetCover'])->name('imoveis.imageSetCover');
+    Route::get('imoveis/set-status', [PropertyController::class, 'imovelSetStatus'])->name('imoveis.imovelSetStatus');
+    Route::delete('imoveis/image-remove', [PropertyController::class, 'imageRemove'])->name('imoveis.imageRemove');
+    Route::put('imoveis/{imovel}', [PropertyController::class, 'update'])->name('imoveis.update');
+    Route::get('imoveis/{imovel}/edit', [PropertyController::class, 'edit'])->name('imoveis.edit');
+    Route::get('imoveis/create', [PropertyController::class, 'create'])->name('imoveis.create');
+    Route::post('imoveis/store', [PropertyController::class, 'store'])->name('imoveis.store');
+    Route::get('imoveis', [PropertyController::class, 'index'])->name('imoveis.index');
 
    
 
