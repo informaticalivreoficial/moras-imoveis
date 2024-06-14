@@ -9,13 +9,19 @@ use Livewire\WithPagination;
 class Property extends Component
 {
     use WithPagination;
-    public $propertyId;
+    public $propertyId, $updateProperty = false, $addProperty = false;
     
     public function render()
     {
+        $properties = ModelsProperty::orderBy('created_at', 'DESC')->orderBy('status', 'ASC')->paginate(50);
         return view('admin.properties.livewire.list',[
-            'properties' => ModelsProperty::orderBy('created_at', 'DESC')->orderBy('status', 'ASC')->paginate(50),
+            'properties' => $properties
         ]);
+    }
+
+    public function create()
+    {
+        return view('admin.properties.create');
     }
 
     public function store()
@@ -25,6 +31,19 @@ class Property extends Component
 
     public function edit($id)
     {
-
+        try {
+            $property = ModelsProperty::findOrFail($id);
+            if( !$property) {
+                session()->flash('error','Este imóvel não existe!');
+            } else {
+                $this->title = $post->title;
+                $this->description = $post->description;
+                $this->postId = $post->id;
+                $this->updateProperty = true;
+                $this->addProperty = false;
+            }
+        } catch (\Exception $ex) {
+            session()->flash('error','Algo deu errado!!');
+        }
     }
 }

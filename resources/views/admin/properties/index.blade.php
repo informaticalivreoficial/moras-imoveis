@@ -17,7 +17,8 @@
 @stop
 
 @section('content')
-<livewire:admin.property /> 
+
+    <livewire:admin.property /> 
 
 
 
