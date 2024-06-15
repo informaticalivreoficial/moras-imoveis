@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\PropertyRequest;
 use App\Models\Property;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class PropertyController extends Controller
 {
-    public function index(): View
+    public function index()
     {
         $properties = Property::orderBy('created_at', 'DESC')->orderBy('status', 'ASC')->paginate(50);
         return view('admin.properties.index', [
@@ -28,5 +28,9 @@ class PropertyController extends Controller
             'users' => $users,
             //'portais' => $portais
         ]);
+    }
+
+    public function store(PropertyRequest $request){
+        dd($request->all());
     }
 }

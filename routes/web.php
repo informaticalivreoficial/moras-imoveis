@@ -6,7 +6,6 @@ use App\Http\Controllers\Admin\{
     AdminController,
     ConfigController,
     EmailController,
-    ImovelController,
     PropertyController,
     TemplateController,
     UserController
@@ -62,7 +61,6 @@ Route::prefix('admin')->middleware('auth')->group( function(){
     /** Imóveis */
     Route::match(['post', 'get'], 'imoveis/destaque', [PropertyController::class, 'destaqueMark'])->name('imoveis.destaque');
     Route::get('imoveis/marcadagua', [PropertyController::class, 'imageWatermark'])->name('imoveis.marcadagua');
-    Route::match(['post', 'get'], 'imoveis/fetchCity', [PropertyController::class, 'fetchCity'])->name('imoveis.fetchCity');
     Route::get('imoveis/delete', [PropertyController::class, 'delete'])->name('imoveis.delete');
     Route::delete('imoveis/deleteon', [PropertyController::class, 'deleteon'])->name('imoveis.deleteon');
     Route::post('imoveis/image-set-cover', [PropertyController::class, 'imageSetCover'])->name('imoveis.imageSetCover');
@@ -73,8 +71,6 @@ Route::prefix('admin')->middleware('auth')->group( function(){
     Route::get('imoveis/create', [PropertyController::class, 'create'])->name('imoveis.create');
     Route::post('imoveis/store', [PropertyController::class, 'store'])->name('imoveis.store');
     Route::get('imoveis', [PropertyController::class, 'index'])->name('imoveis.index');
-
-   
 
     //*********************** Usuários *******************************************/
     Route::match(['get', 'post'], 'usuarios/pesquisa', [UserController::class, 'search'])->name('users.search');

@@ -16,6 +16,7 @@ class Property extends Model
         'sale',
         'location',
         'category',
+        'type',
         'owner',
         'display_values',
         'sale_value',

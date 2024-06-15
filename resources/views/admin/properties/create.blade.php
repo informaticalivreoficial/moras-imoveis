@@ -40,7 +40,6 @@ $config = [
 @stop
 
 @section('content')
-
     
         <div class="row">
             <div class="col-12">
@@ -87,11 +86,11 @@ $config = [
                                         <div class="form-group p-3 mb-0">
                                             <span class="mr-3 text-muted"><b>Finalidade:</b></span>  
                                             <div class="form-check d-inline mx-2">
-                                                <input id="venda" class="form-check-input" type="checkbox" name="venda" {{ (old('venda') == 'on' || old('venda') == true ? 'checked' : '') }}>
+                                                <input id="venda" class="form-check-input" type="checkbox" name="sale" {{ (old('sale') == 'on' || old('sale') == true ? 'checked' : '') }}>
                                                 <label for="venda" class="form-check-label">Venda</label>
                                             </div>
                                             <div class="form-check d-inline mx-2">
-                                                <input id="locacao" class="form-check-input" type="checkbox"  name="locacao" {{ (old('locacao') == 'on' || old('locacao') == true ? 'checked' : '') }}>
+                                                <input id="locacao" class="form-check-input" type="checkbox"  name="location" {{ (old('location') == 'on' || old('location') == true ? 'checked' : '') }}>
                                                 <label for="locacao" class="form-check-label">Locação</label>
                                             </div>
                                         </div>
@@ -115,10 +114,10 @@ $config = [
                                     <div class="col-12 col-md-6 col-lg-4"> 
                                         <div class="form-group">
                                             <label class="labelforms text-muted"><b>*Proprietário</b></label>
-                                            <select class="form-control" name="proprietario">
+                                            <select class="form-control" name="owner">
                                                 <option value="">Selecione o proprietário</option>
                                                 @foreach($users as $user)
-                                                    <option value="{{ $user->id }}" {{ (old('proprietario') == $user->id ? 'selected' : '') }}>
+                                                    <option value="{{ $user->id }}" {{ (old('owner') == $user->id ? 'selected' : '') }}>
                                                         {{ $user->name }} ({{ $user->rg }})
                                                     </option>
                                                 @endforeach
@@ -128,43 +127,43 @@ $config = [
                                     <div class="col-12 col-md-6 col-lg-3"> 
                                         <div class="form-group">
                                             <label class="labelforms text-muted"><b>*Categoria</b></label>
-                                            <select class="form-control" name="categoria">
+                                            <select class="form-control" name="category">
                                                 <option value=""> Selecione </option>
-                                                <option value="Imóvel Residencial" {{(old('categoria') == 'Imóvel Residencial' ? 'selected' : '')}}>Imóvel Residencial</option>
-                                                <option value="Comercial/Industrial" {{(old('categoria') == 'Comercial/Industrial' ? 'selected' : '')}}>Comercial/Industrial</option>
-                                                <option value="Terreno" {{(old('categoria') == 'Terreno' ? 'selected' : '')}}>Terreno</option>
-                                                <option value="Rural" {{(old('categoria') == 'Rural' ? 'selected' : '')}}>Rural</option>
+                                                <option value="Imóvel Residencial" {{(old('category') == 'Imóvel Residencial' ? 'selected' : '')}}>Imóvel Residencial</option>
+                                                <option value="Comercial/Industrial" {{(old('category') == 'Comercial/Industrial' ? 'selected' : '')}}>Comercial/Industrial</option>
+                                                <option value="Terreno" {{(old('category') == 'Terreno' ? 'selected' : '')}}>Terreno</option>
+                                                <option value="Rural" {{(old('category') == 'Rural' ? 'selected' : '')}}>Rural</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 col-lg-3"> 
                                         <div class="form-group">
                                             <label class="labelforms text-muted"><b>*Tipo</b></label>
-                                           <select class="form-control" name="tipo">
+                                           <select class="form-control" name="type">
                                                 <option value=""> Selecione </option>
-                                                <option value="Casa" {{(old('tipo') == 'Casa' ? 'selected' : '')}}>Casa</option>
-                                                <option value="Cobertura" {{(old('tipo') == 'Cobertura' ? 'selected' : '')}}>Cobertura</option>
-                                                <option value="Apartamento" {{(old('tipo') == 'Apartamento' ? 'selected' : '')}}>Apartamento</option>
-                                                <option value="Studio" {{(old('tipo') == 'Studio' ? 'selected' : '')}}>Studio</option>
-                                                <option value="Kitnet" {{(old('tipo') == 'Kitnet' ? 'selected' : '')}}>Kitnet</option>
-                                                <option value="Sala Comercial" {{(old('tipo') == 'Sala Comercial' ? 'selected' : '')}}>Sala Comercial</option>
-                                                <option value="Salão de Festa" {{(old('tipo') == 'Salão de Festa' ? 'selected' : '')}}>Salão de Festa</option>
-                                                <option value="Chalé" {{(old('tipo') == 'Chalé' ? 'selected' : '')}}>Chalé</option>
-                                                <option value="Hotel Pousada" {{(old('tipo') == 'Hotel Pousada' ? 'selected' : '')}}>Hotel/Pousada</option>
-                                                <option value="Sítio" {{(old('tipo') == 'Sítio' ? 'selected' : '')}}>Sítio</option>
-                                                <option value="Sobrado" {{(old('tipo') == 'Sobrado' ? 'selected' : '')}}>Sobrado</option>
-                                                <option value="Loja" {{(old('tipo') == 'Loja' ? 'selected' : '')}}>Loja</option>
-                                                <option value="Terreno em Condomínio" {{(old('tipo') == 'Terreno em Condomínio' ? 'selected' : '')}}>Terreno em Condomínio</option>
-                                                <option value="Terreno" {{(old('tipo') == 'Terreno' ? 'selected' : '')}}>Terreno</option>
-                                                <option value="Fazenda" {{(old('tipo') == 'Fazenda' ? 'selected' : '')}}>Fazenda</option>
-                                                <option value="Prédio Edifício Inteiro" {{(old('tipo') == 'Prédio Edifício Inteiro' ? 'selected' : '')}}>Prédio/Edifício Inteiro</option>
+                                                <option value="Casa" {{(old('type') == 'Casa' ? 'selected' : '')}}>Casa</option>
+                                                <option value="Cobertura" {{(old('type') == 'Cobertura' ? 'selected' : '')}}>Cobertura</option>
+                                                <option value="Apartamento" {{(old('type') == 'Apartamento' ? 'selected' : '')}}>Apartamento</option>
+                                                <option value="Studio" {{(old('type') == 'Studio' ? 'selected' : '')}}>Studio</option>
+                                                <option value="Kitnet" {{(old('type') == 'Kitnet' ? 'selected' : '')}}>Kitnet</option>
+                                                <option value="Sala Comercial" {{(old('type') == 'Sala Comercial' ? 'selected' : '')}}>Sala Comercial</option>
+                                                <option value="Salão de Festa" {{(old('type') == 'Salão de Festa' ? 'selected' : '')}}>Salão de Festa</option>
+                                                <option value="Chalé" {{(old('type') == 'Chalé' ? 'selected' : '')}}>Chalé</option>
+                                                <option value="Hotel Pousada" {{(old('type') == 'Hotel Pousada' ? 'selected' : '')}}>Hotel/Pousada</option>
+                                                <option value="Sítio" {{(old('type') == 'Sítio' ? 'selected' : '')}}>Sítio</option>
+                                                <option value="Sobrado" {{(old('type') == 'Sobrado' ? 'selected' : '')}}>Sobrado</option>
+                                                <option value="Loja" {{(old('type') == 'Loja' ? 'selected' : '')}}>Loja</option>
+                                                <option value="Terreno em Condomínio" {{(old('type') == 'Terreno em Condomínio' ? 'selected' : '')}}>Terreno em Condomínio</option>
+                                                <option value="Terreno" {{(old('type') == 'Terreno' ? 'selected' : '')}}>Terreno</option>
+                                                <option value="Fazenda" {{(old('type') == 'Fazenda' ? 'selected' : '')}}>Fazenda</option>
+                                                <option value="Prédio Edifício Inteiro" {{(old('type') == 'Prédio Edifício Inteiro' ? 'selected' : '')}}>Prédio/Edifício Inteiro</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 col-lg-2"> 
                                         <div class="form-group">
                                             <label class="labelforms text-muted"><b>Referência</b></label>
-                                            <input type="text" class="form-control" name="referencia" value="{{ old('referencia') }}">
+                                            <input type="text" class="form-control" name="reference" value="{{ old('reference') }}">
                                         </div>
                                     </div>                                    
                                 </div>
@@ -186,9 +185,9 @@ $config = [
                                                         <div class="form-group">
                                                             <label class="labelforms text-muted"><b>Deseja exibir os valores?</b> <small class="text-info">(valores exibidos no layout do cliente)</small></label>
                                                             <div class="form-check">
-                                                                <input id="exibivaloresim" class="form-check-input" type="radio" value="1" name="exibivalores" {{(old('exibivalores') == '1' ? 'checked' : '')}}>
+                                                                <input id="exibivaloresim" class="form-check-input" type="radio" value="1" name="display_values" {{(old('display_values') == '1' ? 'checked' : '')}}>
                                                                 <label for="exibivaloressim" class="form-check-label mr-5">Sim</label>
-                                                                <input id="exibivaloresnao" class="form-check-input" type="radio" value="0" name="exibivalores" {{(old('exibivalores') == '0' ? 'checked' : '')}}>
+                                                                <input id="exibivaloresnao" class="form-check-input" type="radio" value="0" name="display_values" {{(old('display_values') == '0' ? 'checked' : '')}}>
                                                                 <label for="exibivaloresnao" class="form-check-label">Não</label>
                                                             </div>
                                                         </div>
@@ -196,13 +195,13 @@ $config = [
                                                     <div class="col-12 col-md-3 col-lg-3"> 
                                                         <div class="form-group">
                                                             <label class="labelforms text-muted"><b>Valor de Venda</b></label>
-                                                            <input type="text" class="form-control mask-money valor_venda" name="valor_venda" value="{{old('valor_venda')}}">
+                                                            <input type="text" class="form-control mask-money valor_venda" name="sale_value" value="{{old('sale_value')}}">
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-md-3 col-lg-3"> 
                                                         <div class="form-group">
                                                             <label class="labelforms text-muted"><b>Valor de Locação</b></label>
-                                                            <input type="text" class="form-control mask-money valor_locacao" name="valor_locacao" value="{{old('valor_locacao')}}">
+                                                            <input type="text" class="form-control mask-money valor_locacao" name="rental_value" value="{{old('rental_value')}}">
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-md-3 col-lg-3"> 
@@ -214,7 +213,7 @@ $config = [
                                                     <div class="col-12 col-md-3 col-lg-3"> 
                                                         <div class="form-group">
                                                             <label class="labelforms text-muted"><b>Valor Condomínio</b></label>
-                                                            <input type="text" class="form-control mask-money" name="condominio" value="{{old('condominio')}}">
+                                                            <input type="text" class="form-control mask-money" name="condominium" value="{{old('condominium')}}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -222,15 +221,15 @@ $config = [
                                                     <div class="col-12 col-md-6 col-lg-3"> 
                                                         <div class="form-group">
                                                            <label class="labelforms text-muted"><b>Período da Locação</b></label>
-                                                           <select class="form-control" name="locacao_periodo">
+                                                           <select class="form-control" name="location_period">
                                                                 <option value=""> Selecione </option>
-                                                                <option value="1" {{(old('locacao_periodo') == '1' ? 'selected' : '')}}>Diária</option>
-                                                                <option value="2" {{(old('locacao_periodo') == '2' ? 'selected' : '')}}>Quinzenal</option>
-                                                                <option value="3" {{(old('locacao_periodo') == '3' ? 'selected' : '')}}>Mensal</option>
-                                                                <option value="4" {{(old('locacao_periodo') == '4' ? 'selected' : '')}}>Trimestral</option>
-                                                                <option value="5" {{(old('locacao_periodo') == '5' ? 'selected' : '')}}>Semestral</option>
-                                                                <option value="6" {{(old('locacao_periodo') == '6' ? 'selected' : '')}}>Anual</option>
-                                                                <option value="7" {{(old('locacao_periodo') == '7' ? 'selected' : '')}}>Bianual</option>
+                                                                <option value="1" {{(old('location_period') == '1' ? 'selected' : '')}}>Diária</option>
+                                                                <option value="2" {{(old('location_period') == '2' ? 'selected' : '')}}>Quinzenal</option>
+                                                                <option value="3" {{(old('location_period') == '3' ? 'selected' : '')}}>Mensal</option>
+                                                                <option value="4" {{(old('location_period') == '4' ? 'selected' : '')}}>Trimestral</option>
+                                                                <option value="5" {{(old('location_period') == '5' ? 'selected' : '')}}>Semestral</option>
+                                                                <option value="6" {{(old('location_period') == '6' ? 'selected' : '')}}>Anual</option>
+                                                                <option value="7" {{(old('location_period') == '7' ? 'selected' : '')}}>Bianual</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -253,9 +252,9 @@ $config = [
                                                         <div class="form-group">
                                                             <label class="labelforms text-muted"><b>Deseja exibir o endereço? <small class="text-info">(opção não exibir retornará somente a cidade e estado)</small></b></label>
                                                             <div class="form-check">
-                                                                <input id="exibirenderecosim" class="form-check-input" type="radio" value="1" name="exibirendereco" {{(old('exibirendereco') == '1' ? 'checked' : '')}}>
+                                                                <input id="exibirenderecosim" class="form-check-input" type="radio" value="1" name="display_address" {{(old('display_address') == '1' ? 'checked' : '')}}>
                                                                 <label for="exibirenderecosim" class="form-check-label mr-5">Sim</label>
-                                                                <input id="exibirendereconao" class="form-check-input" type="radio" value="0" name="exibirendereco" {{(old('exibirendereco') == '0' ? 'checked' : '' )}}>
+                                                                <input id="exibirendereconao" class="form-check-input" type="radio" value="0" name="display_address" {{(old('display_address') == '0' ? 'checked' : '' )}}>
                                                                 <label for="exibirendereconao" class="form-check-label">Não</label>
                                                             </div>
                                                         </div>
@@ -889,28 +888,6 @@ $config = [
             } else {
                 $('.valor_venda').attr('disabled', true);
             }
-        });
-        
-        $('#state-dd').on('change', function () {
-            var idState = this.value;
-            //$("#city-dd").removeAttr('disabled');
-            $("#city-dd").html('Carregando...');
-            $.ajax({
-                url: "{{route('imoveis.fetchCity')}}",
-                type: "POST",
-                data: {
-                    estado_id: idState,
-                    _token: '{{csrf_token()}}'
-                },
-                dataType: 'json',
-                success: function (res) {
-                    $('#city-dd').html('<option value="">Selecione a cidade</option>');
-                    $.each(res.cidades, function (key, value) {
-                        $("#city-dd").append('<option value="' + value
-                            .cidade_id + '">' + value.cidade_nome + '</option>');
-                    });
-                }
-            });
         });
         
         $('input[name="files[]"]').change(function (files) {

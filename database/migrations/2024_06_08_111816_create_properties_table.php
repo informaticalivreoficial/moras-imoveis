@@ -17,6 +17,7 @@ return new class extends Migration
             $table->boolean('location')->nullable();
             $table->boolean('highlight')->default('0');
             $table->string('category');
+            $table->string('type');
             $table->integer('status')->default('0');
             $table->unsignedInteger('owner');
 
