@@ -22,6 +22,9 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
     Route::get('feed', [FeedController::class, 'feed'])->name('feed');
     Route::get('/politica-de-privacidade', [WebController::class, 'politica'])->name('politica');
     Route::get('/sitemap', [WebController::class, 'sitemap'])->name('sitemap');
+
+    /** Página de Compra - Específica de um imóvel */
+    Route::match(['get', 'post'],'/imoveis/quero-comprar/{slug}', [WebController::class, 'buyProperty'])->name('buyProperty');
 });
 
 Route::prefix('admin')->middleware('auth')->group( function(){
@@ -64,7 +67,7 @@ Route::prefix('admin')->middleware('auth')->group( function(){
     Route::get('imoveis/delete', [PropertyController::class, 'delete'])->name('imoveis.delete');
     Route::delete('imoveis/deleteon', [PropertyController::class, 'deleteon'])->name('imoveis.deleteon');
     Route::post('imoveis/image-set-cover', [PropertyController::class, 'imageSetCover'])->name('imoveis.imageSetCover');
-    Route::get('imoveis/set-status', [PropertyController::class, 'imovelSetStatus'])->name('imoveis.imovelSetStatus');
+    Route::get('imoveis/set-status', [PropertyController::class, 'setStatus'])->name('imoveis.setStatus');
     Route::delete('imoveis/image-remove', [PropertyController::class, 'imageRemove'])->name('imoveis.imageRemove');
     Route::put('imoveis/{imovel}', [PropertyController::class, 'update'])->name('imoveis.update');
     Route::get('imoveis/{imovel}/edit', [PropertyController::class, 'edit'])->name('imoveis.edit');

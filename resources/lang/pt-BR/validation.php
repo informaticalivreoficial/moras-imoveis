@@ -190,8 +190,29 @@ return [
         'birthday' => 'data de nascimento',
         'cpf' => 'CPF',
 
-        'dormitorios' => 'Leitos',
+        // Address
+        'zipcode' => 'CEP',
+        'street' => 'Rua',
+        'number' => 'Número',
+        'neighborhood' => 'Bairro',
+        'state' => 'Estado',
+        'city' => 'Cidade',
+
+        // IMÓVEL
+        'owner' => 'Proprietário',
         'titulo' => 'Título',
+        'category' => 'Categoria',
+        'type' => 'Tipo',
+        'iptu' => 'IPTU',
+        'condominium' => 'condomínio',
+        'dormitories' => 'dormitórios',
+        'suites' => 'suítes',
+        'bathrooms' => 'banheiros',
+        'rooms' => 'salas',
+        'garage' => 'garagem',
+        'garage_covered' => 'garagem coberta',
+        'total_area' => 'área total',
+        'useful_area' => 'área útil',
     ],
 
 ];

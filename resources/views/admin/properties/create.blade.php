@@ -259,63 +259,50 @@ $config = [
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-12 col-md-4 col-lg-4"> 
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-12 col-md-2 col-lg-2"> 
                                                         <div class="form-group">
-                                                            <label class="labelforms text-muted"><b>*Estado:</b></label>
-                                                            <select id="state-dd" class="form-control" name="uf">
-                                                                @if(!empty($estados))
-                                                                    <option value="">Selecione o Estado</option>
-                                                                    @foreach($estados as $estado)
-                                                                    <option value="{{$estado->estado_id}}" {{ (old('uf') == $estado->estado_id ? 'selected' : '') }}>{{$estado->estado_nome}}</option>
-                                                                    @endforeach                                                                        
-                                                                @endif
-                                                            </select>
+                                                            <label class="labelforms text-muted"><b>CEP:</b></label>
+                                                            <input type="text" id="cep" class="form-control mask-zipcode" placeholder="Digite o CEP" name="zipcode" value="{{old('zipcode')}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-3 col-lg-3"> 
+                                                        <div class="form-group">
+                                                            <label class="labelforms text-muted"><b>Estado:</b></label>
+                                                            <input type="text" class="form-control" id="uf" name="state" value="{{old('state')}}">
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-md-4 col-lg-4"> 
                                                         <div class="form-group">
-                                                            <label class="labelforms text-muted"><b>*Cidade:</b></label>
-                                                            <select id="city-dd" class="form-control" name="cidade">
-                                                                @if(!empty($cidades)))
-                                                                    <option value="">Selecione o Estado</option>
-                                                                    @foreach($cidades as $cidade)
-                                                                        <option value="{{$cidade->cidade_id}}" 
-                                                                                {{ (old('cidade') == $cidade->cidade_id ? 'selected' : '') }}>{{$cidade->cidade_nome}}</option>                                                                   
-                                                                    @endforeach                                                                        
-                                                                @endif
-                                                            </select>
+                                                            <label class="labelforms text-muted"><b>Cidade:</b></label>
+                                                            <input type="text" class="form-control" id="cidade" name="city" value="{{old('city')}}">
                                                         </div>
                                                     </div>
-                                                    <div class="col-12 col-md-4 col-lg-4"> 
+                                                    <div class="col-12 col-md-4 col-lg-3"> 
                                                         <div class="form-group">
                                                             <label class="labelforms text-muted"><b>Bairro:</b></label>
-                                                            <input type="text" class="form-control" title="Bairro" name="bairro" value="{{old('bairro')}}">
+                                                            <input type="text" class="form-control" placeholder="Bairro" id="bairro" name="neighborhood" value="{{old('neighborhood')}}">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row mb-2">
                                                     <div class="col-12 col-md-6 col-lg-5"> 
                                                         <div class="form-group">
-                                                            <label class="labelforms text-muted"><b>Endereço:</b></label>
-                                                            <input type="text" class="form-control" title="Endereço Completo" name="rua" value="{{old('rua')}}">
+                                                            <label class="labelforms text-muted"><b>Rua/Av:</b></label>
+                                                            <input type="text" class="form-control" id="rua" name="street" value="{{old('street')}}">
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-md-6 col-lg-2"> 
                                                         <div class="form-group">
                                                             <label class="labelforms text-muted"><b>Número:</b></label>
-                                                            <input type="text" class="form-control" title="Número do Endereço" name="num" value="{{old('num')}}">
+                                                            <input type="text" class="form-control" placeholder="Número do Endereço" name="number" value="{{old('number')}}">
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-md-6 col-lg-3"> 
                                                         <div class="form-group">
                                                             <label class="labelforms text-muted"><b>Complemento:</b></label>
-                                                            <input type="text" class="form-control" title="Completo (Opcional)" name="complemento" value="{{old('complemento')}}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 col-md-6 col-lg-2"> 
-                                                        <div class="form-group">
-                                                            <label class="labelforms text-muted"><b>*CEP:</b></label>
-                                                            <input type="text" class="form-control mask-zipcode" title="Digite o CEP" name="cep" value="{{old('cep')}}">
+                                                            <input type="text" class="form-control" placeholder="Complemento (Opcional)" name="complement" value="{{old('complement')}}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -337,7 +324,7 @@ $config = [
                                                     <div class="col-12 col-md-6 col-lg-2">   
                                                         <div class="form-group">
                                                             <label class="labelforms text-muted"><b>*Dormitórios</b></label>
-                                                            <input type="text" class="form-control" title="Quantidade de Dormitórios" name="dormitorios" value="{{old('dormitorios')}}">
+                                                            <input type="text" class="form-control" title="Quantidade de Dormitórios" name="dormitories" value="{{old('dormitories')}}">
                                                         </div>                                                    
                                                     </div>
                                                     <div class="col-12 col-md-6 col-lg-2">   
@@ -349,54 +336,54 @@ $config = [
                                                     <div class="col-12 col-md-6 col-lg-2">   
                                                         <div class="form-group">
                                                             <label class="labelforms text-muted"><b>Banheiros</b></label>
-                                                            <input type="text" class="form-control" title="Quantidade de Banheiros" name="banheiros" value="{{old('banheiros')}}">
+                                                            <input type="text" class="form-control" title="Quantidade de Banheiros" name="bathrooms" value="{{old('bathrooms')}}">
                                                         </div>                                                    
                                                     </div>
                                                     <div class="col-12 col-md-6 col-lg-2">   
                                                         <div class="form-group">
                                                             <label class="labelforms text-muted"><b>Salas</b></label>
-                                                            <input type="text" class="form-control" title="Quantidade de Salas" name="salas" value="{{old('salas')}}">
+                                                            <input type="text" class="form-control" title="Quantidade de Salas" name="rooms" value="{{old('rooms')}}">
                                                         </div>                                                    
                                                     </div>
                                                     <div class="col-12 col-md-6 col-lg-2">   
                                                         <div class="form-group">
                                                             <label class="labelforms text-muted"><b>Garagem</b></label>
-                                                            <input type="text" class="form-control" title="Quantidade de Garagem" name="garagem" value="{{old('garagem')}}">
+                                                            <input type="text" class="form-control" title="Quantidade de Garagem" name="garage" value="{{old('garage')}}">
                                                         </div>                                                    
                                                     </div>
                                                     <div class="col-12 col-md-6 col-lg-2">   
                                                         <div class="form-group">
                                                             <label class="labelforms text-muted"><b>Garagem Coberta</b></label>
-                                                            <input type="text" class="form-control" title="Garagem Coberta" name="garagem_coberta" value="{{old('garagem_coberta')}}">
+                                                            <input type="text" class="form-control" title="Garagem Coberta" name="covered_garage" value="{{old('covered_garage')}}">
                                                         </div>                                                    
                                                     </div>
                                                     <div class="col-12 col-md-6 col-lg-2">   
                                                         <div class="form-group">
                                                             <label class="labelforms text-muted"><b>Ano de Construção</b></label>
-                                                            <input type="text" class="form-control" title="Ano de Construção" name="anodeconstrucao" value="{{ old('anodeconstrucao') }}">
+                                                            <input type="text" class="form-control" title="Ano de Construção" name="construction_year" value="{{ old('construction_year') }}">
                                                         </div>                                                    
                                                     </div>
                                                     <div class="col-12 col-md-6 col-lg-2">   
                                                         <div class="form-group">
                                                             <label class="labelforms text-muted"><b>Área Total</b></label>
-                                                            <input type="text" class="form-control" title="Área Total" name="area_total" value="{{old('area_total')}}">
+                                                            <input type="text" class="form-control" title="Área Total" name="total_area" value="{{old('total_area')}}">
                                                         </div>                                                    
                                                     </div>
                                                     <div class="col-12 col-md-6 col-lg-2">   
                                                         <div class="form-group">
                                                             <label class="labelforms text-muted"><b>Área Útil</b></label>
-                                                            <input type="text" class="form-control" title="Área Útil" name="area_util" value="{{old('area_util')}}">
+                                                            <input type="text" class="form-control" title="Área Útil" name="useful_area" value="{{old('useful_area')}}">
                                                         </div>                                                    
                                                     </div>
                                                     <div class="col-12 col-md-6 col-lg-2">   
                                                         <div class="form-group">
                                                             <label class="labelforms text-muted"><b>Medidas</b></label>
-                                                            <select class="form-control" name="medidas">
+                                                            <select class="form-control" name="measures">
                                                                 <option value=""> Selecione </option>
-                                                                <option value="m²" {{(old('medidas') == 'm²' ? 'selected' : '')}}>m²</option>
-                                                                <option value="km²" {{(old('medidas') == 'km²' ? 'selected' : '')}}>km²</option>
-                                                                <option value="hectare" {{(old('medidas') == 'hectare' ? 'selected' : '')}}>hectare</option>
-                                                                <option value="alqueire" {{(old('medidas') == 'alqueire' ? 'selected' : '')}}>alqueire</option>
+                                                                <option value="m²" {{(old('measures') == 'm²' ? 'selected' : '')}}>m²</option>
+                                                                <option value="km²" {{(old('measures') == 'km²' ? 'selected' : '')}}>km²</option>
+                                                                <option value="hectare" {{(old('measures') == 'hectare' ? 'selected' : '')}}>hectare</option>
+                                                                <option value="alqueire" {{(old('measures') == 'alqueire' ? 'selected' : '')}}>alqueire</option>
                                                             </select>
                                                         </div>                                                    
                                                     </div>
@@ -416,13 +403,13 @@ $config = [
                                                 <div class="row mb-2">
                                                     <div class="col-12">   
                                                         <label class="labelforms text-muted"><b>Descrição do Imóvel</b></label>
-                                                        <x-adminlte-text-editor name="descricao" v placeholder="Descrição do Imóvel..." :config="$config">{{ old('descricao') }}</x-adminlte-text-editor>                                                      
+                                                        <x-adminlte-text-editor name="description" v placeholder="Descrição do Imóvel..." :config="$config">{{ old('description') }}</x-adminlte-text-editor>                                                      
                                                     </div>
                                                 </div>
                                                 <div class="row mb-2">
                                                     <div class="col-12">   
                                                         <label class="labelforms text-muted"><b>Notas Adicionais</b></label>
-                                                        <textarea id="inputDescription" class="form-control" rows="5" name="notasadicionais">{{ old('notasadicionais') ?? 'Os valores podem ser alterados sem aviso prévio. Informações e metragens sujeitos a confirmações. Crédito / Financiamento dependem de aprovação.'}}</textarea>                                                      
+                                                        <textarea id="inputDescription" class="form-control" rows="5" name="additional_notes">{{ old('additional_notes') ?? 'Os valores podem ser alterados sem aviso prévio. Informações e metragens sujeitos a confirmações. Crédito / Financiamento dependem de aprovação.'}}</textarea>                                                      
                                                     </div>
                                                 </div>                                                
                                             </div>
@@ -645,9 +632,9 @@ $config = [
                                         <div class="form-group">
                                             <label class="labelforms"><b>Deseja exibir uma Marca D'agua? </b><small class="text-info">(esta opção permite inserir uma marca em todas as imagens)</small></label>
                                             <div class="form-check">
-                                                <input id="exibirmarcadaguasim" class="form-check-input" type="radio" value="1" name="exibirmarcadagua" {{(old('exibirmarcadagua') == '1' ? 'checked' : '')}}>
+                                                <input id="exibirmarcadaguasim" class="form-check-input" type="radio" value="1" name="display_marked_water" {{(old('display_marked_water') == '1' ? 'checked' : '')}}>
                                                 <label for="exibirmarcadaguasim" class="form-check-label mr-5">Sim</label>
-                                                <input id="exibirmarcadaguanao" class="form-check-input" type="radio" value="0" name="exibirmarcadagua" {{(old('exibirmarcadagua') == '0' ? 'checked' : '')}}>
+                                                <input id="exibirmarcadaguanao" class="form-check-input" type="radio" value="0" name="display_marked_water" {{(old('display_marked_water') == '0' ? 'checked' : '')}}>
                                                 <label for="exibirmarcadaguanao" class="form-check-label">Não</label>
                                             </div>
                                         </div>
@@ -655,7 +642,7 @@ $config = [
                                     <div class="col-12 col-sm-12 col-md-6 col-lg-6">   
                                         <div class="form-group">
                                             <label class="labelforms"><b>Legenda da Imagem de Capa</b></label>
-                                            <input type="text" class="form-control"  name="legendaimgcapa" value="{{ old('legendaimgcapa') }}">
+                                            <input type="text" class="form-control"  name="caption_img_cover" value="{{ old('caption_img_cover') }}">
                                         </div>                                                    
                                     </div>
                                     <div class="col-sm-12">                                        
@@ -675,7 +662,7 @@ $config = [
                                     <div class="col-12 col-md-6 col-lg-6">   
                                         <div class="form-group">
                                             <label class="labelforms"><b>*Título</b></label>
-                                            <input type="text" class="form-control" name="titulo" value="{{old('titulo')}}">
+                                            <input type="text" class="form-control" name="title" value="{{old('title')}}">
                                         </div>                                                    
                                     </div>
                                     <div class="col-12 col-md-6 col-lg-6">   
@@ -712,7 +699,7 @@ $config = [
                                     </div> 
                                     <div class="col-12">   
                                         <label class="labelforms"><b>Mapa do Google</b> <small class="text-info">(Copie o código de incorporação do Google Maps e cole abaixo)</small></label>
-                                        <textarea id="inputDescription" class="form-control" rows="5" name="mapadogoogle">{{ old('mapadogoogle') }}</textarea>                                                      
+                                        <textarea id="inputDescription" class="form-control" rows="5" name="google_map">{{ old('google_map') }}</textarea>                                                      
                                     </div>
                                 </div> 
                             </div>
@@ -928,6 +915,52 @@ $config = [
                 width:'auto',
                 height:200
             });
+        });
+    });
+
+    $(document).ready(function() {
+
+        function limpa_formulário_cep() {
+            $("#rua").val("");
+            $("#bairro").val("");
+            $("#cidade").val("");
+            $("#uf").val("");
+        }
+
+        $("#cep").blur(function() {
+
+            var cep = $(this).val().replace(/\D/g, '');
+
+            if (cep != "") {
+                
+                var validacep = /^[0-9]{8}$/;
+
+                if(validacep.test(cep)) {
+                    
+                    $("#rua").val("Carregando...");
+                    $("#bairro").val("Carregando...");
+                    $("#cidade").val("Carregando...");
+                    $("#uf").val("Carregando...");
+                    
+                    $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+
+                        if (!("erro" in dados)) {
+                            $("#rua").val(dados.logradouro);
+                            $("#bairro").val(dados.bairro);
+                            $("#cidade").val(dados.localidade);
+                            $("#uf").val(dados.uf);
+                        } else {
+                            limpa_formulário_cep();
+                            alert("CEP não encontrado.");
+                        }
+                    });
+                } else {
+                    limpa_formulário_cep();
+                    alert("Formato de CEP inválido.");
+                }
+            } else {
+                limpa_formulário_cep();
+            }
         });
     });
 </script>

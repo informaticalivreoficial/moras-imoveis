@@ -23,7 +23,17 @@ class PropertyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'owner' => 'required',
+            'category' => 'required',
+            'type' => 'required',
+            'sale_value' => 'required_if:venda,on:exibivalores,1',
+            'rental_value' => 'required_if:locacao,on:exibivalores,1',
+            'description' => 'nullable|min:3',
+            'zipcode' => 'required|min:8|max:10',
+            'state' => 'required',
+            'city' => 'required',            
+            'dormitories' => 'required',
+            'title' => 'required'
         ];
     }
 }

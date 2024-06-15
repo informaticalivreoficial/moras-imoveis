@@ -64,8 +64,8 @@ return new class extends Migration
             $table->string('number')->nullable();
             $table->string('complement')->nullable();
             $table->string('neighborhood')->nullable();
-            $table->integer('state')->nullable();
-            $table->integer('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('city')->nullable();
 
             /** structure */
             $table->boolean('ar_condicionado')->nullable();
