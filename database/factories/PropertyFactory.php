@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,13 @@ class PropertyFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => $this->faker->sentence(),
+            'owner' => User::factory(),
+            'slug' => $this->faker->slug(3),
+            'category' => 'Casa',
+            'description' => $this->faker->paragraph(10),
+            'dormitories' => $this->faker->numberBetween($min=0, $max=10),
+            'status' => $this->faker->boolean(),
         ];
     }
 }

@@ -19,14 +19,18 @@ class Property extends Component
         ]);
     }
 
-    public function create()
+    public function addProperty()
     {
         return view('admin.properties.create');
     }
 
-    public function store()
-    {
-
+    public function delete($id){
+        try {
+            ModelsProperty::where('id',$id)->delete();
+            return $this->redirect('/admin/imoveis',navigate:true); 
+        } catch (\Exception $th) {
+            dd($th);
+        }
     }
 
     public function edit($id)

@@ -1,7 +1,7 @@
 <div>
     <div class="card">
         <div class="card-header text-right">
-            <a href="{{route('imoveis.create')}}" class="btn btn-default"><i class="fas fa-plus mr-2"></i> Cadastrar Novo</a>
+            <a wire:navigate href="{{route('imoveis.create')}}" class="btn btn-default"><i class="fas fa-plus mr-2"></i> Cadastrar Novo</a>
         </div>        
         <!-- /.card-header -->
         <div class="card-body">
@@ -62,7 +62,8 @@
                                     @endif
                                 @endif                            
                                 <a data-toggle="tooltip" data-placement="top" title="Editar Imóvel" href="{{route('imoveis.edit',$property->id)}}" class="btn btn-xs btn-default"><i class="fas fa-pen"></i></a>
-                                <button data-placement="top" title="Remover Imóvel" type="button" class="btn btn-xs btn-danger text-white j_modal_btn" data-id="{{$property->id}}" data-toggle="modal" data-target="#modal-default"><i class="fas fa-trash"></i></button>
+                                
+                                <button data-placement="top" title="Remover Imóvel" type="button" class="btn btn-xs btn-danger text-white" wire:click="delete({{$property->id}})" wire:confirm="Are you sure you want to delete this?"><i class="fas fa-trash"></i></button>
                             </td>
                         </tr>
                         @endforeach

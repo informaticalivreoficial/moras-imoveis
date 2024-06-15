@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ConfigTableSeeder::class,
             TemplateTableSeeder::class,
+            PropertyTableSeeder::class,
         ]);
     }
 }
