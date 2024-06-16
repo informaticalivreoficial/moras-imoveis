@@ -44,7 +44,7 @@ class Config extends Model
         'additional_email',
          
         //Address      
-        'postcode', 'street', 'number', 'complement', 'neighborhood', 'state', 'city',
+        'zipcode', 'street', 'number', 'complement', 'neighborhood', 'state', 'city',
 
         //Social
         'facebook', 'twitter', 'instagram', 'youtube', 'linkedin',

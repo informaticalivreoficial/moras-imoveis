@@ -16,7 +16,10 @@ class ConfigTableSeeder extends Seeder
         DB::table('config')->insert([
             'id' => 1,
             'email' => 'teste@teste.com.br',
-            'app_name' => 'teste',
+            'app_name' => 'Nome da Aplicação',
+            'zipcode' => '11680000',
+            'city' => 'Ubatuba',
+            'state' => 'SP',
             'rss' => 'teste',
             'sitemap' => 'teste',
             'rss_data' => now(),

@@ -24,7 +24,7 @@ class User extends Authenticatable
         'civil_status',
         'avatar',  
         //Address      
-        'postcode', 'street', 'number', 'complement', 'neighborhood', 'state', 'city',
+        'zipcode', 'street', 'number', 'complement', 'neighborhood', 'state', 'city',
         //Contact
         'phone', 'cell_phone', 'whatsapp', 'skype', 'telegram', 'email', 'additional_email',
         //Social
@@ -142,6 +142,20 @@ class User extends Authenticatable
     public function setSuperAdminAttribute($value)
     {
         $this->attributes['superadmin'] = ($value === true || $value === 'on' ? 1 : 0);
+    }
+
+    public function setZipcodeAttribute($value)
+    {
+        $this->attributes['zipcode'] = (!empty($value) ? $this->clearField($value) : null);
+    }
+
+    public function getZipcodeAttribute($value)
+    {
+        if (empty($value)) {
+            return null;
+        }
+
+        return substr($value, 0, 5) . '-' . substr($value, 5, 3);
     }
 
     private function convertStringToDouble(?string $param)

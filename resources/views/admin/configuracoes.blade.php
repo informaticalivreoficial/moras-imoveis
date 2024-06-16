@@ -159,7 +159,7 @@ $config1 = [
                                                 <div class="col-12 col-md-2 col-lg-2"> 
                                                     <div class="form-group">
                                                         <label class="labelforms text-muted"><b>CEP:</b></label>
-                                                        <input type="text" id="cep" class="form-control mask-zipcode" placeholder="Digite o CEP" name="postcode" value="{{old('postcode') ?? $config->postcode}}">
+                                                        <input type="text" id="cep" class="form-control mask-zipcode" placeholder="Digite o CEP" name="zipcode" value="{{old('zipcode') ?? $config->zipcode}}">
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-3 col-lg-3"> 

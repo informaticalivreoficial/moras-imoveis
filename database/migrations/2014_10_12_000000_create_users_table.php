@@ -34,7 +34,7 @@ return new class extends Migration
             $table->string('additional_email')->nullable();
 
             /** address */
-            $table->string('postcode')->nullable();
+            $table->string('zipcode')->nullable();
             $table->string('street')->nullable();
             $table->string('number')->nullable();
             $table->string('complement')->nullable();
