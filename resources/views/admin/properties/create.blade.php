@@ -32,7 +32,7 @@ $config = [
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{route('home')}}">Painel de Controle</a></li>
-            <li class="breadcrumb-item"><a href="{{route('imoveis.index')}}">Imóveis</a></li>
+            <li class="breadcrumb-item"><a href="{{route('properties.index')}}">Imóveis</a></li>
             <li class="breadcrumb-item active">Cadastrar Imóvel</li>
         </ol>
     </div>
@@ -52,7 +52,7 @@ $config = [
                 @endif 
             </div>            
         </div>
-        <form action="{{ route('imoveis.store') }}" method="post" enctype="multipart/form-data" autocomplete="off">
+        <form action="{{ route('property.store') }}" method="post" enctype="multipart/form-data" autocomplete="off">
         @csrf
         <div class="row">            
             <div class="col-12">

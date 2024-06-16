@@ -71,7 +71,7 @@
                         @endif
                         <td class="text-center">{{$property->reference}}</td>
                         <td class="acoes">
-                            <a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Marcar como Destaque" class="btn btn-xs {{ ($property->highlight == true ? 'btn-warning' : 'btn-secondary') }} icon-notext j_destaque" data-action="{{ route('property.destaque', ['id' => $property->id]) }}"><i class="fas fa-award"></i></a>
+                            <a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Marcar como Destaque" class="btn btn-xs {{ ($property->highlight == true ? 'btn-warning' : 'btn-secondary') }} icon-notext j_destaque" data-action="{{ route('property.highlight', ['id' => $property->id]) }}"><i class="fas fa-award"></i></a>
                             <input type="checkbox" data-onstyle="success" data-offstyle="warning" data-size="mini" class="toggle-class" data-id="{{ $property->id }}" data-toggle="toggle" data-style="slow" data-on="<i class='fas fa-check'></i>" data-off="<i style='color:#fff !important;' class='fas fa-exclamation-triangle'></i>" {{ $property->status == true ? 'checked' : ''}}>
                             <button data-toggle="tooltip" data-placement="top" title="Inserir Marca D'agua" type="button" class="btn btn-xs btn-secondary text-white j_marcadagua {{$property->id}} @php if($property->imagesmarkedwater() >= 1){echo '';}else{echo 'disabled';}  @endphp" id="{{$property->id}}" data-id="{{$property->id}}"><i class="fas fa-copyright icon{{$property->id}}"></i></button>
                             @if (!empty($property->slug))

@@ -62,7 +62,7 @@ Route::prefix('admin')->middleware('auth')->group( function(){
     Route::get('templates', [TemplateController::class, 'index'])->name('templates.index');
 
     /** Imóveis */
-    Route::match(['post', 'get'], 'imoveis/destaque', [PropertyController::class, 'destaqueMark'])->name('property.destaque');
+    Route::match(['post', 'get'], 'imoveis/destaque', [PropertyController::class, 'highlightMark'])->name('property.highlight');
     Route::get('imoveis/marcadagua', [PropertyController::class, 'imageWatermark'])->name('property.watermark');
     Route::get('imoveis/delete', [PropertyController::class, 'delete'])->name('property.delete');
     Route::delete('imoveis/deleteon', [PropertyController::class, 'deleteon'])->name('property.deleteon');

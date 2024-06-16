@@ -107,11 +107,138 @@ class PropertyController extends Controller
         ]);
     }
 
+    public function update(PropertyRequest $request, $id)
+    {      
+        // $deletePimovel = PortalImoveis::where('imovel', $imovel)->first();
+        // if($deletePimovel != null){
+        //     $deletePimovel = PortalImoveis::where('imovel', $imovel)->get();
+        //     foreach($deletePimovel as $delete){
+        //         $delete->delete();
+        //     }            
+        // } 
+
+        // $portaisRequest = $request->all();
+        // $portais = null;
+        // foreach($portaisRequest as $key => $value) {
+        //     if(Str::is('portal_*', $key) == true){
+        //         $f['portal'] = ltrim($key, 'portal_');
+        //         $f['imovel'] = $imovel;
+        //         $createPimovel = PortalImoveis::create($f);
+        //         $createPimovel->save();
+        //     }
+        // }
+
+        $property = Property::where('id', $id)->first();  
+        $property->fill($request->all());
+
+        $property->setSaleAttribute($request->sale);
+        $property->setLocationAttribute($request->location);
+        $property->setArCondicionadoAttribute($request->ar_condicionado);
+        $property->setAquecedorsolarAttribute($request->aquecedor_solar);
+        $property->setBarAttribute($request->bar);
+        $property->setBibliotecaAttribute($request->biblioteca);
+        $property->setChurrasqueiraAttribute($request->churrasqueira);
+        $property->setEstacionamentoAttribute($request->estacionamento);
+        $property->setCozinhaAmericanaAttribute($request->cozinha_americana);
+        $property->setCozinhaPlanejadaAttribute($request->cozinha_planejada);
+        $property->setDispensaAttribute($request->dispensa);
+        $property->setEdiculaAttribute($request->edicula);
+        $property->setEspacoFitnessAttribute($request->espaco_fitness);
+        $property->setEscritorioAttribute($request->escritorio);
+        $property->setArmarionauticoAttribute($request->armarionautico);
+        $property->setFornodepizzaAttribute($request->fornodepizza);
+        $property->setPortaria24hsAttribute($request->portaria24hs);
+        $property->setQuintalAttribute($request->quintal);
+        $property->setZeladoriaAttribute($request->zeladoria);
+        $property->setSalaodejogosAttribute($request->salaodejogos);
+        $property->setSaladetvAttribute($request->saladetv);
+        $property->setAreadelazerAttribute($request->areadelazer);
+        $property->setBalcaoamericanoAttribute($request->balcaoamericano);
+        $property->setVarandagourmetAttribute($request->varandagourmet);
+        $property->setBanheirosocialAttribute($request->banheirosocial);
+        $property->setBrinquedotecaAttribute($request->brinquedoteca);
+        $property->setPertodeescolasAttribute($request->pertodeescolas);
+        $property->setCondominiofechadoAttribute($request->condominiofechado);
+        $property->setInterfoneAttribute($request->interfone);
+        $property->setSistemadealarmeAttribute($request->sistemadealarme);
+        $property->setJardimAttribute($request->jardim);
+        $property->setSalaodefestasAttribute($request->salaodefestas);
+        $property->setPermiteanimaisAttribute($request->permiteanimais);
+        $property->setQuadrapoliesportivaAttribute($request->quadrapoliesportiva);
+        $property->setGeradoreletricoAttribute($request->geradoreletrico);
+        $property->setBanheiraAttribute($request->banheira);
+        $property->setLareiraAttribute($request->lareira);
+        $property->setLavaboAttribute($request->lavabo);
+        $property->setLavanderiaAttribute($request->lavanderia);
+        $property->setElevadorAttribute($request->elevador);
+        $property->setMobiliadoAttribute($request->mobiliado);
+        $property->setVistaParaMarAttribute($request->vista_para_mar);
+        $property->setPiscinaAttribute($request->piscina);
+        $property->setVentiladorTetoAttribute($request->ventilador_teto);
+        $property->setInternetAttribute($request->internet);
+        $property->setGeladeiraAttribute($request->geladeira);
+
+        $property->save();
+        $property->setSlug();  
+
+        $validator = Validator::make($request->only('files'), ['files.*' => 'image']);
+
+        if ($validator->fails() === true) {
+            return redirect()->back()->withInput()->with([
+                'color' => 'danger',
+                'message' => 'Todas as imagens devem ser do tipo jpg, jpeg ou png.',
+            ]);
+        }
+        
+        if($request->allFiles()){
+            $files = count($request->allFiles());
+            $filesTotal = ($files + $property->images()->count());
+            if(!empty($filesTotal) && $filesTotal > env('LIMITE_IMOVEIS')){
+                return redirect()->back()->withInput()->with([
+                    'color' => 'danger',
+                    'message' => 'O sistema só permite o envio de ' . env('LIMITE_IMOVEIS') . ' fotos por Imóvel!!',
+                ]);
+            }else{
+                foreach ($request->allFiles()['files'] as $image) {
+                    $propertyImage = new propertyGb();
+                    $propertyImage->property = $property->id;
+                    $propertyImage->path = $image->storeAs(env('AWS_PASTA') . 'imoveis/'. $property->id, Str::slug($request->title) . '-' . str_replace('.', '', microtime(true)) . '.' . $image->extension());
+                    $propertyImage->save();
+                    unset($propertyImage);
+                }
+            }
+        }
+
+        return redirect()->route('property.edit', [
+            'id' => $property->id,
+        ])->with(['color' => 'success', 'message' => 'Imóvel atualizado com sucesso!']);
+    }
+
     public function setStatus(Request $request)
     {        
         $property = Property::find($request->id);
         $property->status = $request->status;
         $property->save();
         return response()->json(['success' => true]);
+    }
+
+    public function highlightMark(Request $request)
+    {
+        $property = Property::find($request->id);
+        $allProperties = Property::where('id', '!=', $property->id)->get();
+
+        foreach ($allProperties as $all) {
+            $all->highlight = 0;
+            $all->save();
+        }
+
+        $property->highlight = true;
+        $property->save();
+
+        $json = [
+            'success' => true,
+        ];
+
+        return response()->json($json);         
     }
 }
