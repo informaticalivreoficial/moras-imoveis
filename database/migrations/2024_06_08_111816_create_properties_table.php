@@ -123,7 +123,7 @@ return new class extends Migration
             $table->timestamps();
             $table->integer('publication_type')->nullable();
 
-            $table->foreign('owner')->references('id')->on('users')->onDelete('CASCADE');
+            $table->foreign('owner')->references('id')->on('users');
         });
     }
 

@@ -756,7 +756,7 @@ $config = [
                                             <div class="form-check mb-2">
                                                 <input id="zeladoria" class="form-check-input" type="checkbox"  name="portal_{{$portal->id}}" 
                                                 @php
-                                                    if(\App\Models\PortalImoveis::where('portal', $portal->id)->where('property', $property->id)->first()){
+                                                    if(\App\Models\PortalImoveis::where('portal', $portal->id)->where('imovel', $property->id)->first()){
                                                         echo 'checked';                                                               
                                                     }
                                                 @endphp

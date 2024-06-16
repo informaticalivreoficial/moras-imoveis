@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PropertyRequest;
+use App\Models\Portal;
+use App\Models\PortalImoveis;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Models\Property;
@@ -98,35 +100,35 @@ class PropertyController extends Controller
                 ->orderBy('name', 'ASC')
                 ->get();
 
-        //$portais = Portal::orderBy('nome')->available()->get(); 
+        $portais = Portal::orderBy('nome')->available()->get(); 
         
         return view('admin.properties.edit', [
             'property' => $property,
             'users' => $users,
-            //'portais' => $portais
+            'portais' => $portais
         ]);
     }
 
     public function update(PropertyRequest $request, $id)
     {      
-        // $deletePimovel = PortalImoveis::where('imovel', $imovel)->first();
-        // if($deletePimovel != null){
-        //     $deletePimovel = PortalImoveis::where('imovel', $imovel)->get();
-        //     foreach($deletePimovel as $delete){
-        //         $delete->delete();
-        //     }            
-        // } 
+        $deletePimovel = PortalImoveis::where('imovel', $id)->first();
+        if($deletePimovel != null){
+            $deletePimovel = PortalImoveis::where('imovel', $id)->get();
+            foreach($deletePimovel as $delete){
+                $delete->delete();
+            }            
+        } 
 
-        // $portaisRequest = $request->all();
-        // $portais = null;
-        // foreach($portaisRequest as $key => $value) {
-        //     if(Str::is('portal_*', $key) == true){
-        //         $f['portal'] = ltrim($key, 'portal_');
-        //         $f['imovel'] = $imovel;
-        //         $createPimovel = PortalImoveis::create($f);
-        //         $createPimovel->save();
-        //     }
-        // }
+        $portaisRequest = $request->all();
+        $portais = null;
+        foreach($portaisRequest as $key => $value) {
+            if(Str::is('portal_*', $key) == true){
+                $f['portal'] = ltrim($key, 'portal_');
+                $f['imovel'] = $id;
+                $createPimovel = PortalImoveis::create($f);
+                $createPimovel->save();
+            }
+        }
 
         $property = Property::where('id', $id)->first();  
         $property->fill($request->all());

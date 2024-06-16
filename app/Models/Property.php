@@ -83,6 +83,11 @@ class Property extends Model
         return $this->hasMany(PropertyGb::class, 'property', 'id')->whereNull('watermark')->count();
     }
 
+    public function pimoveis()
+    {
+        return $this->hasMany(PortalImoveis::class, 'imovel', 'id');
+    }
+
     /**
      * Accerssors and Mutators
     */
