@@ -62,18 +62,18 @@ Route::prefix('admin')->middleware('auth')->group( function(){
     Route::get('templates', [TemplateController::class, 'index'])->name('templates.index');
 
     /** Imóveis */
-    Route::match(['post', 'get'], 'imoveis/destaque', [PropertyController::class, 'destaqueMark'])->name('imoveis.destaque');
-    Route::get('imoveis/marcadagua', [PropertyController::class, 'imageWatermark'])->name('imoveis.marcadagua');
-    Route::get('imoveis/delete', [PropertyController::class, 'delete'])->name('imoveis.delete');
-    Route::delete('imoveis/deleteon', [PropertyController::class, 'deleteon'])->name('imoveis.deleteon');
-    Route::post('imoveis/image-set-cover', [PropertyController::class, 'imageSetCover'])->name('imoveis.imageSetCover');
-    Route::get('imoveis/set-status', [PropertyController::class, 'setStatus'])->name('imoveis.setStatus');
-    Route::delete('imoveis/image-remove', [PropertyController::class, 'imageRemove'])->name('imoveis.imageRemove');
-    Route::put('imoveis/{imovel}', [PropertyController::class, 'update'])->name('imoveis.update');
-    Route::get('imoveis/{imovel}/edit', [PropertyController::class, 'edit'])->name('imoveis.edit');
-    Route::get('imoveis/create', [PropertyController::class, 'create'])->name('imoveis.create');
-    Route::post('imoveis/store', [PropertyController::class, 'store'])->name('imoveis.store');
-    Route::get('imoveis', [PropertyController::class, 'index'])->name('imoveis.index');
+    Route::match(['post', 'get'], 'imoveis/destaque', [PropertyController::class, 'destaqueMark'])->name('property.destaque');
+    Route::get('imoveis/marcadagua', [PropertyController::class, 'imageWatermark'])->name('property.watermark');
+    Route::get('imoveis/delete', [PropertyController::class, 'delete'])->name('property.delete');
+    Route::delete('imoveis/deleteon', [PropertyController::class, 'deleteon'])->name('property.deleteon');
+    Route::post('imoveis/image-set-cover', [PropertyController::class, 'setCover'])->name('property.setCover');
+    Route::get('imoveis/set-status', [PropertyController::class, 'setStatus'])->name('property.setStatus');
+    Route::delete('imoveis/image-remove', [PropertyController::class, 'imageRemove'])->name('property.imageRemove');
+    Route::put('imoveis/{id}', [PropertyController::class, 'update'])->name('property.update');
+    Route::get('imoveis/{id}/edit', [PropertyController::class, 'edit'])->name('property.edit');
+    Route::get('imoveis/create', [PropertyController::class, 'create'])->name('property.create');
+    Route::post('imoveis/store', [PropertyController::class, 'store'])->name('property.store');
+    Route::get('imoveis', [PropertyController::class, 'index'])->name('properties.index');
 
     //*********************** Usuários *******************************************/
     Route::match(['get', 'post'], 'usuarios/pesquisa', [UserController::class, 'search'])->name('users.search');

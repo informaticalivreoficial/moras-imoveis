@@ -32,7 +32,7 @@ $config = [
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{route('home')}}">Painel de Controle</a></li>
-            <li class="breadcrumb-item"><a href="{{route('imoveis.index')}}">Imóveis</a></li>
+            <li class="breadcrumb-item"><a href="{{route('properties.index')}}">Imóveis</a></li>
             <li class="breadcrumb-item active">Editar Imóvel</li>
         </ol>
     </div>
@@ -80,7 +80,7 @@ $config = [
                     </li>
                 </ul>
             </div>
-            <form action="{{ route('imoveis.update', ['imovel' => $imovel->id]) }}" method="post" enctype="multipart/form-data" autocomplete="off">
+            <form action="{{ route('property.update', ['id' => $property->id]) }}" method="post" enctype="multipart/form-data" autocomplete="off">
             @csrf
             @method('PUT')
             <div class="card-body">
@@ -92,11 +92,11 @@ $config = [
                                  <div class="form-group p-3 mb-0">
                                      <span class="mr-3 text-muted"><b>Finalidade:</b></span>  
                                      <div class="form-check d-inline mx-2">
-                                         <input id="venda" class="form-check-input" type="checkbox" name="venda" {{ (old('venda') == 'on' || old('venda') == true ? 'checked' : ($imovel->venda == true ? 'checked' : '')) }}>
+                                         <input id="venda" class="form-check-input" type="checkbox" name="sale" {{ (old('sale') == 'on' || old('sale') == true ? 'checked' : ($property->sale == true ? 'checked' : '')) }}>
                                          <label for="venda" class="form-check-label">Venda</label>
                                      </div>
                                      <div class="form-check d-inline mx-2">
-                                         <input id="locacao" class="form-check-input" type="checkbox"  name="locacao" {{ (old('locacao') == 'on' || old('locacao') == true ? 'checked' : ($imovel->locacao == true ? 'checked' : '')) }}>
+                                         <input id="locacao" class="form-check-input" type="checkbox"  name="location" {{ (old('location') == 'on' || old('location') == true ? 'checked' : ($property->location == true ? 'checked' : '')) }}>
                                          <label for="locacao" class="form-check-label">Locação</label>
                                      </div>
                                  </div>
@@ -106,70 +106,70 @@ $config = [
                             <div class="col-12 col-md-6 col-lg-6 mb-2">
                                 <div class="form-group">
                                     <label class="labelforms text-muted"><b>Link Booking.com</b></label>
-                                    <input type="text" class="form-control" placeholder="Link Booking.com" name="url_booking" value="{{ old('url_booking') ?? $imovel->url_booking }}">
+                                    <input type="text" class="form-control" placeholder="Link Booking.com" name="url_booking" value="{{ old('url_booking') ?? $property->url_booking }}">
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 col-lg-6 mb-2">
                                 <div class="form-group">
                                     <label class="labelforms text-muted"><b>Link Airbnb</b></label>
-                                    <input type="text" class="form-control" placeholder="Link Airbnb" name="url_arbnb" value="{{ old('url_arbnb') ?? $imovel->url_arbnb }}">
+                                    <input type="text" class="form-control" placeholder="Link Airbnb" name="url_arbnb" value="{{ old('url_arbnb') ?? $property->url_arbnb }}">
                                 </div>
                             </div>
                          </div>
                          <div class="row mb-4">
-                             <div class="col-12 col-md-6 col-lg-4"> 
-                                 <div class="form-group">
-                                     <label class="labelforms text-muted"><b>*Proprietário</b></label>
-                                     <select class="form-control" name="proprietario">
-                                         <option value="">Selecione o proprietário</option>
-                                         @foreach($users as $user)
-                                             <option value="{{ $user->id }}" {{ (old('proprietario') == $imovel->proprietario ? 'selected' : ($imovel->proprietario == $user->id ? 'selected' : '')) }}>
-                                                 {{ $user->name }} ({{ $user->rg }})
-                                             </option>
-                                         @endforeach
-                                     </select>
-                                 </div>
-                             </div>
+                            <div class="col-12 col-md-6 col-lg-4"> 
+                                <div class="form-group">
+                                    <label class="labelforms text-muted"><b>*Proprietário</b></label>
+                                    <select class="form-control" name="owner">
+                                        <option value="">Selecione o proprietário</option>
+                                            @foreach($users as $user)
+                                                <option value="{{ $user->id }}" {{ (old('owner') == $property->owner ? 'selected' : ($property->owner == $user->id ? 'selected' : '')) }}>
+                                                    {{ $user->name }} ({{ ($user->rg ? $user->rg : '---------') }})
+                                                </option>
+                                            @endforeach
+                                    </select>
+                                </div>
+                            </div>
                              <div class="col-12 col-md-6 col-lg-3"> 
                                  <div class="form-group">
                                      <label class="labelforms text-muted"><b>*Categoria</b></label>
-                                     <select class="form-control" name="categoria">
+                                     <select class="form-control" name="category">
                                          <option value=""> Selecione </option>
-                                         <option value="Imóvel Residencial" {{(old('categoria') == 'Imóvel Residencial' ? 'selected' : ($imovel->categoria == 'Imóvel Residencial' ? 'selected' : '')) }}>Imóvel Residencial</option>
-                                         <option value="Comercial/Industrial" {{(old('categoria') == 'Comercial/Industrial' ? 'selected' : ($imovel->categoria == 'Comercial/Industrial' ? 'selected' : '')) }}>Comercial/Industrial</option>
-                                         <option value="Terreno" {{(old('categoria') == 'Terreno' ? 'selected' : ($imovel->categoria == 'Terreno' ? 'selected' : '')) }}>Terreno</option>
-                                         <option value="Rural" {{(old('categoria') == 'Rural' ? 'selected' : ($imovel->categoria == 'Rural' ? 'selected' : '')) }}>Rural</option>
+                                         <option value="Imóvel Residencial" {{(old('category') == 'Imóvel Residencial' ? 'selected' : ($property->category == 'Imóvel Residencial' ? 'selected' : '')) }}>Imóvel Residencial</option>
+                                         <option value="Comercial/Industrial" {{(old('category') == 'Comercial/Industrial' ? 'selected' : ($property->category == 'Comercial/Industrial' ? 'selected' : '')) }}>Comercial/Industrial</option>
+                                         <option value="Terreno" {{(old('category') == 'Terreno' ? 'selected' : ($property->category == 'Terreno' ? 'selected' : '')) }}>Terreno</option>
+                                         <option value="Rural" {{(old('category') == 'Rural' ? 'selected' : ($property->category == 'Rural' ? 'selected' : '')) }}>Rural</option>
                                      </select>
                                  </div>
                              </div>
                              <div class="col-12 col-md-6 col-lg-3"> 
                                  <div class="form-group">
                                     <label class="labelforms text-muted"><b>*Tipo</b></label>
-                                    <select class="form-control" name="tipo">
+                                    <select class="form-control" name="type">
                                          <option value=""> Selecione </option>
-                                         <option value="Casa" {{(old('tipo') == 'Casa' ? 'selected' : ($imovel->tipo == 'Casa' ? 'selected' : ''))}}>Casa</option>
-                                         <option value="Cobertura" {{(old('tipo') == 'Cobertura' ? 'selected' : ($imovel->tipo == 'Cobertura' ? 'selected' : ''))}}>Cobertura</option>
-                                         <option value="Apartamento" {{(old('tipo') == 'Apartamento' ? 'selected' : ($imovel->tipo == 'Apartamento' ? 'selected' : ''))}}>Apartamento</option>
-                                         <option value="Studio" {{(old('tipo') == 'Studio' ? 'selected' : ($imovel->tipo == 'Studio' ? 'selected' : ''))}}>Studio</option>
-                                         <option value="Kitnet" {{(old('tipo') == 'Kitnet' ? 'selected' : ($imovel->tipo == 'Kitnet' ? 'selected' : ''))}}>Kitnet</option>
-                                         <option value="Sala Comercial" {{(old('tipo') == 'Sala Comercial' ? 'selected' : ($imovel->tipo == 'Sala Comercial' ? 'selected' : ''))}}>Sala Comercial</option>
-                                         <option value="Salão de Festa" {{(old('tipo') == 'Salão de Festa' ? 'selected' : ($imovel->tipo == 'Salão de Festa' ? 'selected' : ''))}}>Salão de Festa</option>
-                                         <option value="Chalé" {{(old('tipo') == 'Chalé' ? 'selected' : ($imovel->tipo == 'Chalé' ? 'selected' : ''))}}>Chalé</option>
-                                         <option value="Hotel Pousada" {{(old('tipo') == 'Hotel Pousada' ? 'selected' : ($imovel->tipo == 'Hotel Pousada' ? 'selected' : ''))}}>Hotel/Pousada</option>
-                                         <option value="Sítio" {{(old('tipo') == 'Sítio' ? 'selected' : ($imovel->tipo == 'Sítio' ? 'selected' : ''))}}>Sítio</option>
-                                         <option value="Sobrado" {{(old('tipo') == 'Sobrado' ? 'selected' : ($imovel->tipo == 'Sobrado' ? 'selected' : ''))}}>Sobrado</option>
-                                         <option value="Loja" {{(old('tipo') == 'Loja' ? 'selected' : ($imovel->tipo == 'Loja' ? 'selected' : ''))}}>Loja</option>
-                                         <option value="Terreno em Condomínio" {{(old('tipo') == 'Terreno em Condomínio' ? 'selected' : ($imovel->tipo == 'Terreno em Condomínio' ? 'selected' : ''))}}>Terreno em Condomínio</option>
-                                         <option value="Terreno" {{(old('tipo') == 'Terreno' ? 'selected' : ($imovel->tipo == 'Terreno' ? 'selected' : ''))}}>Terreno</option>
-                                         <option value="Fazenda" {{(old('tipo') == 'Fazenda' ? 'selected' : ($imovel->tipo == 'Fazenda' ? 'selected' : ''))}}>Fazenda</option>
-                                         <option value="Prédio Edifício Inteiro" {{(old('tipo') == 'Prédio Edifício Inteiro' ? 'selected' : ($imovel->tipo == 'Prédio Edifício Inteiro' ? 'selected' : ''))}}>Prédio/Edifício Inteiro</option>
+                                         <option value="Casa" {{(old('type') == 'Casa' ? 'selected' : ($property->type == 'Casa' ? 'selected' : ''))}}>Casa</option>
+                                         <option value="Cobertura" {{(old('type') == 'Cobertura' ? 'selected' : ($property->type == 'Cobertura' ? 'selected' : ''))}}>Cobertura</option>
+                                         <option value="Apartamento" {{(old('type') == 'Apartamento' ? 'selected' : ($property->type == 'Apartamento' ? 'selected' : ''))}}>Apartamento</option>
+                                         <option value="Studio" {{(old('type') == 'Studio' ? 'selected' : ($property->type == 'Studio' ? 'selected' : ''))}}>Studio</option>
+                                         <option value="Kitnet" {{(old('type') == 'Kitnet' ? 'selected' : ($property->type == 'Kitnet' ? 'selected' : ''))}}>Kitnet</option>
+                                         <option value="Sala Comercial" {{(old('type') == 'Sala Comercial' ? 'selected' : ($property->type == 'Sala Comercial' ? 'selected' : ''))}}>Sala Comercial</option>
+                                         <option value="Salão de Festa" {{(old('type') == 'Salão de Festa' ? 'selected' : ($property->type == 'Salão de Festa' ? 'selected' : ''))}}>Salão de Festa</option>
+                                         <option value="Chalé" {{(old('type') == 'Chalé' ? 'selected' : ($property->type == 'Chalé' ? 'selected' : ''))}}>Chalé</option>
+                                         <option value="Hotel Pousada" {{(old('type') == 'Hotel Pousada' ? 'selected' : ($property->type == 'Hotel Pousada' ? 'selected' : ''))}}>Hotel/Pousada</option>
+                                         <option value="Sítio" {{(old('type') == 'Sítio' ? 'selected' : ($property->type == 'Sítio' ? 'selected' : ''))}}>Sítio</option>
+                                         <option value="Sobrado" {{(old('type') == 'Sobrado' ? 'selected' : ($property->type == 'Sobrado' ? 'selected' : ''))}}>Sobrado</option>
+                                         <option value="Loja" {{(old('type') == 'Loja' ? 'selected' : ($property->type == 'Loja' ? 'selected' : ''))}}>Loja</option>
+                                         <option value="Terreno em Condomínio" {{(old('type') == 'Terreno em Condomínio' ? 'selected' : ($property->type == 'Terreno em Condomínio' ? 'selected' : ''))}}>Terreno em Condomínio</option>
+                                         <option value="Terreno" {{(old('type') == 'Terreno' ? 'selected' : ($property->type == 'Terreno' ? 'selected' : ''))}}>Terreno</option>
+                                         <option value="Fazenda" {{(old('type') == 'Fazenda' ? 'selected' : ($property->type == 'Fazenda' ? 'selected' : ''))}}>Fazenda</option>
+                                         <option value="Prédio Edifício Inteiro" {{(old('type') == 'Prédio Edifício Inteiro' ? 'selected' : ($property->type == 'Prédio Edifício Inteiro' ? 'selected' : ''))}}>Prédio/Edifício Inteiro</option>
                                      </select>
                                  </div>
                              </div>
                              <div class="col-12 col-md-6 col-lg-2"> 
                                  <div class="form-group">
                                      <label class="labelforms text-muted"><b>Referência</b></label>
-                                     <input type="text" class="form-control" name="referencia" value="{{ old('referencia') ?? $imovel->referencia }}">
+                                     <input type="text" class="form-control" name="reference" value="{{ old('reference') ?? $property->reference }}">
                                  </div>
                              </div>                                    
                          </div>
@@ -191,9 +191,9 @@ $config = [
                                                     <div class="form-group">
                                                         <label class="labelforms text-muted"><b>Deseja exibir os valores?</b> <small class="text-info">(valores exibidos no layout do cliente)</small></label>
                                                         <div class="form-check">
-                                                            <input id="exibivaloresim" class="form-check-input" type="radio" value="1" name="exibivalores" {{(old('exibivalores') == '1' ? 'checked' : ($imovel->exibivalores == '1' ? 'checked' : ''))}}>
+                                                            <input id="exibivaloresim" class="form-check-input" type="radio" value="1" name="display_values" {{(old('display_values') == '1' ? 'checked' : ($property->display_values == '1' ? 'checked' : ''))}}>
                                                             <label for="exibivaloressim" class="form-check-label mr-5">Sim</label>
-                                                            <input id="exibivaloresnao" class="form-check-input" type="radio" value="0" name="exibivalores" {{(old('exibivalores') == '0' ? 'checked' : ($imovel->exibivalores == '0' ? 'checked' : ''))}}>
+                                                            <input id="exibivaloresnao" class="form-check-input" type="radio" value="0" name="display_values" {{(old('display_values') == '0' ? 'checked' : ($property->display_values == '0' ? 'checked' : ''))}}>
                                                             <label for="exibivaloresnao" class="form-check-label">Não</label>
                                                         </div>
                                                     </div>
@@ -201,25 +201,25 @@ $config = [
                                                 <div class="col-12 col-md-3 col-lg-3"> 
                                                     <div class="form-group">
                                                         <label class="labelforms text-muted"><b>Valor de Venda</b></label>
-                                                        <input type="text" class="form-control mask-money valor_venda" name="valor_venda" value="{{ old('valor_venda') ?? $imovel->valor_venda }}">
+                                                        <input type="text" class="form-control mask-money valor_venda" name="sale_value" value="{{ old('sale_value') ?? $property->sale_value }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-3 col-lg-3"> 
                                                     <div class="form-group">
                                                         <label class="labelforms text-muted"><b>Valor de Locação</b></label>
-                                                        <input type="text" class="form-control mask-money valor_locacao" name="valor_locacao" value="{{ old('valor_locacao') ?? $imovel->valor_locacao }}">
+                                                        <input type="text" class="form-control mask-money valor_locacao" name="rental_value" value="{{ old('rental_value') ?? $property->rental_value }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-3 col-lg-3"> 
                                                     <div class="form-group">
                                                         <label class="labelforms text-muted"><b>Valor IPTU</b></label>
-                                                        <input type="text" class="form-control mask-money" name="iptu" value="{{ old('iptu') ?? $imovel->iptu }}">
+                                                        <input type="text" class="form-control mask-money" name="iptu" value="{{ old('iptu') ?? $property->iptu }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-3 col-lg-3"> 
                                                     <div class="form-group">
                                                         <label class="labelforms text-muted"><b>Valor Condomínio</b></label>
-                                                        <input type="text" class="form-control mask-money" name="condominio" value="{{ old('condominio') ?? $imovel->condominio }}">
+                                                        <input type="text" class="form-control mask-money" name="condominium" value="{{ old('condominium') ?? $property->condominium }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -227,15 +227,15 @@ $config = [
                                                 <div class="col-12 col-md-6 col-lg-3"> 
                                                     <div class="form-group">
                                                        <label class="labelforms text-muted"><b>Período da Locação</b></label>
-                                                       <select class="form-control" name="locacao_periodo">
+                                                       <select class="form-control" name="location_period">
                                                             <option value=""> Selecione </option>
-                                                            <option value="1" {{(old('locacao_periodo') == '1' ? 'selected' : ($imovel->locacao_periodo == '1' ? 'selected' : ''))}}>Diária</option>
-                                                            <option value="2" {{(old('locacao_periodo') == '2' ? 'selected' : ($imovel->locacao_periodo == '2' ? 'selected' : ''))}}>Quinzenal</option>
-                                                            <option value="3" {{(old('locacao_periodo') == '3' ? 'selected' : ($imovel->locacao_periodo == '3' ? 'selected' : ''))}}>Mensal</option>
-                                                            <option value="4" {{(old('locacao_periodo') == '4' ? 'selected' : ($imovel->locacao_periodo == '4' ? 'selected' : ''))}}>Trimestral</option>
-                                                            <option value="5" {{(old('locacao_periodo') == '5' ? 'selected' : ($imovel->locacao_periodo == '5' ? 'selected' : ''))}}>Semestral</option>
-                                                            <option value="6" {{(old('locacao_periodo') == '6' ? 'selected' : ($imovel->locacao_periodo == '6' ? 'selected' : ''))}}>Anual</option>
-                                                            <option value="7" {{(old('locacao_periodo') == '7' ? 'selected' : ($imovel->locacao_periodo == '7' ? 'selected' : ''))}}>Bianual</option>
+                                                            <option value="1" {{(old('location_period') == '1' ? 'selected' : ($property->location_period == '1' ? 'selected' : ''))}}>Diária</option>
+                                                            <option value="2" {{(old('location_period') == '2' ? 'selected' : ($property->location_period == '2' ? 'selected' : ''))}}>Quinzenal</option>
+                                                            <option value="3" {{(old('location_period') == '3' ? 'selected' : ($property->location_period == '3' ? 'selected' : ''))}}>Mensal</option>
+                                                            <option value="4" {{(old('location_period') == '4' ? 'selected' : ($property->location_period == '4' ? 'selected' : ''))}}>Trimestral</option>
+                                                            <option value="5" {{(old('location_period') == '5' ? 'selected' : ($property->location_period == '5' ? 'selected' : ''))}}>Semestral</option>
+                                                            <option value="6" {{(old('location_period') == '6' ? 'selected' : ($property->location_period == '6' ? 'selected' : ''))}}>Anual</option>
+                                                            <option value="7" {{(old('location_period') == '7' ? 'selected' : ($property->location_period == '7' ? 'selected' : ''))}}>Bianual</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -251,81 +251,69 @@ $config = [
                                          </a>
                                      </h4>
                                  </div>
-                                 <div id="collapseEndereco" class="panel-collapse collapse show">
-                                     <div class="card-body">
-                                         <div class="row mb-2">
-                                             <div class="col-12"> 
-                                                 <div class="form-group">
-                                                     <label class="labelforms text-muted"><b>Deseja exibir o endereço? </b><small class="text-info">(opção não exibir retornará somente a cidade e estado)</small></label>
-                                                     <div class="form-check">
-                                                         <input id="exibirenderecosim" class="form-check-input" type="radio" value="1" name="exibirendereco" {{(old('exibirendereco') == '1' ? 'checked' : ($imovel->exibirendereco == '1' ? 'checked' : ''))}}>
-                                                         <label for="exibirenderecosim" class="form-check-label mr-5">Sim</label>
-                                                         <input id="exibirendereconao" class="form-check-input" type="radio" value="0" name="exibirendereco" {{(old('exibirendereco') == '0' ? 'checked' : ($imovel->exibirendereco == '0' ? 'checked' : ''))}}>
-                                                         <label for="exibirendereconao" class="form-check-label">Não</label>
-                                                     </div>
-                                                 </div>
-                                             </div>
-                                             <div class="col-12 col-md-4 col-lg-4"> 
-                                                 <div class="form-group">
-                                                     <label class="labelforms text-muted"><b>*Estado:</b></label>
-                                                     <select id="state-dd" class="form-control" name="uf">
-                                                         @if(!empty($estados))
-                                                             <option value="">Selecione o Estado</option>
-                                                             @foreach($estados as $estado)
-                                                             <option value="{{$estado->estado_id}}" {{ (old('uf') == $estado->estado_id ? 'selected' : ($imovel->uf == $estado->estado_id ? 'selected' : '')) }}>{{$estado->estado_nome}}</option>
-                                                             @endforeach                                                                        
-                                                         @endif
-                                                     </select>
-                                                 </div>
-                                             </div>
-                                             <div class="col-12 col-md-4 col-lg-4"> 
-                                                 <div class="form-group">
-                                                     <label class="labelforms text-muted"><b>*Cidade:</b></label>
-                                                     <select id="city-dd" class="form-control" name="cidade">
-                                                         @if(!empty($cidades)))
-                                                             <option value="">Selecione o Estado</option>
-                                                             @foreach($cidades as $cidade)
-                                                                 <option value="{{$cidade->cidade_id}}" {{ (old('cidade') == $cidade->cidade_id ? 'selected' : ($cidade->cidade_id == $imovel->cidade ? 'selected' : '')) }}>{{$cidade->cidade_nome}}</option>                                                                   
-                                                             @endforeach                                                                        
-                                                         @endif
-                                                     </select>
-                                                 </div>
-                                             </div>
-                                             <div class="col-12 col-md-4 col-lg-4"> 
-                                                 <div class="form-group">
-                                                     <label class="labelforms text-muted"><b>Bairro:</b></label>
-                                                     <input type="text" class="form-control" title="Bairro" name="bairro" value="{{ old('bairro') ?? $imovel->bairro }}">
-                                                 </div>
-                                             </div>
-                                         </div>
-                                         <div class="row mb-2">
-                                             <div class="col-12 col-md-6 col-lg-5"> 
-                                                 <div class="form-group">
-                                                     <label class="labelforms text-muted"><b>Endereço:</b></label>
-                                                     <input type="text" class="form-control" title="Endereço Completo" name="rua" value="{{ old('rua') ?? $imovel->rua }}">
-                                                 </div>
-                                             </div>
-                                             <div class="col-12 col-md-6 col-lg-2"> 
-                                                 <div class="form-group">
-                                                     <label class="labelforms text-muted"><b>Número:</b></label>
-                                                     <input type="text" class="form-control" title="Número do Endereço" name="num" value="{{ old('num') ?? $imovel->num }}">
-                                                 </div>
-                                             </div>
-                                             <div class="col-12 col-md-6 col-lg-3"> 
-                                                 <div class="form-group">
-                                                     <label class="labelforms text-muted"><b>Complemento:</b></label>
-                                                     <input type="text" class="form-control" title="Completo (Opcional)" name="complemento" value="{{ old('complemento') ?? $imovel->complemento }}">
-                                                 </div>
-                                             </div>
-                                             <div class="col-12 col-md-6 col-lg-2"> 
-                                                 <div class="form-group">
-                                                     <label class="labelforms text-muted"><b>*CEP:</b></label>
-                                                     <input type="text" class="form-control mask-zipcode" title="Digite o CEP" name="cep" value="{{ old('cep') ?? $imovel->cep }}">
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </div>
-                                 </div>
+                                    <div id="collapseEndereco" class="panel-collapse collapse show">
+                                        <div class="card-body">
+                                            <div class="row mb-2">
+                                                <div class="col-12"> 
+                                                    <div class="form-group">
+                                                        <label class="labelforms text-muted"><b>Deseja exibir o endereço? </b><small class="text-info">(opção não exibir retornará somente a cidade e estado)</small></label>
+                                                        <div class="form-check">
+                                                            <input id="exibirenderecosim" class="form-check-input" type="radio" value="1" name="display_address" {{(old('display_address') == '1' ? 'checked' : ($property->display_address == '1' ? 'checked' : ''))}}>
+                                                            <label for="exibirenderecosim" class="form-check-label mr-5">Sim</label>
+                                                            <input id="exibirendereconao" class="form-check-input" type="radio" value="0" name="display_address" {{(old('display_address') == '0' ? 'checked' : ($property->display_address == '0' ? 'checked' : ''))}}>
+                                                            <label for="exibirendereconao" class="form-check-label">Não</label>
+                                                        </div>
+                                                    </div>
+                                                </div>                                             
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-12 col-md-2 col-lg-2"> 
+                                                    <div class="form-group">
+                                                        <label class="labelforms text-muted"><b>CEP:</b></label>
+                                                        <input type="text" id="cep" class="form-control mask-zipcode" placeholder="Digite o CEP" name="zipcode" value="{{ old('zipcode') ?? $property->zipcode }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-3 col-lg-3"> 
+                                                    <div class="form-group">
+                                                        <label class="labelforms text-muted"><b>Estado:</b></label>
+                                                        <input type="text" class="form-control" id="uf" name="state" value="{{ old('state') ?? $property->state }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-4 col-lg-4"> 
+                                                    <div class="form-group">
+                                                        <label class="labelforms text-muted"><b>Cidade:</b></label>
+                                                        <input type="text" class="form-control" id="cidade" name="city" value="{{ old('city') ?? $property->city }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-4 col-lg-3"> 
+                                                    <div class="form-group">
+                                                        <label class="labelforms text-muted"><b>Bairro:</b></label>
+                                                        <input type="text" class="form-control" placeholder="Bairro" id="bairro" name="neighborhood" value="{{ old('neighborhood') ?? $property->neighborhood }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-12 col-md-6 col-lg-5"> 
+                                                    <div class="form-group">
+                                                        <label class="labelforms text-muted"><b>Rua/Av:</b></label>
+                                                        <input type="text" class="form-control" id="rua" name="street" value="{{ old('street') ?? $property->street }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-6 col-lg-2"> 
+                                                    <div class="form-group">
+                                                        <label class="labelforms text-muted"><b>Número:</b></label>
+                                                        <input type="text" class="form-control" placeholder="Número do Endereço" name="number" value="{{ old('number') ?? $property->number }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-6 col-lg-3"> 
+                                                    <div class="form-group">
+                                                        <label class="labelforms text-muted"><b>Complemento:</b></label>
+                                                        <input type="text" class="form-control" placeholder="Complemento (Opcional)" name="complement" value="{{ old('complement') ?? $property->complement }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                              </div>
                              <div class="card">
                                  <div class="card-header">
@@ -342,92 +330,92 @@ $config = [
                                              <div class="col-12 col-md-6 col-lg-2">   
                                                  <div class="form-group">
                                                      <label class="labelforms text-muted"><b>*Dormitórios</b></label>
-                                                     <input type="text" class="form-control" title="Quantidade de Dormitórios" name="dormitorios" value="{{ old('dormitorios') ?? $imovel->dormitorios }}">
+                                                     <input type="text" class="form-control" title="Quantidade de Dormitórios" name="dormitories" value="{{ old('dormitories') ?? $property->dormitories }}">
                                                  </div>                                                    
                                              </div>
                                              <div class="col-12 col-md-6 col-lg-2">   
                                                  <div class="form-group">
                                                      <label class="labelforms text-muted"><b>Suítes</b></label>
-                                                     <input type="text" class="form-control" title="Quantidade de Suítes" name="suites" value="{{ old('suites') ?? $imovel->suites }}">
+                                                     <input type="text" class="form-control" title="Quantidade de Suítes" name="suites" value="{{ old('suites') ?? $property->suites }}">
                                                  </div>                                                    
                                              </div>
                                              <div class="col-12 col-md-6 col-lg-2">   
                                                  <div class="form-group">
                                                      <label class="labelforms text-muted"><b>Banheiros</b></label>
-                                                     <input type="text" class="form-control" title="Quantidade de Banheiros" name="banheiros" value="{{ old('banheiros') ?? $imovel->banheiros }}">
+                                                     <input type="text" class="form-control" title="Quantidade de Banheiros" name="bathrooms" value="{{ old('bathrooms') ?? $property->bathrooms }}">
                                                  </div>                                                    
                                              </div>
                                              <div class="col-12 col-md-6 col-lg-2">   
                                                  <div class="form-group">
                                                      <label class="labelforms text-muted"><b>Salas</b></label>
-                                                     <input type="text" class="form-control" title="Quantidade de Salas" name="salas" value="{{ old('salas') ?? $imovel->salas }}">
+                                                     <input type="text" class="form-control" title="Quantidade de Salas" name="rooms" value="{{ old('rooms') ?? $property->rooms }}">
                                                  </div>                                                    
                                              </div>
                                              <div class="col-12 col-md-6 col-lg-2">   
                                                  <div class="form-group">
                                                      <label class="labelforms text-muted"><b>Garagem</b></label>
-                                                     <input type="text" class="form-control" title="Quantidade de Garagem" name="garagem" value="{{ old('garagem') ?? $imovel->garagem }}">
+                                                     <input type="text" class="form-control" title="Quantidade de Garagem" name="garage" value="{{ old('garage') ?? $property->garage }}">
                                                  </div>                                                    
                                              </div>
                                              <div class="col-12 col-md-6 col-lg-2">   
                                                  <div class="form-group">
                                                      <label class="labelforms text-muted"><b>Garagem Coberta</b></label>
-                                                     <input type="text" class="form-control" title="Garagem Coberta" name="garagem_coberta" value="{{ old('garagem_coberta') ?? $imovel->garagem_coberta }}">
+                                                     <input type="text" class="form-control" title="Garagem Coberta" name="covered_garage" value="{{ old('covered_garage') ?? $property->covered_garage }}">
                                                  </div>                                                    
                                              </div>
                                              <div class="col-12 col-md-6 col-lg-2">   
                                                  <div class="form-group">
                                                      <label class="labelforms text-muted"><b>Ano de Construção</b></label>
-                                                     <input type="text" class="form-control" title="Ano de Construção" name="anodeconstrucao" value="{{ old('anodeconstrucao') ?? $imovel->anodeconstrucao }}">
+                                                     <input type="text" class="form-control" title="Ano de Construção" name="construction_year" value="{{ old('construction_year') ?? $property->construction_year }}">
                                                  </div>                                                    
                                              </div>
                                              <div class="col-12 col-md-6 col-lg-2">   
                                                  <div class="form-group">
                                                      <label class="labelforms text-muted"><b>Área Total</b></label>
-                                                     <input type="text" class="form-control" title="Área Total" name="area_total" value="{{ old('area_total') ?? $imovel->area_total }}">
+                                                     <input type="text" class="form-control" title="Área Total" name="total_area" value="{{ old('total_area') ?? $property->total_area }}">
                                                  </div>                                                    
                                              </div>
                                              <div class="col-12 col-md-6 col-lg-2">   
                                                  <div class="form-group">
                                                      <label class="labelforms text-muted"><b>Área Útil</b></label>
-                                                     <input type="text" class="form-control" title="Área Útil" name="area_util" value="{{ old('area_util') ?? $imovel->area_util }}">
+                                                     <input type="text" class="form-control" title="Área Útil" name="useful_area" value="{{ old('useful_area') ?? $property->useful_area }}">
                                                  </div>                                                    
                                              </div>
                                              <div class="col-12 col-md-6 col-lg-2">   
                                                  <div class="form-group">
                                                      <label class="labelforms text-muted"><b>Medidas</b></label>
-                                                     <select class="form-control" name="medidas">
+                                                     <select class="form-control" name="measures">
                                                          <option value=""> Selecione </option>
-                                                         <option value="m²" {{(old('medidas') == 'm²' ? 'selected' : ($imovel->medidas == 'm²' ? 'selected' : ''))}}>m²</option>
-                                                         <option value="km²" {{(old('medidas') == 'km²' ? 'selected' : ($imovel->medidas == 'km²' ? 'selected' : ''))}}>km²</option>
-                                                         <option value="hectare" {{(old('medidas') == 'hectare' ? 'selected' : ($imovel->medidas == 'hectare' ? 'selected' : ''))}}>hectare</option>
-                                                         <option value="alqueire" {{(old('medidas') == 'alqueire' ? 'selected' : ($imovel->medidas == 'alqueire' ? 'selected' : ''))}}>alqueire</option>
+                                                         <option value="m²" {{(old('measures') == 'm²' ? 'selected' : ($property->measures == 'm²' ? 'selected' : ''))}}>m²</option>
+                                                         <option value="km²" {{(old('measures') == 'km²' ? 'selected' : ($property->measures == 'km²' ? 'selected' : ''))}}>km²</option>
+                                                         <option value="hectare" {{(old('measures') == 'hectare' ? 'selected' : ($property->measures == 'hectare' ? 'selected' : ''))}}>hectare</option>
+                                                         <option value="alqueire" {{(old('measures') == 'alqueire' ? 'selected' : ($property->measures == 'alqueire' ? 'selected' : ''))}}>alqueire</option>
                                                      </select>
                                                  </div>                                                    
                                              </div>
                                              <div class="col-12 col-md-6 col-lg-2">   
                                                  <div class="form-group">
                                                      <label class="labelforms text-muted"><b>Latitude</b></label>
-                                                     <input type="text" class="form-control" title="Latitude" name="latitude" value="{{ old('latitude') ?? $imovel->latitude }}">
+                                                     <input type="text" class="form-control" title="Latitude" name="latitude" value="{{ old('latitude') ?? $property->latitude }}">
                                                  </div>                                                    
                                              </div>
                                              <div class="col-12 col-md-6 col-lg-2">   
                                                  <div class="form-group">
                                                      <label class="labelforms text-muted"><b>Longitude</b></label>
-                                                     <input type="text" class="form-control" title="Longitude" name="longitude" value="{{ old('longitude') ?? $imovel->longitude }}">
+                                                     <input type="text" class="form-control" title="Longitude" name="longitude" value="{{ old('longitude') ?? $property->longitude }}">
                                                  </div>                                                    
                                              </div>
                                          </div>
                                          <div class="row mb-2">
                                              <div class="col-12">   
                                                  <label class="labelforms text-muted"><b>Descrição do Imóvel</b></label>
-                                                 <x-adminlte-text-editor name="descricao" v placeholder="Descrição do Imóvel..." :config="$config">{{ old('descricao') ?? $imovel->descricao }}</x-adminlte-text-editor>                                                      
+                                                 <x-adminlte-text-editor name="description" v placeholder="Descrição do Imóvel..." :config="$config">{{ old('description') ?? $property->description }}</x-adminlte-text-editor>                                                      
                                              </div>
                                          </div>                                                
                                          <div class="row mb-2">
                                              <div class="col-12">   
                                                  <label class="labelforms text-muted"><b>Notas Adicionais</b></label>
-                                                 <textarea id="inputDescription" class="form-control" rows="5" name="notasadicionais">{{ old('notasadicionais') ?? $imovel->notasadicionais }}</textarea>                                                      
+                                                 <textarea id="inputDescription" class="form-control" rows="5" name="additional_notes">{{ old('additional_notes') ?? $property->additional_notes }}</textarea>                                                      
                                              </div>
                                          </div>                                                
                                      </div>
@@ -445,51 +433,51 @@ $config = [
                                 <!-- checkbox -->
                                 <div class="form-group p-3 mb-1">
                                     <div class="form-check mb-2">
-                                        <input id="areadelazer" class="form-check-input" type="checkbox" name="areadelazer" {{ (old('areadelazer') == 'on' || old('areadelazer') == true ? 'checked' : ($imovel->areadelazer == true ? 'checked' : '')) }}>
+                                        <input id="areadelazer" class="form-check-input" type="checkbox" name="areadelazer" {{ (old('areadelazer') == 'on' || old('areadelazer') == true ? 'checked' : ($property->areadelazer == true ? 'checked' : '')) }}>
                                         <label for="areadelazer" class="form-check-label">Área de Lazer</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="ar_condicionado" class="form-check-input" type="checkbox" name="ar_condicionado" {{ (old('ar_condicionado') == 'on' || old('ar_condicionado') == true ? 'checked' : ($imovel->ar_condicionado == true ? 'checked' : '')) }}>
+                                        <input id="ar_condicionado" class="form-check-input" type="checkbox" name="ar_condicionado" {{ (old('ar_condicionado') == 'on' || old('ar_condicionado') == true ? 'checked' : ($property->ar_condicionado == true ? 'checked' : '')) }}>
                                         <label for="ar_condicionado" class="form-check-label">Ar Condicionado</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="aquecedor_solar" class="form-check-input" type="checkbox" name="aquecedor_solar" {{ (old('aquecedor_solar') == 'on' || old('aquecedor_solar') == true ? 'checked' : ($imovel->aquecedor_solar == true ? 'checked' : '')) }}>
+                                        <input id="aquecedor_solar" class="form-check-input" type="checkbox" name="aquecedor_solar" {{ (old('aquecedor_solar') == 'on' || old('aquecedor_solar') == true ? 'checked' : ($property->aquecedor_solar == true ? 'checked' : '')) }}>
                                         <label for="aquecedor_solar" class="form-check-label">Aquecedor Solar</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="armarionautico" class="form-check-input" type="checkbox" name="armarionautico" {{ (old('armarionautico') == 'on' || old('armarionautico') == true ? 'checked' : ($imovel->armarionautico == true ? 'checked' : '')) }}>
+                                        <input id="armarionautico" class="form-check-input" type="checkbox" name="armarionautico" {{ (old('armarionautico') == 'on' || old('armarionautico') == true ? 'checked' : ($property->armarionautico == true ? 'checked' : '')) }}>
                                         <label for="armarionautico" class="form-check-label">Armário Náutico</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="balcaoamericano" class="form-check-input" type="checkbox"  name="balcaoamericano" {{ (old('balcaoamericano') == 'on' || old('balcaoamericano') == true ? 'checked' : ($imovel->balcaoamericano == true ? 'checked' : '')) }}>
+                                        <input id="balcaoamericano" class="form-check-input" type="checkbox"  name="balcaoamericano" {{ (old('balcaoamericano') == 'on' || old('balcaoamericano') == true ? 'checked' : ($property->balcaoamericano == true ? 'checked' : '')) }}>
                                         <label for="balcaoamericano" class="form-check-label">Balcão Americano</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="banheira" class="form-check-input" type="checkbox"  name="banheira" {{ (old('banheira') == 'on' || old('banheira') == true ? 'checked' : ($imovel->banheira == true ? 'checked' : '')) }}>
+                                        <input id="banheira" class="form-check-input" type="checkbox"  name="banheira" {{ (old('banheira') == 'on' || old('banheira') == true ? 'checked' : ($property->banheira == true ? 'checked' : '')) }}>
                                         <label for="banheira" class="form-check-label">Banheira</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="banheirosocial" class="form-check-input" type="checkbox"  name="banheirosocial" {{ (old('banheirosocial') == 'on' || old('banheirosocial') == true ? 'checked' : ($imovel->banheirosocial == true ? 'checked' : '')) }}>
+                                        <input id="banheirosocial" class="form-check-input" type="checkbox"  name="banheirosocial" {{ (old('banheirosocial') == 'on' || old('banheirosocial') == true ? 'checked' : ($property->banheirosocial == true ? 'checked' : '')) }}>
                                         <label for="banheirosocial" class="form-check-label">Banheiro Social</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="bar" class="form-check-input" type="checkbox" name="bar" {{ (old('bar') == 'on' || old('bar') == true ? 'checked' : ($imovel->bar == true ? 'checked' : '')) }}>
+                                        <input id="bar" class="form-check-input" type="checkbox" name="bar" {{ (old('bar') == 'on' || old('bar') == true ? 'checked' : ($property->bar == true ? 'checked' : '')) }}>
                                         <label for="bar" class="form-check-label">Bar Social</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="biblioteca" class="form-check-input" type="checkbox"  name="biblioteca" {{ (old('biblioteca') == 'on' || old('biblioteca') == true ? 'checked' : ($imovel->biblioteca == true ? 'checked' : '')) }}>
+                                        <input id="biblioteca" class="form-check-input" type="checkbox"  name="biblioteca" {{ (old('biblioteca') == 'on' || old('biblioteca') == true ? 'checked' : ($property->biblioteca == true ? 'checked' : '')) }}>
                                         <label for="biblioteca" class="form-check-label">Biblioteca</label>
                                     </div>                                            
                                     <div class="form-check mb-2">
-                                        <input id="brinquedoteca" class="form-check-input" type="checkbox"  name="brinquedoteca" {{ (old('brinquedoteca') == 'on' || old('brinquedoteca') == true ? 'checked' : ($imovel->brinquedoteca == true ? 'checked' : '')) }}>
+                                        <input id="brinquedoteca" class="form-check-input" type="checkbox"  name="brinquedoteca" {{ (old('brinquedoteca') == 'on' || old('brinquedoteca') == true ? 'checked' : ($property->brinquedoteca == true ? 'checked' : '')) }}>
                                         <label for="brinquedoteca" class="form-check-label">Brinquedoteca</label>
                                     </div>                                            
                                     <div class="form-check mb-2">
-                                        <input id="condominiofechado" class="form-check-input" type="checkbox"  name="condominiofechado" {{ (old('condominiofechado') == 'on' || old('condominiofechado') == true ? 'checked' : ($imovel->condominiofechado == true ? 'checked' : '')) }}>
+                                        <input id="condominiofechado" class="form-check-input" type="checkbox"  name="condominiofechado" {{ (old('condominiofechado') == 'on' || old('condominiofechado') == true ? 'checked' : ($property->condominiofechado == true ? 'checked' : '')) }}>
                                         <label for="condominiofechado" class="form-check-label">Condomínio fechado</label>
                                     </div> 
                                     <div class="form-check mb-2">
-                                        <input id="cozinha_planejada" class="form-check-input" type="checkbox"  name="cozinha_planejada" {{ (old('cozinha_planejada') == 'on' || old('cozinha_planejada') == true ? 'checked' : ($imovel->cozinha_planejada == true ? 'checked' : '')) }}>
+                                        <input id="cozinha_planejada" class="form-check-input" type="checkbox"  name="cozinha_planejada" {{ (old('cozinha_planejada') == 'on' || old('cozinha_planejada') == true ? 'checked' : ($property->cozinha_planejada == true ? 'checked' : '')) }}>
                                         <label for="cozinha_planejada" class="form-check-label">Cozinha Planejada</label>
                                     </div>                       
                                 </div>
@@ -498,51 +486,51 @@ $config = [
                                 <!-- checkbox -->
                                 <div class="form-group p-3 mb-1">                                      
                                     <div class="form-check mb-2">
-                                        <input id="cozinha_americana" class="form-check-input" type="checkbox"  name="cozinha_americana" {{ (old('cozinha_americana') == 'on' || old('cozinha_americana') == true ? 'checked' : ($imovel->cozinha_americana == true ? 'checked' : '')) }}>
+                                        <input id="cozinha_americana" class="form-check-input" type="checkbox"  name="cozinha_americana" {{ (old('cozinha_americana') == 'on' || old('cozinha_americana') == true ? 'checked' : ($property->cozinha_americana == true ? 'checked' : '')) }}>
                                         <label for="cozinha_americana" class="form-check-label">Cozinha Americana</label>
                                     </div>                                            
                                     <div class="form-check mb-2">
-                                        <input id="churrasqueira" class="form-check-input" type="checkbox"  name="churrasqueira" {{ (old('churrasqueira') == 'on' || old('churrasqueira') == true ? 'checked' : ($imovel->churrasqueira == true ? 'checked' : '')) }}>
+                                        <input id="churrasqueira" class="form-check-input" type="checkbox"  name="churrasqueira" {{ (old('churrasqueira') == 'on' || old('churrasqueira') == true ? 'checked' : ($property->churrasqueira == true ? 'checked' : '')) }}>
                                         <label for="churrasqueira" class="form-check-label">Churrasqueira</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="dispensa" class="form-check-input" type="checkbox"  name="dispensa" {{ (old('dispensa') == 'on' || old('dispensa') == true ? 'checked' : ($imovel->dispensa == true ? 'checked' : '')) }}>
+                                        <input id="dispensa" class="form-check-input" type="checkbox"  name="dispensa" {{ (old('dispensa') == 'on' || old('dispensa') == true ? 'checked' : ($property->dispensa == true ? 'checked' : '')) }}>
                                         <label for="dispensa" class="form-check-label">Despensa</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="edicula" class="form-check-input" type="checkbox" name="edicula" {{ (old('edicula') == 'on' || old('edicula') == true ? 'checked' : ($imovel->edicula == true ? 'checked' : '')) }}>
+                                        <input id="edicula" class="form-check-input" type="checkbox" name="edicula" {{ (old('edicula') == 'on' || old('edicula') == true ? 'checked' : ($property->edicula == true ? 'checked' : '')) }}>
                                         <label for="edicula" class="form-check-label">Edícula</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="elevador" class="form-check-input" type="checkbox"  name="elevador" {{ (old('elevador') == 'on' || old('elevador') == true ? 'checked' : ($imovel->elevador == true ? 'checked' : '')) }}>
+                                        <input id="elevador" class="form-check-input" type="checkbox"  name="elevador" {{ (old('elevador') == 'on' || old('elevador') == true ? 'checked' : ($property->elevador == true ? 'checked' : '')) }}>
                                         <label for="elevador" class="form-check-label">Elevador</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="escritorio" class="form-check-input" type="checkbox"  name="escritorio" {{ (old('escritorio') == 'on' || old('escritorio') == true ? 'checked' : ($imovel->escritorio == true ? 'checked' : '')) }}>
+                                        <input id="escritorio" class="form-check-input" type="checkbox"  name="escritorio" {{ (old('escritorio') == 'on' || old('escritorio') == true ? 'checked' : ($property->escritorio == true ? 'checked' : '')) }}>
                                         <label for="escritorio" class="form-check-label">Escritório</label>
                                     </div>                                            
                                     <div class="form-check mb-2">
-                                        <input id="espaco_fitness" class="form-check-input" type="checkbox"  name="espaco_fitness" {{ (old('espaco_fitness') == 'on' || old('espaco_fitness') == true ? 'checked' : ($imovel->espaco_fitness == true ? 'checked' : '')) }}>
+                                        <input id="espaco_fitness" class="form-check-input" type="checkbox"  name="espaco_fitness" {{ (old('espaco_fitness') == 'on' || old('espaco_fitness') == true ? 'checked' : ($property->espaco_fitness == true ? 'checked' : '')) }}>
                                         <label for="espaco_fitness" class="form-check-label">Espaço Fitness</label>
                                     </div>                                            
                                     <div class="form-check mb-2">
-                                        <input id="estacionamento" class="form-check-input" type="checkbox"  name="estacionamento" {{ (old('estacionamento') == 'on' || old('estacionamento') == true ? 'checked' : ($imovel->estacionamento == true ? 'checked' : '')) }}>
+                                        <input id="estacionamento" class="form-check-input" type="checkbox"  name="estacionamento" {{ (old('estacionamento') == 'on' || old('estacionamento') == true ? 'checked' : ($property->estacionamento == true ? 'checked' : '')) }}>
                                         <label for="estacionamento" class="form-check-label">Estacionamento</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="fornodepizza" class="form-check-input" type="checkbox"  name="fornodepizza" {{ (old('fornodepizza') == 'on' || old('fornodepizza') == true ? 'checked' : ($imovel->fornodepizza == true ? 'checked' : '')) }}>
+                                        <input id="fornodepizza" class="form-check-input" type="checkbox"  name="fornodepizza" {{ (old('fornodepizza') == 'on' || old('fornodepizza') == true ? 'checked' : ($property->fornodepizza == true ? 'checked' : '')) }}>
                                         <label for="fornodepizza" class="form-check-label">Forno de Pizza</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="geladeira" class="form-check-input" type="checkbox"  name="geladeira" {{ (old('geladeira') == 'on' || old('geladeira') == true ? 'checked' : ($imovel->geladeira == true ? 'checked' : '')) }}>
+                                        <input id="geladeira" class="form-check-input" type="checkbox"  name="geladeira" {{ (old('geladeira') == 'on' || old('geladeira') == true ? 'checked' : ($property->geladeira == true ? 'checked' : '')) }}>
                                         <label for="geladeira" class="form-check-label">Geladeira</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="geradoreletrico" class="form-check-input" type="checkbox"  name="geradoreletrico" {{ (old('geradoreletrico') == 'on' || old('geradoreletrico') == true ? 'checked' : ($imovel->geradoreletrico == true ? 'checked' : '')) }}>
+                                        <input id="geradoreletrico" class="form-check-input" type="checkbox"  name="geradoreletrico" {{ (old('geradoreletrico') == 'on' || old('geradoreletrico') == true ? 'checked' : ($property->geradoreletrico == true ? 'checked' : '')) }}>
                                         <label for="geradoreletrico" class="form-check-label">Gerador elétrico</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="interfone" class="form-check-input" type="checkbox"  name="interfone" {{ (old('interfone') == 'on' || old('interfone') == true ? 'checked' : ($imovel->interfone == true ? 'checked' : '')) }}>
+                                        <input id="interfone" class="form-check-input" type="checkbox"  name="interfone" {{ (old('interfone') == 'on' || old('interfone') == true ? 'checked' : ($property->interfone == true ? 'checked' : '')) }}>
                                         <label for="interfone" class="form-check-label">Interfone</label>
                                     </div>
                                 </div>
@@ -551,51 +539,51 @@ $config = [
                                 <!-- checkbox -->
                                 <div class="form-group p-3 mb-1"> 
                                     <div class="form-check mb-2">
-                                        <input id="internet" class="form-check-input" type="checkbox"  name="internet" {{ (old('internet') == 'on' || old('internet') == true ? 'checked' : ($imovel->internet == true ? 'checked' : '')) }}>
+                                        <input id="internet" class="form-check-input" type="checkbox"  name="internet" {{ (old('internet') == 'on' || old('internet') == true ? 'checked' : ($property->internet == true ? 'checked' : '')) }}>
                                         <label for="internet" class="form-check-label">Internet</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="jardim" class="form-check-input" type="checkbox"  name="jardim" {{ (old('jardim') == 'on' || old('jardim') == true ? 'checked' : ($imovel->jardim == true ? 'checked' : '')) }}>
+                                        <input id="jardim" class="form-check-input" type="checkbox"  name="jardim" {{ (old('jardim') == 'on' || old('jardim') == true ? 'checked' : ($property->jardim == true ? 'checked' : '')) }}>
                                         <label for="jardim" class="form-check-label">Jardim</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="lareira" class="form-check-input" type="checkbox"  name="lareira" {{ (old('lareira') == 'on' || old('lareira') == true ? 'checked' : ($imovel->lareira == true ? 'checked' : '')) }}>
+                                        <input id="lareira" class="form-check-input" type="checkbox"  name="lareira" {{ (old('lareira') == 'on' || old('lareira') == true ? 'checked' : ($property->lareira == true ? 'checked' : '')) }}>
                                         <label for="lareira" class="form-check-label">Lareira</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="lavabo" class="form-check-input" type="checkbox"  name="lavabo" {{ (old('lavabo') == 'on' || old('lavabo') == true ? 'checked' : ($imovel->lavabo == true ? 'checked' : '')) }}>
+                                        <input id="lavabo" class="form-check-input" type="checkbox"  name="lavabo" {{ (old('lavabo') == 'on' || old('lavabo') == true ? 'checked' : ($property->lavabo == true ? 'checked' : '')) }}>
                                         <label for="lavabo" class="form-check-label">Lavabo</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="lavanderia" class="form-check-input" type="checkbox"  name="lavanderia" {{ (old('lavanderia') == 'on' || old('lavanderia') == true ? 'checked' : ($imovel->lavanderia == true ? 'checked' : '')) }}>
+                                        <input id="lavanderia" class="form-check-input" type="checkbox"  name="lavanderia" {{ (old('lavanderia') == 'on' || old('lavanderia') == true ? 'checked' : ($property->lavanderia == true ? 'checked' : '')) }}>
                                         <label for="lavanderia" class="form-check-label">Lavanderia</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="mobiliado" class="form-check-input" type="checkbox"  name="mobiliado" {{ (old('mobiliado') == 'on' || old('mobiliado') == true ? 'checked' : ($imovel->mobiliado == true ? 'checked' : '')) }}>
+                                        <input id="mobiliado" class="form-check-input" type="checkbox"  name="mobiliado" {{ (old('mobiliado') == 'on' || old('mobiliado') == true ? 'checked' : ($property->mobiliado == true ? 'checked' : '')) }}>
                                         <label for="mobiliado" class="form-check-label">Mobiliado</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="pertodeescolas" class="form-check-input" type="checkbox" name="pertodeescolas" {{ (old('pertodeescolas') == 'on' || old('pertodeescolas') == true ? 'checked' : ($imovel->pertodeescolas == true ? 'checked' : '')) }}>
+                                        <input id="pertodeescolas" class="form-check-input" type="checkbox" name="pertodeescolas" {{ (old('pertodeescolas') == 'on' || old('pertodeescolas') == true ? 'checked' : ($property->pertodeescolas == true ? 'checked' : '')) }}>
                                         <label for="pertodeescolas" class="form-check-label">Perto de Escolas</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="piscina" class="form-check-input" type="checkbox" name="piscina" {{ (old('piscina') == 'on' || old('piscina') == true ? 'checked' : ($imovel->piscina == true ? 'checked' : '')) }}>
+                                        <input id="piscina" class="form-check-input" type="checkbox" name="piscina" {{ (old('piscina') == 'on' || old('piscina') == true ? 'checked' : ($property->piscina == true ? 'checked' : '')) }}>
                                         <label for="piscina" class="form-check-label">Piscina</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="portaria24hs" class="form-check-input" type="checkbox"  name="portaria24hs" {{ (old('portaria24hs') == 'on' || old('portaria24hs') == true ? 'checked' : ($imovel->portaria24hs == true ? 'checked' : '')) }}>
+                                        <input id="portaria24hs" class="form-check-input" type="checkbox"  name="portaria24hs" {{ (old('portaria24hs') == 'on' || old('portaria24hs') == true ? 'checked' : ($property->portaria24hs == true ? 'checked' : '')) }}>
                                         <label for="portaria24hs" class="form-check-label">Portaria 24 Horas</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="quadrapoliesportiva" class="form-check-input" type="checkbox"  name="quadrapoliesportiva" {{ (old('quadrapoliesportiva') == 'on' || old('quadrapoliesportiva') == true ? 'checked' : ($imovel->quadrapoliesportiva == true ? 'checked' : '')) }}>
+                                        <input id="quadrapoliesportiva" class="form-check-input" type="checkbox"  name="quadrapoliesportiva" {{ (old('quadrapoliesportiva') == 'on' || old('quadrapoliesportiva') == true ? 'checked' : ($property->quadrapoliesportiva == true ? 'checked' : '')) }}>
                                         <label for="quadrapoliesportiva" class="form-check-label">Quadra poliesportiva</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="quintal" class="form-check-input" type="checkbox"  name="quintal" {{ (old('quintal') == 'on' || old('quintal') == true ? 'checked' : ($imovel->quintal == true ? 'checked' : '')) }}>
+                                        <input id="quintal" class="form-check-input" type="checkbox"  name="quintal" {{ (old('quintal') == 'on' || old('quintal') == true ? 'checked' : ($property->quintal == true ? 'checked' : '')) }}>
                                         <label for="quintal" class="form-check-label">Quintal</label>
                                     </div>  
                                     <div class="form-check mb-2">
-                                        <input id="sauna" class="form-check-input" type="checkbox"  name="sauna" {{ (old('sauna') == 'on' || old('sauna') == true ? 'checked' : ($imovel->sauna == true ? 'checked' : '')) }}>
+                                        <input id="sauna" class="form-check-input" type="checkbox"  name="sauna" {{ (old('sauna') == 'on' || old('sauna') == true ? 'checked' : ($property->sauna == true ? 'checked' : '')) }}>
                                         <label for="sauna" class="form-check-label">Sauna</label>
                                     </div>                                          
                                 </div>
@@ -604,39 +592,39 @@ $config = [
                                 <!-- checkbox -->
                                 <div class="form-group p-3 mb-1">                                    
                                     <div class="form-check mb-2">
-                                        <input id="saladetv" class="form-check-input" type="checkbox"  name="saladetv" {{ (old('saladetv') == 'on' || old('saladetv') == true ? 'checked' : ($imovel->saladetv == true ? 'checked' : '')) }}>
+                                        <input id="saladetv" class="form-check-input" type="checkbox"  name="saladetv" {{ (old('saladetv') == 'on' || old('saladetv') == true ? 'checked' : ($property->saladetv == true ? 'checked' : '')) }}>
                                         <label for="saladetv" class="form-check-label">Sala de TV</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="salaodefestas" class="form-check-input" type="checkbox"  name="salaodefestas" {{ (old('salaodefestas') == 'on' || old('salaodefestas') == true ? 'checked' : ($imovel->salaodefestas == true ? 'checked' : '')) }}>
+                                        <input id="salaodefestas" class="form-check-input" type="checkbox"  name="salaodefestas" {{ (old('salaodefestas') == 'on' || old('salaodefestas') == true ? 'checked' : ($property->salaodefestas == true ? 'checked' : '')) }}>
                                         <label for="salaodefestas" class="form-check-label">Salão de Festas</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="salaodejogos" class="form-check-input" type="checkbox"  name="salaodejogos" {{ (old('salaodejogos') == 'on' || old('salaodejogos') == true ? 'checked' : ($imovel->salaodejogos == true ? 'checked' : '')) }}>
+                                        <input id="salaodejogos" class="form-check-input" type="checkbox"  name="salaodejogos" {{ (old('salaodejogos') == 'on' || old('salaodejogos') == true ? 'checked' : ($property->salaodejogos == true ? 'checked' : '')) }}>
                                         <label for="salaodejogos" class="form-check-label">Salão de Jogos</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="zeladoria" class="form-check-input" type="checkbox"  name="zeladoria" {{ (old('zeladoria') == 'on' || old('zeladoria') == true ? 'checked' : ($imovel->zeladoria == true ? 'checked' : '')) }}>
+                                        <input id="zeladoria" class="form-check-input" type="checkbox"  name="zeladoria" {{ (old('zeladoria') == 'on' || old('zeladoria') == true ? 'checked' : ($property->zeladoria == true ? 'checked' : '')) }}>
                                         <label for="zeladoria" class="form-check-label">Serviço de Zeladoria</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="sistemadealarme" class="form-check-input" type="checkbox"  name="sistemadealarme" {{ (old('sistemadealarme') == 'on' || old('sistemadealarme') == true ? 'checked' : ($imovel->sistemadealarme == true ? 'checked' : '')) }}>
+                                        <input id="sistemadealarme" class="form-check-input" type="checkbox"  name="sistemadealarme" {{ (old('sistemadealarme') == 'on' || old('sistemadealarme') == true ? 'checked' : ($property->sistemadealarme == true ? 'checked' : '')) }}>
                                         <label for="sistemadealarme" class="form-check-label">Sistema de alarme</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="permiteanimais" class="form-check-input" type="checkbox"  name="permiteanimais" {{ (old('permiteanimais') == 'on' || old('permiteanimais') == true ? 'checked' : ($imovel->permiteanimais == true ? 'checked' : '')) }}>
+                                        <input id="permiteanimais" class="form-check-input" type="checkbox"  name="permiteanimais" {{ (old('permiteanimais') == 'on' || old('permiteanimais') == true ? 'checked' : ($property->permiteanimais == true ? 'checked' : '')) }}>
                                         <label for="permiteanimais" class="form-check-label">Permite animais</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="varandagourmet" class="form-check-input" type="checkbox"  name="varandagourmet" {{ (old('varandagourmet') == 'on' || old('varandagourmet') == true ? 'checked' : ($imovel->varandagourmet == true ? 'checked' : '')) }}>
+                                        <input id="varandagourmet" class="form-check-input" type="checkbox"  name="varandagourmet" {{ (old('varandagourmet') == 'on' || old('varandagourmet') == true ? 'checked' : ($property->varandagourmet == true ? 'checked' : '')) }}>
                                         <label for="varandagourmet" class="form-check-label">Varanda Gourmet</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="vista_para_mar" class="form-check-input" type="checkbox"  name="vista_para_mar" {{ (old('vista_para_mar') == 'on' || old('vista_para_mar') == true ? 'checked' : ($imovel->vista_para_mar == true ? 'checked' : '')) }}>
+                                        <input id="vista_para_mar" class="form-check-input" type="checkbox"  name="vista_para_mar" {{ (old('vista_para_mar') == 'on' || old('vista_para_mar') == true ? 'checked' : ($property->vista_para_mar == true ? 'checked' : '')) }}>
                                         <label for="vista_para_mar" class="form-check-label">Vista para o Mar</label>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <input id="ventilador_teto" class="form-check-input" type="checkbox"  name="ventilador_teto" {{ (old('ventilador_teto') == 'on' || old('ventilador_teto') == true ? 'checked' : ($imovel->ventilador_teto == true ? 'checked' : '')) }}>
+                                        <input id="ventilador_teto" class="form-check-input" type="checkbox"  name="ventilador_teto" {{ (old('ventilador_teto') == 'on' || old('ventilador_teto') == true ? 'checked' : ($property->ventilador_teto == true ? 'checked' : '')) }}>
                                         <label for="ventilador_teto" class="form-check-label">Ventilador de Teto</label>
                                     </div>    
                                 </div>
@@ -651,9 +639,9 @@ $config = [
                                 <div class="form-group">
                                     <label class="labelforms"><b>Deseja exibir uma Marca D'agua? </b><small class="text-info">(esta opção permite inserir uma marca em todas as imagens)</small></label>
                                     <div class="form-check">
-                                        <input id="exibirmarcadaguasim" class="form-check-input" type="radio" value="1" name="exibirmarcadagua" {{(old('exibirmarcadagua') == '1' ? 'checked' : ($imovel->exibirmarcadagua == '1' ? 'checked' : ''))}}>
+                                        <input id="exibirmarcadaguasim" class="form-check-input" type="radio" value="1" name="display_marked_water" {{(old('display_marked_water') == '1' ? 'checked' : ($property->display_marked_water == '1' ? 'checked' : ''))}}>
                                         <label for="exibirmarcadaguasim" class="form-check-label mr-5">Sim</label>
-                                        <input id="exibirmarcadaguanao" class="form-check-input" type="radio" value="0" name="exibirmarcadagua" {{(old('exibirmarcadagua') == '0' ? 'checked' : ($imovel->exibirmarcadagua == '0' ? 'checked' : ''))}}>
+                                        <input id="exibirmarcadaguanao" class="form-check-input" type="radio" value="0" name="display_marked_water" {{(old('display_marked_water') == '0' ? 'checked' : ($property->display_marked_water == '0' ? 'checked' : ''))}}>
                                         <label for="exibirmarcadaguanao" class="form-check-label">Não</label>
                                     </div>
                                 </div>
@@ -661,7 +649,7 @@ $config = [
                             <div class="col-12 col-sm-12 col-md-6 col-lg-6">   
                                 <div class="form-group">
                                     <label class="labelforms"><b>Legenda da Imagem de Capa</b></label>
-                                    <input type="text" class="form-control"  name="legendaimgcapa" value="{{ old('legendaimgcapa') ?? $imovel->legendaimgcapa }}">
+                                    <input type="text" class="form-control"  name="caption_img_cover" value="{{ old('caption_img_cover') ?? $property->caption_img_cover }}">
                                 </div>                                                    
                             </div>
                             <div class="col-sm-12">                                        
@@ -674,14 +662,14 @@ $config = [
                                 <div class="content_image"></div>
                                 
                                 <div class="property_image">
-                                    @foreach($imovel->images()->get() as $image)
+                                    @foreach($property->images()->get() as $image)
                                         <div class="property_image_item">
                                             <a href="{{ $image->getUrlImageAttribute() }}" data-toggle="lightbox" data-gallery="property-gallery" data-type="image">
-                                                <img style="max-height: 134px;min-width:237px;" src="{{ $image->url_cropped }}" alt="{{old('titulo') ?? $imovel->titulo}}">
+                                                <img style="max-height: 134px;min-width:237px;" src="{{ $image->url_cropped }}" alt="{{old('title') ?? $property->title}}">
                                             </a>
                                             <div class="property_image_actions">
-                                                <a href="javascript:void(0)" class="btn btn-xs {{ ($image->cover == true ? 'btn-success' : 'btn-default') }} icon-notext image-set-cover" data-action="{{ route('imoveis.imageSetCover', ['image' => $image->id]) }}"><i class="nav-icon fas fa-check"></i> </a>
-                                                <a href="javascript:void(0)" class="btn btn-danger btn-xs icon-notext image-remove px-2" data-action="{{ route('imoveis.imageRemove', ['image' => $image->id]) }}"><i class="nav-icon fas fa-times"></i> </a>
+                                                <a href="javascript:void(0)" class="btn btn-xs {{ ($image->cover == true ? 'btn-success' : 'btn-default') }} icon-notext image-set-cover" data-action="{{ route('property.setCover', ['image' => $image->id]) }}"><i class="nav-icon fas fa-check"></i> </a>
+                                                <a href="javascript:void(0)" class="btn btn-danger btn-xs icon-notext image-remove px-2" data-action="{{ route('property.imageRemove', ['image' => $image->id]) }}"><i class="nav-icon fas fa-times"></i> </a>
                                             </div>
                                         </div>
                                     @endforeach
@@ -695,13 +683,13 @@ $config = [
                             <div class="col-12 col-md-6 col-lg-6">   
                                 <div class="form-group">
                                     <label class="labelforms"><b>*Título</b></label>
-                                    <input type="text" class="form-control" name="titulo" value="{{old('titulo') ?? $imovel->titulo}}">
+                                    <input type="text" class="form-control" name="title" value="{{old('title') ?? $property->title}}">
                                 </div>                                                    
                             </div>
                             <div class="col-12 col-md-6 col-lg-6">   
                                 <div class="form-group">
                                     <label class="labelforms"><b>Headline</b></label>
-                                    <input type="text" class="form-control" name="headline" value="{{old('headline') ?? $imovel->headline}}">
+                                    <input type="text" class="form-control" name="headline" value="{{old('headline') ?? $property->headline}}">
                                 </div>                                                    
                             </div>
                             <div class="col-12 col-md-6 col-lg-6"> 
@@ -709,30 +697,30 @@ $config = [
                                     <label class="labelforms"><b>Experiência</b></label>
                                     <select class="form-control" name="experience">
                                         <option value=""> Selecione </option>
-                                        <option value="Cobertura" {{(old('experience') == 'Cobertura' ? 'selected' : ($imovel->experience == 'Cobertura' ? 'selected' : ''))}}>Cobertura</option>
-                                        <option value="Alto Padrão" {{(old('experience') == 'Alto Padrão' ? 'selected' : ($imovel->experience == 'Alto Padrão' ? 'selected' : ''))}}>Alto Padrão</option>
-                                        <option value="De Frente para o Mar" {{(old('experience') == 'De Frente para o Mar' ? 'selected' : ($imovel->experience == 'De Frente para o Mar' ? 'selected' : ''))}}>De Frente para o Mar</option>
-                                        <option value="Condomínio Fechado" {{(old('experience') == 'Condomínio Fechado' ? 'selected' : ($imovel->experience == 'Condomínio Fechado' ? 'selected' : ''))}}>Condomínio Fechado</option>
+                                        <option value="Cobertura" {{(old('experience') == 'Cobertura' ? 'selected' : ($property->experience == 'Cobertura' ? 'selected' : ''))}}>Cobertura</option>
+                                        <option value="Alto Padrão" {{(old('experience') == 'Alto Padrão' ? 'selected' : ($property->experience == 'Alto Padrão' ? 'selected' : ''))}}>Alto Padrão</option>
+                                        <option value="De Frente para o Mar" {{(old('experience') == 'De Frente para o Mar' ? 'selected' : ($property->experience == 'De Frente para o Mar' ? 'selected' : ''))}}>De Frente para o Mar</option>
+                                        <option value="Condomínio Fechado" {{(old('experience') == 'Condomínio Fechado' ? 'selected' : ($property->experience == 'Condomínio Fechado' ? 'selected' : ''))}}>Condomínio Fechado</option>
                                         <option value="Compacto" {{(old('experience') == 'Compacto' ? 'selected' : '')}}>Compacto</option>
-                                        <option value="Lojas e Salas" {{(old('experience') == 'Lojas e Salas' ? 'selected' : ($imovel->experience == 'Lojas e Salas' ? 'selected' : ''))}}>Lojas e Salas</option>
+                                        <option value="Lojas e Salas" {{(old('experience') == 'Lojas e Salas' ? 'selected' : ($property->experience == 'Lojas e Salas' ? 'selected' : ''))}}>Lojas e Salas</option>
                                     </select>
                                 </div>
                             </div>                            
                             <div class="col-12 mb-1"> 
                                 <div class="form-group">
                                     <label class="labelforms"><b>MetaTags</b></label>
-                                    <input id="tags_1" class="tags" rows="5" name="metatags" value="{{ old('metatags') ?? $imovel->metatags}}">
+                                    <input id="tags_1" class="tags" rows="5" name="metatags" value="{{ old('metatags') ?? $property->metatags}}">
                                 </div>
                             </div>   
                             <div class="col-12"> 
                                 <div class="form-group">
                                     <label class="labelforms"><b>Youtube Vídeo</b></label>
-                                    <textarea id="inputDescription" class="form-control" rows="5" name="youtube_video">{{ old('youtube_video') ?? $imovel->youtube_video }}</textarea> 
+                                    <textarea id="inputDescription" class="form-control" rows="5" name="youtube_video">{{ old('youtube_video') ?? $property->youtube_video }}</textarea> 
                                 </div>
                             </div>                                 
                             <div class="col-12">   
                                 <label class="labelforms"><b>Mapa do Google</b> <small class="text-info">(Copie o código de incorporação do Google Maps e cole abaixo)</small></label>
-                                <textarea id="inputDescription" class="form-control" rows="5" name="mapadogoogle">{{ old('mapadogoogle') ?? $imovel->mapadogoogle }}</textarea>                                                      
+                                <textarea id="inputDescription" class="form-control" rows="5" name="google_map">{{ old('google_map') ?? $property->google_map }}</textarea>                                                      
                             </div>                                    
                         </div> 
                     </div>
@@ -746,15 +734,15 @@ $config = [
                                 </div>
                                 <div class="form-group mt-4">
                                     <div class="form-check d-inline mr-3">
-                                      <input id="p" class="form-check-input" type="radio" value="0" name="publication_type" {{(old('publication_type') == '0' ? 'checked' : ($imovel->publication_type == '0' ? 'checked' : '')) }}>
+                                      <input id="p" class="form-check-input" type="radio" value="0" name="publication_type" {{(old('publication_type') == '0' ? 'checked' : ($property->publication_type == '0' ? 'checked' : '')) }}>
                                       <label for="p" class="form-check-label">Padrão</label>
                                     </div>
                                     <div class="form-check d-inline mr-3">
-                                      <input id="d" class="form-check-input" type="radio" value="1" name="publication_type" {{(old('publication_type') == '1' ? 'checked' : ($imovel->publication_type == '1' ? 'checked' : '')) }}>
+                                      <input id="d" class="form-check-input" type="radio" value="1" name="publication_type" {{(old('publication_type') == '1' ? 'checked' : ($property->publication_type == '1' ? 'checked' : '')) }}>
                                       <label for="d" class="form-check-label">Destaque</label>
                                     </div>
                                     <div class="form-check d-inline">
-                                      <input id="sd" class="form-check-input" type="radio" value="2" name="publication_type" {{(old('publication_type') == '2' ? 'checked' : ($imovel->publication_type == '2' ? 'checked' : '')) }}>
+                                      <input id="sd" class="form-check-input" type="radio" value="2" name="publication_type" {{(old('publication_type') == '2' ? 'checked' : ($property->publication_type == '2' ? 'checked' : '')) }}>
                                       <label for="sd" class="form-check-label">Super destaque</label>
                                     </div>
                                 </div>
@@ -768,7 +756,7 @@ $config = [
                                             <div class="form-check mb-2">
                                                 <input id="zeladoria" class="form-check-input" type="checkbox"  name="portal_{{$portal->id}}" 
                                                 @php
-                                                    if(\App\Models\PortalImoveis::where('portal', $portal->id)->where('imovel', $imovel->id)->first()){
+                                                    if(\App\Models\PortalImoveis::where('portal', $portal->id)->where('property', $property->id)->first()){
                                                         echo 'checked';                                                               
                                                     }
                                                 @endphp
@@ -929,28 +917,6 @@ $config = [
             }
         });
         
-        $('#state-dd').on('change', function () {
-            var idState = this.value;
-            //$("#city-dd").removeAttr('disabled');
-            $("#city-dd").html('Carregando...');
-            $.ajax({
-                url: "{{route('imoveis.fetchCity')}}",
-                type: "POST",
-                data: {
-                    estado_id: idState,
-                    _token: '{{csrf_token()}}'
-                },
-                dataType: 'json',
-                success: function (res) {
-                    $('#city-dd').html('<option value="">Selecione a cidade</option>');
-                    $.each(res.cidades, function (key, value) {
-                        $("#city-dd").append('<option value="' + value
-                            .cidade_id + '">' + value.cidade_nome + '</option>');
-                    });
-                }
-            });
-        });
-        
         $('.image-set-cover').click(function (event) {
             event.preventDefault();
             var button = $(this);
@@ -1029,6 +995,52 @@ $config = [
                 width:'auto',
                 height:200
             });
+        });
+    });
+
+    $(document).ready(function() {
+
+        function limpa_formulário_cep() {
+            $("#rua").val("");
+            $("#bairro").val("");
+            $("#cidade").val("");
+            $("#uf").val("");
+        }
+
+        $("#cep").blur(function() {
+
+            var cep = $(this).val().replace(/\D/g, '');
+
+            if (cep != "") {
+                
+                var validacep = /^[0-9]{8}$/;
+
+                if(validacep.test(cep)) {
+                    
+                    $("#rua").val("Carregando...");
+                    $("#bairro").val("Carregando...");
+                    $("#cidade").val("Carregando...");
+                    $("#uf").val("Carregando...");
+                    
+                    $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+
+                        if (!("erro" in dados)) {
+                            $("#rua").val(dados.logradouro);
+                            $("#bairro").val(dados.bairro);
+                            $("#cidade").val(dados.localidade);
+                            $("#uf").val(dados.uf);
+                        } else {
+                            limpa_formulário_cep();
+                            alert("CEP não encontrado.");
+                        }
+                    });
+                } else {
+                    limpa_formulário_cep();
+                    alert("Formato de CEP inválido.");
+                }
+            } else {
+                limpa_formulário_cep();
+            }
         });
     });
 </script>

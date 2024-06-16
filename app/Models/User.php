@@ -119,6 +119,23 @@ class User extends Authenticatable
             substr($value, 7, 4) ;
     }
 
+    public function setWhatsappAttribute($value)
+    {
+        $this->attributes['whatsapp'] = (!empty($value) ? $this->clearField($value) : null);
+    }
+    
+    public function getWhatsappAttribute($value)
+    {
+        if (empty($value)) {
+            return null;
+        }
+        return  
+            substr($value, 0, 0) . '(' .
+            substr($value, 0, 2) . ') ' .
+            substr($value, 2, 5) . '-' .
+            substr($value, 7, 4) ;
+    }
+
     public function setBirthdayAttribute($value)
     {
         $this->attributes['birthday'] = (!empty($value) ? $this->convertStringToDate($value) : null);

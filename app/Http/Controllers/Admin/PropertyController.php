@@ -84,9 +84,27 @@ class PropertyController extends Controller
         //     }
         // }
 
-        return redirect()->route('imoveis.edit', [
-            'imovel' => $createProperty->id
+        return redirect()->route('property.edit', [
+            'id' => $createProperty->id
         ])->with(['color' => 'success', 'message' => 'Imóvel cadastrado com sucesso!']);
+    }
+
+    public function edit($id)
+    {
+        $property = Property::where('id', $id)->first();    
+        $users = User::orderBy('superadmin', 'DESC')
+                ->orderBy('admin', 'DESC')
+                ->orderBy('editor', 'DESC')
+                ->orderBy('name', 'ASC')
+                ->get();
+
+        //$portais = Portal::orderBy('nome')->available()->get(); 
+        
+        return view('admin.properties.edit', [
+            'property' => $property,
+            'users' => $users,
+            //'portais' => $portais
+        ]);
     }
 
     public function setStatus(Request $request)

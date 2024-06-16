@@ -118,7 +118,7 @@ $config = [
                                                 <option value="">Selecione o proprietário</option>
                                                 @foreach($users as $user)
                                                     <option value="{{ $user->id }}" {{ (old('owner') == $user->id ? 'selected' : '') }}>
-                                                        {{ $user->name }} ({{ $user->rg }})
+                                                        {{ $user->name }} ({{ ($user->rg ? $user->rg : '---------') }})
                                                     </option>
                                                 @endforeach
                                             </select>
