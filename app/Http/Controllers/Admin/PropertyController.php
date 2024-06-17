@@ -31,11 +31,11 @@ class PropertyController extends Controller
                 ->orderBy('name', 'ASC')
                 ->get();
 
-        //$portais = Portal::orderBy('nome')->available()->get();
+        $portais = Portal::orderBy('nome')->available()->get();
 
         return view('admin.properties.create', [
             'users' => $users,
-            //'portais' => $portais
+            'portais' => $portais
         ]);
     }
 
@@ -75,16 +75,16 @@ class PropertyController extends Controller
             }
         }
         
-        // $portaisRequest = $request->all();
-        // $portais = null;
-        // foreach($portaisRequest as $key => $value) {
-        //     if(Str::is('portal_*', $key) == true){
-        //         $f['portal'] = ltrim($key, 'portal_');
-        //         $f['imovel'] = $createProperty->id;
-        //         $createPimovel = PortalImoveis::create($f);
-        //         $createPimovel->save();
-        //     }
-        // }
+        $portaisRequest = $request->all();
+        $portais = null;
+        foreach($portaisRequest as $key => $value) {
+            if(Str::is('portal_*', $key) == true){
+                $f['portal'] = ltrim($key, 'portal_');
+                $f['imovel'] = $createProperty->id;
+                $createPimovel = PortalImoveis::create($f);
+                $createPimovel->save();
+            }
+        }
 
         return redirect()->route('property.edit', [
             'id' => $createProperty->id

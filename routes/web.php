@@ -25,6 +25,9 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
 
     /** Página de Compra - Específica de um imóvel */
     Route::match(['get', 'post'],'/imoveis/quero-comprar/{slug}', [WebController::class, 'buyProperty'])->name('buyProperty');
+
+    /** Página de Locaçãp - Específica de um imóvel */
+    Route::get('/quero-alugar/{slug}', [WebController::class, 'rentProperty'])->name('rentProperty');
 });
 
 Route::prefix('admin')->middleware('auth')->group( function(){
