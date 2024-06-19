@@ -22,7 +22,7 @@ class Seo
 
         $this->optimizer = new Optimizer();
         $this->optimizer->openGraph(
-            'Moriah Treinamento Físico Funcional' ?? 'Informática Livre',
+            env('APP_NAME') ?? 'Informática Livre',
             'pt_BR',
             'article'
         )->publisher(

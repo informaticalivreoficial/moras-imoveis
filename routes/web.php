@@ -28,6 +28,9 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
 
     /** Página de Locaçãp - Específica de um imóvel */
     Route::get('/quero-alugar/{slug}', [WebController::class, 'rentProperty'])->name('rentProperty');
+
+    /** Lista todos os imóveis */
+    Route::get('/imoveis/{type}', [WebController::class, 'propertyList'])->name('propertyList');
 });
 
 Route::prefix('admin')->middleware('auth')->group( function(){

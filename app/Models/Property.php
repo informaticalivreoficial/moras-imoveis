@@ -74,6 +74,16 @@ class Property extends Model
         return $query->where('status', 0);
     }
 
+    public function scopeSale($query)
+    {
+        return $query->where('sale', 1);
+    }
+
+    public function scopeLocation($query)
+    {
+        return $query->where('location', 1);
+    }
+
     /**
      * Relationships
     */
