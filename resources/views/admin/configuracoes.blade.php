@@ -499,9 +499,9 @@ $config1 = [
                 </button>
             </div>
             <div class="modal-body text-center">  
-                <p>Este QrCode direciona para: {{$config->domain}}</p>
+                <p>Este QrCode direciona para: {{$config->domain ?? env('APP_NAME')}}</p>
                 @php 
-                    $qrcode = QRCode::url($config->domain)
+                    $qrcode = QRCode::url($config->domain ?? env('APP_NAME'))
                             ->setSize(8)
                             ->setMargin(2)
                             ->svg();

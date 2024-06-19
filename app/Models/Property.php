@@ -64,6 +64,15 @@ class Property extends Model
     /**
      * Scopes
     */
+    public function scopeAvailable($query)
+    {
+        return $query->where('status', 1);
+    }
+
+    public function scopeUnavailable($query)
+    {
+        return $query->where('status', 0);
+    }
 
     /**
      * Relationships

@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\{
-        User
+    Property,
+    User
 };
 use Illuminate\Http\Request;
 use Analytics;
@@ -67,9 +68,9 @@ class AdminController extends Controller
         //         ->available()
         //         ->first();          
            
-        //Imóveis
-        // $imoveisAvailable = Imovel::available()->count();
-        // $imoveisUnavailable = Imovel::unavailable()->count();
+        //Properties
+        $propertyAvailable = Property::available()->count();
+        $propertyUnavailable = Property::unavailable()->count();
         //Empresas
         //$empresasAvailable = Empresa::available()->count();
         //$empresasUnavailable = Empresa::unavailable()->count();
@@ -109,8 +110,8 @@ class AdminController extends Controller
             //'imoveisTop' => $imoveisTop,
             //'imoveistotalviews' => $totalViewsImoveis->VIEWS, 
             //Imóveis
-            //'imoveisAvailable' => $imoveisAvailable,
-            //'imoveisUnavailable' => $imoveisUnavailable,
+            'propertyAvailable' => $propertyAvailable,
+            'propertyUnavailable' => $propertyUnavailable,
             //Analytics
             'visitasHoje' => $visitasHoje,
             //'visitas365' => $visitas365,

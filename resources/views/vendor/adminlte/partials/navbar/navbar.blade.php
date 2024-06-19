@@ -16,11 +16,19 @@
 
     {{-- Navbar right links --}}
     <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link" href="{{route('web.home')}}" title="Ver Site" target="_blank"><i class="fas fa-desktop"></i></a>
+        </li>
+        
         {{-- Custom right links --}}
         @yield('content_top_nav_right')
 
         {{-- Configured right links --}}
         @each('adminlte::partials.navbar.menu-item', $adminlte->menu('navbar-right'), 'item')
+
+        <li class="nav-item dropdown">
+            <a class="nav-link j_modal_suporte" data-id="{{auth()->user()->id}}" data-toggle="modal" data-target="#modal-suporte" href="javascript:void(0)" aria-selected="false" title="Suporte"><i style="color: rgb(223, 87, 87);" class="fas fa-life-ring"></i></a>
+        </li>
 
         {{-- User menu link --}}
         @if(Auth::user())

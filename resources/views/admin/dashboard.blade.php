@@ -32,13 +32,13 @@
     </div>
     <div class="col-12 col-sm-6 col-md-4 col-lg-3">
         <div class="info-box">
-            <span class="info-box-icon bg-teal"><a href="{{--route('imoveis.index')--}}" title="Imóveis"><i class="fa far fa-home"></i></a></span>
+            <span class="info-box-icon bg-teal"><a href="{{route('properties.index')}}" title="Imóveis"><i class="fa far fa-home"></i></a></span>
 
             <div class="info-box-content">
                 <span class="info-box-text"><b>Imóveis</b></span>
-                <span class="info-box-text">Disponíveis: {{-- $imoveisAvailable --}}</span>
-                <span class="info-box-text">Inativos: {{-- $imoveisUnavailable --}}</span>
-                <span class="info-box-text">Total: {{-- $imoveisAvailable + $imoveisUnavailable --}}</span>
+                <span class="info-box-text">Disponíveis: {{ $propertyAvailable }}</span>
+                <span class="info-box-text">Inativos: {{ $propertyUnavailable }}</span>
+                <span class="info-box-text">Total: {{ $propertyAvailable + $propertyUnavailable }}</span>
             </div>
         </div>
     </div> 
