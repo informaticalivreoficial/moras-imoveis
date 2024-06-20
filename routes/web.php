@@ -31,6 +31,30 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
 
     /** Lista todos os imóveis */
     Route::get('/imoveis/{type}', [WebController::class, 'propertyList'])->name('propertyList');
+
+    /** Pesquisa */
+    Route::get('/pesquisar-imoveis', [SiteController::class, 'pesquisaImoveis'])->name('pesquisar-imoveis');
+    Route::match(['post', 'get'], '/pesquisa', [SiteController::class, 'pesquisaImoveis'])->name('pesquisa');
+
+    //CLIENTE
+    Route::get('/atendimento', [WebController::class, 'atendimento'])->name('atendimento');
+    Route::get('/sendEmail', [SendEmailController::class, 'sendEmail'])->name('sendEmail');
+    Route::get('/sendNewsletter', [SendEmailController::class, 'sendNewsletter'])->name('sendNewsletter');
+    Route::get('/sendReserva', [SendEmailController::class, 'sendReserva'])->name('sendReserva');
+
+    //****************************** Blog ***********************************************/
+    Route::get('/blog/artigo/{slug}', [SiteController::class, 'artigo'])->name('blog.artigo');
+    Route::get('/blog/categoria/{slug}', [SiteController::class, 'categoria'])->name('blog.categoria');
+    Route::get('/blog/artigos', [SiteController::class, 'artigos'])->name('blog.artigos');    
+    Route::match(['get', 'post'],'/blog/pesquisar', [WebController::class, 'searchBlog'])->name('blog.searchBlog');
+
+    //****************************** Notícias ***********************************************/
+    Route::get('/noticia/{slug}', [SiteController::class, 'noticia'])->name('noticia');
+    Route::get('/noticias/categoria/{slug}', [SiteController::class, 'categoria'])->name('noticia.categoria');
+    Route::get('/noticias', [SiteController::class, 'noticias'])->name('noticias'); 
+
+    //****************************** Páginas ***********************************************/
+    Route::get('/pagina/{slug}', [SiteController::class, 'pagina'])->name('pagina');
 });
 
 Route::prefix('admin')->middleware('auth')->group( function(){

@@ -92,37 +92,42 @@
                                     </a>
                                 </h3>
                                 <!-- Facilities List -->
-                                <ul class="facilities-list clearfix">                                                                        
-                                    <li>
-                                        <i class="flaticon-square-layouting-with-black-square-in-east-area"></i>
-                                        <span>{{$ivenda->useful_area}}{{$ivenda->measures}}</span>
-                                    </li>                                    
-                                    
-                                    <li>
-                                        <i class="flaticon-bed"></i>
-                                        <span>{{$ivenda->dormitories}} Dorm.</span>
-                                    </li>                                    
-                                    
-                                    <li>
-                                        <i class="flaticon-holidays"></i>
-                                        <span>{{$ivenda->banheiros}} Banh.</span>
-                                    </li> 
-                                    
-                                    <li>
-                                        <i class="flaticon-vehicle"></i>
-                                        <span>
-                                            @php
-                                            if(!empty($ivenda->garage) && !empty($ivenda->covered_garage)){
-                                                $g = $ivenda->garage + $ivenda->covered_garage;
-                                                echo $g.' Garag.';
-                                            }elseif(!empty($ivenda->garage) && empty($ivenda->covered_garage)){
-                                                echo $ivenda->garage.' Garag.';
-                                            }else{
-                                                echo $ivenda->covered_garage.' Garag.';
-                                            }
-                                            @endphp
-                                        </span>
-                                    </li>                                    
+                                <ul class="facilities-list clearfix"> 
+                                    @if ($ivenda->useful_area)
+                                        <li>
+                                            <i class="flaticon-square-layouting-with-black-square-in-east-area"></i>
+                                            <span>{{$ivenda->useful_area}}{{$ivenda->measures}}</span>
+                                        </li>
+                                    @endif
+                                    @if ($ivenda->dormitories)
+                                        <li>
+                                            <i class="flaticon-bed"></i>
+                                            <span>{{$ivenda->dormitories}} Dorm.</span>
+                                        </li>
+                                    @endif
+                                    @if ($ivenda->bathrooms)
+                                        <li>
+                                            <i class="flaticon-holidays"></i>
+                                            <span>{{$ivenda->bathrooms}} Banh.</span>
+                                        </li>
+                                    @endif
+                                    @if ($ivenda->garage || $ivenda->covered_garage)
+                                        <li>
+                                            <i class="flaticon-vehicle"></i>
+                                            <span>
+                                                @php
+                                                if(!empty($ivenda->garage) && !empty($ivenda->covered_garage)){
+                                                    $g = $ivenda->garage + $ivenda->covered_garage;
+                                                    echo $g.' Garag.';
+                                                }elseif(!empty($ivenda->garage) && empty($ivenda->covered_garage)){
+                                                    echo $ivenda->garage.' Garag.';
+                                                }else{
+                                                    echo $ivenda->covered_garage.' Garag.';
+                                                }
+                                                @endphp
+                                            </span>
+                                        </li>
+                                    @endif                            
                                 </ul>
 
                             </div>
