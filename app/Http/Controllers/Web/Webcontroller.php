@@ -75,4 +75,31 @@ class Webcontroller extends Controller
             'experienceDeFrenteParaMar' => $experienceDeFrenteParaMar,
         ]);
     }
+
+    public function propertyList($type)
+    {
+        if($type == 'sale'){
+            $properties = Property::orderBy('created_at', 'DESC')
+                                ->available()
+                                ->sale()
+                                ->paginate(15);
+        }else{
+            $properties = Property::orderBy('created_at', 'DESC')
+                                ->available()
+                                ->location()
+                                ->paginate(15);
+        }        
+
+        $head = $this->seo->render('Imóveis para ' . $type ?? env('APP_NAME'),
+            'Confira os imóveis para '.$type.' temos ótimas oportunidades de negócio.',
+            route('web.propertyList', $type),
+            $this->config->getMetaImg() ?? 'https://informatica-livre.s3.us-east-2.amazonaws.com/infolivre/configuracoes/metaimg-informatica-livre.png'
+        );
+
+        return view('web.'.$this->config->template.'.properties.properties',[
+            'head' => $head,
+            'properties' => $properties,
+            'type' => $type
+        ]);
+    }
 }
