@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\{
 };
 use App\Http\Controllers\Web\{
     FeedController,
+    FilterController,
     Webcontroller
 };
 
@@ -31,6 +32,9 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
 
     /** Lista todos os imóveis */
     Route::get('/imoveis/{type}', [WebController::class, 'propertyList'])->name('propertyList');
+
+    /** Página de Experiências - Específica de uma categoria */
+    Route::get('/experiencias/{slug}', [FilterController::class, 'experienceCategory'])->name('experienceCategory');
 
     /** Pesquisa */
     Route::get('/pesquisar-imoveis', [SiteController::class, 'pesquisaImoveis'])->name('pesquisar-imoveis');

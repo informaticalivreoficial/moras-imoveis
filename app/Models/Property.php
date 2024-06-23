@@ -109,7 +109,7 @@ class Property extends Model
 
     /**
      * Accerssors and Mutators
-    */
+    */    
     public function getContentWebAttribute()
     {
         return Str::words($this->description, '20', ' ...');

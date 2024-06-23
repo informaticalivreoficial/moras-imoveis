@@ -144,6 +144,42 @@ class Config extends Model
             substr($value, 7, 4) ;
     }
 
+    public function setPhoneAttribute($value)
+    {
+        $this->attributes['phone'] = (!empty($value) ? $this->clearField($value) : null);
+    }
+    
+    //Formata o celular para exibir
+    public function getPhoneAttribute($value)
+    {
+        if (empty($value)) {
+            return null;
+        }
+        return  
+            substr($value, 0, 0) . '(' .
+            substr($value, 0, 2) . ') ' .
+            substr($value, 2, 5) . '-' .
+            substr($value, 7, 4) ;
+    }
+
+    public function setCellPhoneAttribute($value)
+    {
+        $this->attributes['cell_phone'] = (!empty($value) ? $this->clearField($value) : null);
+    }
+    
+    //Formata o celular para exibir
+    public function getCellPhoneAttribute($value)
+    {
+        if (empty($value)) {
+            return null;
+        }
+        return  
+            substr($value, 0, 0) . '(' .
+            substr($value, 0, 2) . ') ' .
+            substr($value, 2, 5) . '-' .
+            substr($value, 7, 4) ;
+    }
+
     
     private function convertStringToDate(?string $param)
     {

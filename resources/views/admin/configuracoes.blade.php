@@ -218,19 +218,19 @@ $config1 = [
                                                 <div class="col-12 col-md-4 col-sm-4 col-lg-4"> 
                                                     <div class="form-group">
                                                         <label class="labelforms"><b>CNPJ:</b></label>
-                                                        <input type="text" class="form-control text-muted cnpjmask" placeholder="CNPJ" name="cnpj" value="{{old('cnpj') ?? $config->cnpj}}">
+                                                        <input type="text" class="form-control cnpjmask" placeholder="CNPJ" name="cnpj" value="{{old('cnpj') ?? $config->cnpj}}">
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-4 col-sm-4 col-lg-4"> 
                                                     <div class="form-group">
                                                         <label class="labelforms"><b>Inscrição Estadual:</b></label>
-                                                        <input type="text" class="form-control text-muted" placeholder="Inscrição Estadual" name="ie" value="{{old('ie') ?? $config->ie}}">
+                                                        <input type="text" class="form-control" placeholder="Inscrição Estadual" name="ie" value="{{old('ie') ?? $config->ie}}">
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-4 col-sm-4 col-lg-4"> 
                                                     <div class="form-group">
                                                         <label class="labelforms"><b>Ano de ínicio</b></label>
-                                                        <input type="text" class="form-control text-muted" placeholder="Ano de ínicio" name="init_date" value="{{old('init_date') ?? $config->init_date}}">
+                                                        <input type="text" class="form-control" placeholder="Ano de ínicio" name="init_date" value="{{old('init_date') ?? $config->init_date}}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -298,19 +298,19 @@ $config1 = [
                                 <div class="col-12 col-md-6 col-lg-4"> 
                                     <div class="form-group">
                                         <label class="labelforms"><b>Telefone Fixo:</b></label>
-                                        <input type="text" class="form-control text-muted" placeholder="Telefone fixo com DDD" name="phone" value="{{old('phone') ?? $config->phone}}">
+                                        <input type="text" class="form-control text-muted phone" placeholder="Telefone fixo com DDD" name="phone" value="{{old('phone') ?? $config->phone}}">
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-4"> 
                                     <div class="form-group">
                                         <label class="labelforms"><b>Telefone Móvel:</b></label>
-                                        <input type="text" class="form-control text-muted" placeholder="Telefone móvel com DDD" name="cell_phone" value="{{old('cell_phone') ?? $config->cell_phone}}">
+                                        <input type="text" class="form-control text-muted cell_phone" placeholder="Telefone móvel com DDD" name="cell_phone" value="{{old('cell_phone') ?? $config->cell_phone}}">
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-4"> 
                                     <div class="form-group">
                                         <label class="labelforms"><b>WhatsApp:</b></label>
-                                        <input type="text" class="form-control text-muted whatsappmask" placeholder="Número do Celuler com DDD" name="whatsapp" value="{{old('whatsapp') ?? $config->whatsapp}}">
+                                        <input type="text" class="form-control text-muted whatsapp" placeholder="Número do Celuler com DDD" name="whatsapp" value="{{old('whatsapp') ?? $config->whatsapp}}">
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-4"> 
@@ -579,14 +579,16 @@ $config1 = [
 <script src="{{url(asset('backend/assets/js/jquery.mask.js'))}}"></script>
 <script>
     $(document).ready(function () { 
-        var $whatsapp = $(".whatsappmask");
+        var $whatsapp = $(".whatsapp");
         $whatsapp.mask('(99) 99999-9999', {reverse: false});
-        var $telefone = $(".telefonemask");
-        $telefone.mask('(99) 9999-9999', {reverse: false});
-        var $celularmask = $(".celularmask");
-        $celularmask.mask('(99) 99999-9999', {reverse: false});
-        var $zipcode = $(".mask-zipcode");
-        $zipcode.mask('00.000-000', {reverse: true});        
+        var $phone = $(".phone");
+        $phone.mask('(99) 9999-9999', {reverse: false});
+        var $cell_phone = $(".cell_phone");
+        $cell_phone.mask('(99) 99999-9999', {reverse: false});
+        var $zipcode = $(".zipcode");
+        $zipcode.mask('00.000-000', {reverse: true}); 
+        var $Cnpj = $(".cnpjmask");
+        $Cnpj.mask('00.000.000/0000-00', {reverse: true});       
     });
 </script> 
 <script>

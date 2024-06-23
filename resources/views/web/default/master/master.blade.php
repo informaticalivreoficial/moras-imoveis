@@ -285,16 +285,16 @@
                     <div class="footer-item fi2">
                         <div class="main-title-2">
                             <h1>Atendimento</h1>
-                            <p>{{$configuracoes->descricao}}</p>
+                            <p>{{$configuracoes->information}}</p>
                         </div>
                         <ul class="personal-info">
-                            @if ($configuracoes->rua)
+                            @if ($configuracoes->street)
                                 <li>
                                     <i class="fa fa-map-marker"></i>
-                                    {{$configuracoes->rua}}
-                                    {{($configuracoes->num ? ', '.$configuracoes->num : '')}}  
-                                    {!!($configuracoes->bairro ? '<br> '.$configuracoes->bairro : '')!!}  
-                                    {{($configuracoes->cidade ? ', '.$configuracoes->cidade : '')}} 
+                                    {{$configuracoes->street}}
+                                    {{($configuracoes->number ? ', '.$configuracoes->number : '')}}  
+                                    {!!($configuracoes->neighborhood ? '<br> '.$configuracoes->neighborhood : '')!!}  
+                                    {{($configuracoes->city ? ', '.$configuracoes->city : '')}} 
                                 </li> 
                             @endif
                             @if ($configuracoes->email)
@@ -303,25 +303,25 @@
                                     <a href="mailto:{{$configuracoes->email}}" title="Email">{{$configuracoes->email}}</a>
                                 </li>
                             @endif
-                            @if ($configuracoes->email1)
+                            @if ($configuracoes->additional_email)
                                 <li>
                                     <i class="fa fa-envelope"></i>
-                                    <a href="mailto:{{$configuracoes->email1}}" title="Email">{{$configuracoes->email1}}</a>
+                                    <a href="mailto:{{$configuracoes->additional_email}}" title="Email">{{$configuracoes->additional_email}}</a>
                                 </li>
                             @endif
-                            @if ($configuracoes->telefone)
+                            @if ($configuracoes->phone)
                                 <li>
                                     <i class="fa fa-phone"></i>
-                                    <a href="tel:{{$configuracoes->telefone}}" title="Telefone">{{$configuracoes->telefone}}</a>
-                                    @if ($configuracoes->celular)
-                                        <a href="tel:{{$configuracoes->celular}}" title="Celular"> {{$configuracoes->celular}}</a>
+                                    <a href="tel:{{$configuracoes->phone}}" title="Telefone">{{$configuracoes->phone}}</a>
+                                    @if ($configuracoes->cell_phone)
+                                        <a href="tel:{{$configuracoes->cell_phone}}" title="Telefone Móvel"> {{$configuracoes->cell_phone}}</a>
                                     @endif
                                 </li>
                             @endif                            
                             @if ($configuracoes->whatsapp)
                                 <li>
                                     <i class="fa fa-whatsapp"></i>
-                                    <a target="_blank" href="{{\App\Helpers\WhatsApp::getNumZap($configuracoes->whatsapp ,'Atendimento '.$configuracoes->name)}}" title="WhatsApp">{{$configuracoes->whatsapp}}</a>
+                                    <a target="_blank" href="{{\App\Helpers\WhatsApp::getNumZap($configuracoes->whatsapp ,'Atendimento '.$configuracoes->app_name)}}" title="WhatsApp">{{$configuracoes->whatsapp}}</a>
                                 </li>
                             @endif                            
                         </ul>
@@ -358,6 +358,7 @@
                     </div>
                 </div>
                
+                {{--
                 <!-- Subscribe -->
                 <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
                     @if (!empty($newsletterForm))
@@ -384,9 +385,9 @@
                                 </form>
                             </div>
                         </div>
-                    @endif
-                    
+                    @endif                    
                 </div>
+                --}}
             </div>
         </div>
     </div>
@@ -394,7 +395,7 @@
         <div class="container">
             <div class="row clearfix">
                 <div class="col-lg-8 col-md-12 col-sm-12">
-                    <p style="font-size: 14px;">&copy;  {{$configuracoes->ano_de_inicio}} {{$configuracoes->name}}. Todos os direitos reservados.</p>
+                    <p style="font-size: 14px;">&copy;  {{$configuracoes->init_date}} {{$configuracoes->app_name}}. Todos os direitos reservados.</p>
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12">
                     <ul class="social-list clearfix">
@@ -408,7 +409,7 @@
                             <li><a target="_blank" class="instagram-bg" href="{{$configuracoes->instagram}}" title="Instagram"><i class="fa fa-instagram"></i></a></li>
                         @endif
                         @if ($configuracoes->linkedin)
-                            <li><a target="_blank" class="linkedin-bg" href="{{$configuracoes->linkedin}}" title="Linkedin"></a><i class="fa fa-linkedin"></i></li>
+                            <li><a target="_blank" class="linkedin-bg" href="{{$configuracoes->linkedin}}" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
                         @endif
                         @if ($configuracoes->youtube)
                             <li><a target="_blank" class="youtube-bg" href="{{$configuracoes->youtube}}" title="Youtube"><i class="fa fa-youtube"></i></a></li>
@@ -416,9 +417,7 @@
                     </ul>
                 </div>
                 <div class="col-12 text-center my-3">
-                    <a target="_blank" href="{{env('DESENVOLVEDOR_URL')}}" title="{{env('DESENVOLVEDOR')}}">
-                        <img src="{{env('DESENVOLVEDOR_LOGO')}}" alt="{{env('DESENVOLVEDOR')}}">
-                    </a>
+                    <span class="small text-silver-dark">Feito com <i style="color:red;" class="fa fa-heart"></i> por <a style="color:#fff;" target="_blank" href="{{env('DESENVOLVEDOR_URL')}}">{{env('DESENVOLVEDOR')}}</a></span>					
                 </div>
             </div>
         </div>

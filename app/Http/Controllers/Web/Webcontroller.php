@@ -23,13 +23,13 @@ class Webcontroller extends Controller
         $propertiesForSale = Property::orderBy('created_at', 'DESC')
                             ->sale()
                             ->available()
-                            ->limit(24)
+                            ->limit(18)
                             ->get();
 
         $propertiesForRent = Property::orderBy('created_at', 'DESC')
                             ->location()
                             ->available()
-                            ->limit(24)
+                            ->limit(18)
                             ->get(); 
                             
         // $slides = Slide::orderBy('created_at', 'DESC')
