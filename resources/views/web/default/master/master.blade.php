@@ -97,8 +97,8 @@
                             Imóveis
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="imoveisLink">
-                            <li><a class="dropdown-item" href="{{route('web.propertyList',['type' => 'sale'])}}" title="Comprar">Comprar</a></li>
-                            <li><a class="dropdown-item" href="{{route('web.propertyList',['type' => 'rent'])}}" title="Alugar">Alugar</a></li>
+                            <li><a class="dropdown-item" href="{{route('web.propertyList',['type' => 'venda'])}}" title="Comprar">Comprar</a></li>
+                            <li><a class="dropdown-item" href="{{route('web.propertyList',['type' => 'locacao'])}}" title="Alugar">Alugar</a></li>
                         </ul>
                     </li> 
                     @if (!empty($categoriasMenu) && $categoriasMenu->count() > 0)

@@ -78,7 +78,7 @@ class Webcontroller extends Controller
 
     public function propertyList($type)
     {
-        if($type == 'sale'){
+        if($type == 'venda'){
             $properties = Property::orderBy('created_at', 'DESC')
                                 ->available()
                                 ->sale()

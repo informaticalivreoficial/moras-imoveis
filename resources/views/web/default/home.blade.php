@@ -252,7 +252,7 @@
                         </div>
                     </div>   
                 @endforeach
-                <a class="button-md button-theme" href="{{route('web.propertyList',['type' => 'sale'])}}" data-hover="Ver mais Imóveis"> Ver mais Imóveis </a>
+                <a class="button-md button-theme" href="{{route('web.propertyList',['type' => 'venda'])}}" data-hover="Ver mais Imóveis"> Ver mais Imóveis </a>
             </div>        
         </div>
     </div> 
@@ -274,7 +274,7 @@
                                 <div class="property-tag button alt featured">Referência: {{$rent->reference}}</div>
                                 <div class="property-tag button sale">{{$rent->type}}</div>
                                 @if($rent->display_values == 1)
-                                    <div class="property-price">R$ {{str_replace(',00', '', $rent->rental_value)}}</div>
+                                    <div class="property-price">R$ {{str_replace(',00', '', $rent->rental_value)}}/{{$rent->getLocationPeriod()}}</div>
                                 @endif 
                                 <img style="min-height:262px !important;max-height: 262px !important;max-width: 100%;" src="{{--$rent->cover()--}}https://informatica-livre.s3.us-east-2.amazonaws.com/superimoveis/imoveis/5282bcb2-59b0-47ec-9efb-932faba32ea6/444/aluguel-temporada-16867535339626.jpg" alt="{{$rent->title}}" class="img-responsive">
                                 <div class="property-overlay">
