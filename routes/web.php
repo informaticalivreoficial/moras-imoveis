@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\{
 use App\Http\Controllers\Web\{
     FeedController,
     FilterController,
+    SendEmailController,
     Webcontroller
 };
 
@@ -41,7 +42,7 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
     Route::match(['post', 'get'], '/pesquisa', [SiteController::class, 'pesquisaImoveis'])->name('pesquisa');
 
     //CLIENTE
-    Route::get('/atendimento', [WebController::class, 'atendimento'])->name('atendimento');
+    Route::get('/atendimento', [SendEmailController::class, 'contact'])->name('contact');
     Route::get('/sendEmail', [SendEmailController::class, 'sendEmail'])->name('sendEmail');
     Route::get('/sendNewsletter', [SendEmailController::class, 'sendNewsletter'])->name('sendNewsletter');
     Route::get('/sendReserva', [SendEmailController::class, 'sendReserva'])->name('sendReserva');

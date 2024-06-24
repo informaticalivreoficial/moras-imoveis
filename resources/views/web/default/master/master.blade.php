@@ -118,7 +118,7 @@
                         <li class="nav-item"><a class="nav-link" href="{{route('web.lancamento')}}" title="Lançamento">Lançamento</a></li>
                     @endif 
 
-                    <li class="nav-item"><a class="nav-link" href="{{route('web.atendimento')}}" title="Atendimento">Atendimento</a></li>                    
+                    <li class="nav-item"><a class="nav-link" href="{{route('web.contact')}}" title="Atendimento">Atendimento</a></li>                    
                     {{--<li class="nav-item"><a class="nav-link" href="{{route('web.financiamento')}}" title="">Financiamento</a></li> --}}                   
                 </ul>
             </div>
@@ -182,7 +182,7 @@
                 @if (!empty($lancamentoMenu) && $lancamentoMenu->count() > 0)
                     <li><a class="nav-link" href="{{route('web.lancamento')}}" title="Lançamento">Lançamento</a></li>
                 @endif 
-                <li><a href="{{route('web.atendimento')}}" title="Atendimento">Atendimento</a></li>
+                <li><a href="{{route('web.contact')}}" title="Atendimento">Atendimento</a></li>
                
                {{-- <li>
                     <a href="submit-property.html">Submit Property</a>
@@ -253,8 +253,9 @@
     </div>
 </nav>
 <!-- Sidenav end -->
-
-@yield('content')
+<div id="app">
+    @yield('content')
+</div>
 
 <!-- Intro section start -->
 <div class="intro-section">
@@ -265,7 +266,7 @@
                     <h3>Quer vender ou alugar seu imóvel?</h3>
                 </div>
                 <div class="col-lg-3 col-md-5 col-sm-12">
-                    <a class="btn-2 btn-white" href="{{route('web.atendimento')}}" title="Quer vender ou alugar seu imóvel?">
+                    <a class="btn-2 btn-white" href="{{route('web.contact')}}" title="Quer vender ou alugar seu imóvel?">
                         <span>Entrar em contato</span> <i class="arrow"></i>
                     </a>
                 </div>
@@ -349,7 +350,7 @@
                                 <a href="{{route('web.pesquisar-imoveis')}}" title="Pesquisar Imóveis">Pesquisar Imóveis</a>
                             </li>
                             <li>
-                                <a href="{{route('web.atendimento')}}" title="Atendimento">Atendimento</a>
+                                <a href="{{route('web.contact')}}" title="Atendimento">Atendimento</a>
                             </li>
                             <li>
                                 <a href="{{route('web.politica')}}" title="Política de Privacidade">Política de Privacidade</a>
@@ -445,6 +446,8 @@
 <script src="{{--url(asset('frontend/'.$configuracoes->template.'/js/maps.js'))--}}"></script>
 <script src="{{url(asset('frontend/'.$configuracoes->template.'/js/sidebar.js'))}}"></script>
 <script src="{{url(asset('frontend/'.$configuracoes->template.'/js/app.js'))}}"></script>
+
+@vite('resources/js/app.js')
 
 @hasSection('js')
     @yield('js')
