@@ -2068,7 +2068,7 @@ input[type=checkbox]:checked + label:before {
 }
 
 .content-area-7 {
-    padding: 100px 0;
+    padding: 60px 0;
 }
 
 .content-area-8 {
@@ -6425,6 +6425,7 @@ a:hover {
 
 .contact-1 .social-list li {
     display: inline-block;
+    margin: 0 4px 3px 0;
 }
 
 .contact-1 .social-list li a {

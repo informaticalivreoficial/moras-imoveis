@@ -43,7 +43,7 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
 
     //CLIENTE
     Route::get('/atendimento', [SendEmailController::class, 'contact'])->name('contact');
-    Route::get('/sendEmail', [SendEmailController::class, 'sendEmail'])->name('sendEmail');
+    Route::post('/sendEmail', [SendEmailController::class, 'sendEmail'])->name('sendEmail');
     Route::get('/sendNewsletter', [SendEmailController::class, 'sendNewsletter'])->name('sendNewsletter');
     Route::get('/sendReserva', [SendEmailController::class, 'sendReserva'])->name('sendReserva');
 
