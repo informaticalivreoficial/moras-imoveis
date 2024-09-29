@@ -102,4 +102,47 @@ class Webcontroller extends Controller
             'type' => $type
         ]);
     }
+
+    public function buyProperty($slug)
+    {
+        $property = Property::where('slug', $slug)
+                            ->available()
+                            ->sale()
+                            ->first();
+        $properties = Property::where('id', '!=', $property->id)
+                            ->available()
+                            ->location()
+                            ->limit(4)
+                            ->get();
+
+        if(!empty($property)){
+            $property->views = $property->views + 1;
+            $property->save();
+
+            $head = $this->seo->render($property->title ?? env('APP_NAME'),
+                $property->headline ?? $property->title,
+                route('web.buyProperty', ['slug' => $property->slug]),
+                $property->cover() ?? $this->config->getMetaImg()
+            );
+
+            return view('web.'.$this->config->template.'.properties.property', [
+                'head' => $head,
+                'property' => $property,
+                'properties' => $properties,
+                'type' => 'venda',
+            ]);
+        }else{
+            $head = $this->seo->render($this->config->app_name ?? env('APP_NAME'),
+                'Imóvel não encontrado!',
+                route('web.home') ?? 'https://superimoveis.info',
+                $this->config->getMetaImg() ?? 'https://superimoveis.info/media/metaimg.jpg'
+            );
+            return view('web.'.$this->config->template.'.properties.property', [
+                'head' => $head,
+                'property' => false,
+                'type' => 'venda',
+            ]);
+        }
+        
+    }
 }

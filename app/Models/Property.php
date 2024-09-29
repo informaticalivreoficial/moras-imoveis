@@ -124,11 +124,11 @@ class Property extends Model
             $images = $this->images();
             $cover = $images->first(['path']);
         }
-
+        
         if(empty($cover['path']) || !Storage::disk()->exists($cover['path'])) {
             return url(asset('backend/assets/images/image.jpg'));
         }
-
+        
         return Storage::url($cover['path']);
     }
 

@@ -12,6 +12,7 @@ use App\Models\Property;
 use App\Models\PropertyGb;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PropertyController extends Controller
 {
@@ -68,7 +69,7 @@ class PropertyController extends Controller
                 foreach ($request->allFiles()['files'] as $image) {
                     $propertyGb = new PropertyGb();
                     $propertyGb->property = $createProperty->id;
-                    $propertyGb->path = $image->storeAs(env('AWS_PASTA') . 'imoveis/'. $createProperty->id, Str::slug($request->title) . '-' . str_replace('.', '', microtime(true)) . '.' . $image->extension());
+                    $propertyGb->path = $image->storeAs(env('AWS_PASTA') . 'properties/'. $createProperty->id, Str::slug($request->title) . '-' . str_replace('.', '', microtime(true)) . '.' . $image->extension());
                     $propertyGb->save();
                     unset($propertyGb);
                 }
@@ -204,7 +205,7 @@ class PropertyController extends Controller
                 foreach ($request->allFiles()['files'] as $image) {
                     $propertyImage = new propertyGb();
                     $propertyImage->property = $property->id;
-                    $propertyImage->path = $image->storeAs(env('AWS_PASTA') . 'imoveis/'. $property->id, Str::slug($request->title) . '-' . str_replace('.', '', microtime(true)) . '.' . $image->extension());
+                    $propertyImage->path = $image->storeAs(env('AWS_PASTA') . 'properties/'. $property->id, Str::slug($request->title) . '-' . str_replace('.', '', microtime(true)) . '.' . $image->extension());
                     $propertyImage->save();
                     unset($propertyImage);
                 }
@@ -242,5 +243,18 @@ class PropertyController extends Controller
         ];
 
         return response()->json($json);         
+    }
+
+    public function imageRemove(Request $request)
+    {
+        $imageDelete = propertyGb::where('id', $request->image)->first();
+
+        Storage::delete($imageDelete->path);
+        $imageDelete->delete();
+
+        $json = [
+            'success' => true,
+        ];
+        return response()->json($json);
     }
 }

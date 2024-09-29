@@ -17,6 +17,10 @@ use App\Http\Controllers\Web\{
     Webcontroller
 };
 
+Route::get('/teste', function() {
+    return storage_path();
+});
+
 Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
     Route::get('/', [Webcontroller::class, 'home'])->name('home');
 
@@ -60,6 +64,18 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
 
     //****************************** Páginas ***********************************************/
     Route::get('/pagina/{slug}', [SiteController::class, 'pagina'])->name('pagina');
+
+    //FILTROS
+    Route::post('main-filter/search', [FilterController::class, 'search'])->name('main-filter.search');
+    Route::post('main-filter/categoria', [FilterController::class, 'categoria'])->name('main-filter.categoria');
+    Route::post('main-filter/tipo', [FilterController::class, 'tipo'])->name('main-filter.tipo');
+    Route::post('main-filter/bairro', [FilterController::class, 'bairro'])->name('main-filter.bairro');
+    Route::post('main-filter/dormitorios', [FilterController::class, 'dormitorios'])->name('main-filter.dormitorios');
+    Route::post('main-filter/suites', [FilterController::class, 'suites'])->name('main-filter.suites');
+    Route::post('main-filter/banheiros', [FilterController::class, 'banheiros'])->name('main-filter.banheiros');
+    Route::post('main-filter/garagem', [FilterController::class, 'garagem'])->name('main-filter.garagem');
+    Route::post('main-filter/price-base', [FilterController::class, 'priceBase'])->name('main-filter.priceBase');
+    Route::post('main-filter/price-limit', [FilterController::class, 'priceLimit'])->name('main-filter.priceLimit');
 });
 
 Route::prefix('admin')->middleware('auth')->group( function(){

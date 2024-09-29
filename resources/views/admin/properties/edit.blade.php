@@ -664,8 +664,8 @@ $config = [
                                 <div class="property_image">
                                     @foreach($property->images()->get() as $image)
                                         <div class="property_image_item">
-                                            <a href="{{ $image->getUrlImageAttribute() }}" data-toggle="lightbox" data-gallery="property-gallery" data-type="image">
-                                                <img style="max-height: 134px;min-width:237px;" src="{{ $image->url_cropped }}" alt="{{old('title') ?? $property->title}}">
+                                            <a href="{{ $image->url_image }}" data-toggle="lightbox" data-gallery="property-gallery" data-type="image">
+                                                <img style="max-height: 134px;min-width:237px;" src="{{ $image->url_image }}" alt="{{old('title') ?? $property->title}}">
                                             </a>
                                             <div class="property_image_actions">
                                                 <a href="javascript:void(0)" class="btn btn-xs {{ ($image->cover == true ? 'btn-success' : 'btn-default') }} icon-notext image-set-cover" data-action="{{ route('property.setCover', ['image' => $image->id]) }}"><i class="nav-icon fas fa-check"></i> </a>
