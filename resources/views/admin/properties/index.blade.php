@@ -19,6 +19,29 @@
 @section('content')
 
 <div class="card card-solid">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-12 col-sm-6 my-2">
+                <div class="card-tools">
+                    <div style="width: 250px;">
+                        <form class="input-group input-group-sm" action="{{route('property.search')}}" method="post">
+                            @csrf   
+                            <input type="text" name="filter" value="{{ $filters['filter'] ?? '' }}" class="form-control float-right" placeholder="Pesquisar">
+            
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-default">
+                                <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-12 col-sm-6 my-2 text-right">
+                <a href="{{route('property.create')}}" class="btn btn-sm btn-default"><i class="fas fa-plus mr-2"></i> Cadastrar Novo</a>
+            </div>
+        </div>
+    </div>
     <div class="card-body pb-0">
         <div class="row">
             <div class="col-12">                
@@ -38,21 +61,19 @@
                                 <div class="widget-user-header text-white" 
                                     style="background: url('{{url($property->cover())}}') center center;background-size: cover;">
                                     <h3 class="widget-user-username text-right">{{$property->title}}</h3>
-                                    <h5 class="widget-user-desc text-right">{{$property->category}}</h5>
+                                    <h5 class="widget-user-desc text-right">{{$property->category}} - {{$property->type}}</h5>
                                 </div>       
                             </a>         
                             <div class="card-footer">
                                 <div class="row">
-                                    <div class="col-12 text-center">
-                                        @if($property->sale === 1 && $property->location == null)
-                                            {{($property->sale_value != null ? 'R$ ' . str_replace(',00', '', $property->sale_value) : '-----')}}
-                                        @elseif($property->sale == 1 && $property->location == 1)
-                                            
-                                                {{($property->sale_value != null ? 'R$ ' . str_replace(',00', '', $property->sale_value) : '')}}
-                                                {{($property->rental_value != null ? '/R$ ' . str_replace(',00', '', $property->rental_value) : '')}}
-                                           
+                                    <div class="col-12 text-center mb-2">
+                                        @if($property->sale === 1 && $property->location == 0)
+                                            {{($property->sale_value != null ? 'Venda R$ ' . str_replace(',00', '', $property->sale_value) : '-----')}}
+                                        @elseif($property->sale == 1 && $property->location == 1)                                            
+                                            {{($property->sale_value != null ? 'Venda R$ ' . str_replace(',00', '', $property->sale_value) : '')}}
+                                            {{($property->rental_value != null ? '/ Locação R$ ' . str_replace(',00', '', $property->rental_value) : '')}}                                           
                                         @else
-                                            {{($property->rental_value != null ? '/R$ ' . str_replace(',00', '', $property->rental_value) : '-----')}}
+                                            {{($property->rental_value != null ? 'Locação R$ ' . str_replace(',00', '', $property->rental_value) : '-----')}}
                                         @endif
                                     </div>
                                     <div class="col-12 text-center mb-2">
@@ -70,7 +91,7 @@
                                         @endif                            
                                         <a data-toggle="tooltip" data-placement="top" title="Editar Imóvel" href="{{route('property.edit',$property->id)}}" class="btn btn-xs btn-default"><i class="fas fa-pen"></i></a>
                                         
-                                        <button data-placement="top" title="Remover Imóvel" type="button" class="btn btn-xs btn-danger text-white" ><i class="fas fa-trash"></i></button>
+                                        <button data-placement="top" title="Remover Imóvel" type="button" class="btn btn-xs btn-danger text-white j_modal_btn" data-id="{{$property->id}}" data-toggle="modal" data-target="#modal-default"><i class="fas fa-trash"></i></button>
                                     </div>
 
                                     <div class="col-sm-4 border-right">
@@ -112,18 +133,14 @@
     </div>
     <!-- /.card-body -->
     <div class="card-footer paginacao">  
-        {{ $properties->links() }}
+        @if (isset($filters))
+            {{ $properties->appends($filters)->links() }}
+        @else
+            {{ $properties->links() }}
+        @endif
     </div>
       
   </div>
-
-
-
-
-
-
-
-
 
 
 
@@ -134,7 +151,7 @@
             <form id="frm" action="" method="post">            
             @csrf
             @method('DELETE')
-            <input id="id_imovel" name="imovel_id" type="hidden" value=""/>
+            <input id="id_property" name="property_id" type="hidden" value=""/>
                 <div class="modal-header">
                     <h4 class="modal-title">Remover Imóvel!</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -248,21 +265,21 @@
             
             //FUNÇÃO PARA EXCLUIR
             $('.j_modal_btn').click(function() {
-                var imovel_id = $(this).data('id');                
+                var property_id = $(this).data('id');                
                 $.ajax({
                     type: 'GET',
                     dataType: 'JSON',
                     url: "{{ route('property.delete') }}",
                     data: {
-                       'id': imovel_id
+                       'id': property_id
                     },
                     success:function(data) {
                         if(data.error){
                             $('.j_param_data').html(data.error);
-                            $('#id_imovel').val(data.id);
-                            $('#frm').prop('action','{{ route('property.deleteon') }}');
+                            $('#id_property').val(data.id);
+                            $('#frm').prop('action',"{{ route('property.deleteon') }}");
                         }else{
-                            $('#frm').prop('action','{{ route('property.deleteon') }}');
+                            $('#frm').prop('action',"{{ route('property.deleteon') }}");
                         }
                     }
                 });

@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\PropertyRequest;
 use App\Models\Portal;
 use App\Models\PortalImoveis;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\Property;
 use App\Models\PropertyGb;
@@ -18,9 +19,28 @@ class PropertyController extends Controller
 {
     public function index()
     {
-        $properties = Property::orderBy('created_at', 'DESC')->orderBy('status', 'ASC')->paginate(50);
+        $properties = Property::orderBy('created_at', 'DESC')->paginate(50);
         return view('admin.properties.index', [
             'properties' => $properties,
+        ]);
+    }
+
+    public function search(Request $request)
+    {
+        $filters = $request->only('filter');
+
+        $properties = Property::where(function($query) use ($request){
+            if($request->filter){
+                $query->orWhere('title', 'LIKE', "%{$request->filter}%");
+                $query->orWhere('reference', 'LIKE', "%{$request->filter}%");
+                $query->orWhere('neighborhood', 'LIKE', "%{$request->filter}%");
+                $query->orWhere('city', $request->filter);
+            }
+        })->orderBy('created_at', 'DESC')->paginate(25);
+
+        return view('admin.properties.index',[
+            'properties' => $properties,
+            'filters' => $filters
         ]);
     }
 
@@ -195,8 +215,8 @@ class PropertyController extends Controller
         
         if($request->allFiles()){
             $files = count($request->allFiles());
-            $filesTotal = ($files + $property->images()->count());
-            if(!empty($filesTotal) && $filesTotal > env('LIMITE_IMOVEIS')){
+            $filesTotal = ($files + $property->images()->count());            
+            if($filesTotal > 0 && $filesTotal >= env('LIMITE_IMOVEIS')){
                 return redirect()->back()->withInput()->with([
                     'color' => 'danger',
                     'message' => 'O sistema só permite o envio de ' . env('LIMITE_IMOVEIS') . ' fotos por Imóvel!!',
@@ -245,6 +265,26 @@ class PropertyController extends Controller
         return response()->json($json);         
     }
 
+    public function setCover(Request $request)
+    {
+        $imageSetCover = propertyGb::where('id', $request->image)->first();
+        $allImage = propertyGb::where('property', $imageSetCover->property)->get();
+
+        foreach ($allImage as $image) {
+            $image->cover = null;
+            $image->save();
+        }
+
+        $imageSetCover->cover = true;
+        $imageSetCover->save();
+
+        $json = [
+            'success' => true,
+        ];
+
+        return response()->json($json);
+    }
+
     public function imageRemove(Request $request)
     {
         $imageDelete = propertyGb::where('id', $request->image)->first();
@@ -256,5 +296,47 @@ class PropertyController extends Controller
             'success' => true,
         ];
         return response()->json($json);
+    }
+
+    public function delete(Request $request)
+    {
+        $property = Property::where('id', $request->id)->first();
+        $propertyGb = propertyGb::where('property', $request->id)->first();
+        $nome = \App\Helpers\Renato::getPrimeiroNome(Auth::user()->name);
+        if(!empty($property) && !empty($propertyGb)){
+            $json = "<b>$nome</b> você tem certeza que deseja excluir este imóvel? Ele possui imagens e todas serão excluídas!";
+            return response()->json(['error' => $json,'id' => $property->id]);
+        }elseif(!empty($property) && empty($propertyGb)){
+            $json = "<b>$nome</b> você tem certeza que deseja excluir este imóvel?";
+            return response()->json(['error' => $json,'id' => $property->id]);
+        }else{
+            return response()->json(['success' => true]);
+        }
+    }
+
+    public function deleteon(Request $request)
+    {
+        //deleta as integrações
+        // $deletePimovel = PortalImoveis::where('imovel', $request->imovel_id)->first();
+        // if($deletePimovel != null){
+        //     $deletePimovel = PortalImoveis::where('imovel', $request->imovel_id)->get();
+        //     foreach($deletePimovel as $delete){
+        //         $delete->delete();
+        //     }            
+        // } 
+
+        $property = Property::where('id', $request->property_id)->first();  
+        $propertyDelete = propertyGb::where('property', $request->property_id)->first();
+        $propertyR = $property->title;
+        if(!empty($property)){
+            if(!empty($propertyDelete)){
+                Storage::delete($propertyDelete->path);
+                $propertyDelete->delete();
+                Storage::deleteDirectory(env('AWS_PASTA').'properties/'.$property->id);
+                $property->delete();
+            }
+            $property->delete();
+        }
+        return redirect()->route('properties.index')->with(['color' => 'success', 'message' => 'O imóvel '.$propertyR.' foi removido com sucesso!']);
     }
 }

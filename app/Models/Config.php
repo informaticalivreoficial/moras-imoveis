@@ -72,20 +72,20 @@ class Config extends Model
         return Storage::url($this->metaimg);
     }
     
-    public function getlogomarca()
+    public function getlogo()
     {
-        if(empty($this->logomarca) || !Storage::disk()->exists($this->logomarca)) {
+        if(empty($this->logo) || !Storage::disk()->exists($this->logo)) {
             return url(asset('backend/assets/images/image.jpg'));
         } 
-        return Storage::url($this->logomarca);
+        return Storage::url($this->logo);
     }
     
     public function getlogoadmin()
     {
-        if(empty($this->logomarca_admin) || !Storage::disk()->exists($this->logomarca_admin)) {
+        if(empty($this->logo_admin) || !Storage::disk()->exists($this->logo_admin)) {
             return url(asset('backend/assets/images/image.jpg'));
         } 
-        return Storage::url($this->logomarca_admin);
+        return Storage::url($this->logo_admin);
     }
     
     public function getfaveicon()
@@ -96,15 +96,15 @@ class Config extends Model
         return Storage::url($this->favicon);
     }
     
-    public function getmarcadagua()
+    public function getwatermark()
     {
-        if(empty($this->marcadagua) || !Storage::disk()->exists($this->marcadagua)) {
+        if(empty($this->watermark) || !Storage::disk()->exists($this->watermark)) {
             return url(asset('backend/assets/images/image.jpg'));
         } 
-        return Storage::url($this->marcadagua);
+        return Storage::url($this->watermark);
     }
     
-    public function gettopodosite()
+    public function getheadersite()
     {
         if(empty($this->imgheader) || !Storage::disk()->exists($this->imgheader)) {
             return url(asset('backend/assets/images/image.jpg'));
@@ -112,12 +112,12 @@ class Config extends Model
         return Storage::url($this->imgheader);
     }
     
-    public function setCepAttribute($value)
+    public function setZipcodeAttribute($value)
     {
-        $this->attributes['cep'] = (!empty($value) ? $this->clearField($value) : null);
+        $this->attributes['zipcode'] = (!empty($value) ? $this->clearField($value) : null);
     }
     
-    public function getCepAttribute($value)
+    public function getZipcodeAttribute($value)
     {
         if (empty($value)) {
             return null;

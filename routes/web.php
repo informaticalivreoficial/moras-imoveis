@@ -114,6 +114,7 @@ Route::prefix('admin')->middleware('auth')->group( function(){
 
     /** Imóveis */
     Route::match(['post', 'get'], 'imoveis/destaque', [PropertyController::class, 'highlightMark'])->name('property.highlight');
+    Route::match(['get', 'post'], 'imoveis/pesquisa', [PropertyController::class, 'search'])->name('property.search');
     Route::get('imoveis/marcadagua', [PropertyController::class, 'imageWatermark'])->name('property.watermark');
     Route::get('imoveis/delete', [PropertyController::class, 'delete'])->name('property.delete');
     Route::delete('imoveis/deleteon', [PropertyController::class, 'deleteon'])->name('property.deleteon');

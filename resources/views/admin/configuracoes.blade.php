@@ -365,7 +365,7 @@ $config1 = [
                                     <div class="form-group">
                                         <label class="labelforms"><b>Logomarca do site</b> - {{env('LOGOMARCA_WIDTH')}}x{{env('LOGOMARCA_HEIGHT')}} pixels</label>
                                         <div class="thumb_user_admin">                                                    
-                                            <img id="preview2" src="{{$config->getlogomarca()}}" alt="{{ old('domain') ?? $config->domain }}" title="{{ old('domain') ?? $config->domain }}"/>
+                                            <img id="preview2" src="{{$config->getlogo()}}" alt="{{ old('domain') ?? $config->domain }}" title="{{ old('domain') ?? $config->domain }}"/>
                                             <input id="img-logomarca" type="file" name="logo">
                                         </div>
                                     </div>
@@ -392,7 +392,7 @@ $config1 = [
                                     <div class="form-group">
                                         <label class="labelforms"><b>Marca D´agua</b> - {{env('MARCADAGUA_WIDTH')}}x{{env('MARCADAGUA_HEIGHT')}} pixels</label>
                                         <div class="thumb_user_admin">                                                    
-                                            <img id="preview5" src="{{$config->getmarcadagua()}}" alt="{{ old('domain') ?? $config->domain }}" title="{{ old('domain') ?? $config->domain }}"/>
+                                            <img id="preview5" src="{{$config->getwatermark()}}" alt="{{ old('domain') ?? $config->domain }}" title="{{ old('domain') ?? $config->domain }}"/>
                                             <input id="img-marcadagua" type="file" name="watermark">
                                         </div>
                                     </div>
@@ -401,7 +401,7 @@ $config1 = [
                                     <div class="form-group">
                                         <label class="labelforms"><b>Topo do site</b> - {{env('IMGHEADER_WIDTH')}}x{{env('IMGHEADER_HEIGHT')}} pixels</label>
                                         <div class="thumb_user_admin">
-                                            <img id="preview6" src="{{$config->gettopodosite()}}" alt="{{ old('domain') ?? $config->domain }}" title="{{ old('domain') ?? $config->domain }}"/>
+                                            <img id="preview6" src="{{$config->getheadersite()}}" alt="{{ old('domain') ?? $config->domain }}" title="{{ old('domain') ?? $config->domain }}"/>
                                             <input id="img-imgheader" type="file" name="imgheader">
                                         </div>
                                     </div>
