@@ -25,12 +25,12 @@ class AppServiceProvider extends ServiceProvider
     {
         //URL::forceScheme('https');
 
-        Schema::defaultStringLength(191);
-        Blade::aliasComponent('admin.components.message', 'message');
+        // Schema::defaultStringLength(191);
+        // Blade::aliasComponent('admin.components.message', 'message');
 
-        $configuracoes = \App\Models\Config::find(1); 
-        View()->share('configuracoes', $configuracoes);
+        // $configuracoes = \App\Models\Config::find(1); 
+        // View()->share('configuracoes', $configuracoes);
 
-        Paginator::useBootstrap();
+        // Paginator::useBootstrap();
     }
 }
