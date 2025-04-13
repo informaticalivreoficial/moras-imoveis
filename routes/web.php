@@ -16,13 +16,19 @@ use App\Http\Controllers\Web\{
     SendEmailController,
     Webcontroller
 };
+use App\Livewire\Contact;
+use App\Livewire\Home;
 
-Route::get('/teste', function() {
-    return storage_path();
-});
+// Route::get('/teste', function() {
+//     return storage_path();
+// });
+Route::get('/', Home::class);
+
+//CLIENTE
+Route::get('/atendimento', Contact::class)->name('contact');
 
 Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
-    Route::get('/', [Webcontroller::class, 'home'])->name('home');
+    //Route::get('/', Home::class);
 
     /** FEED */
     Route::get('feed', [FeedController::class, 'feed'])->name('feed');
@@ -46,7 +52,7 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
     Route::match(['post', 'get'], '/pesquisa', [SiteController::class, 'pesquisaImoveis'])->name('pesquisa');
 
     //CLIENTE
-    Route::get('/atendimento', [SendEmailController::class, 'contact'])->name('contact');
+    //Route::get('/atendimento', [SendEmailController::class, 'contact'])->name('contact');
     Route::post('/sendEmail', [SendEmailController::class, 'sendEmail'])->name('sendEmail');
     Route::get('/sendNewsletter', [SendEmailController::class, 'sendNewsletter'])->name('sendNewsletter');
     Route::get('/sendReserva', [SendEmailController::class, 'sendReserva'])->name('sendReserva');

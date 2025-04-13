@@ -47,6 +47,7 @@
     <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/html5shiv.min.js'))}}"></script>
     <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/respond.min.js'))}}"></script>
     <![endif]-->
+    @livewireStyles
 </head>
 <body>
 
@@ -84,8 +85,8 @@
 <header class="main-header  header-shrink ">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
-            <a href="{{route('web.home')}}" class="logo" title="{{$configuracoes->name}}">
-                <img src="{{$configuracoes->getlogomarca()}}" alt="{{$configuracoes->name}}">
+            <a href="{{route('home')}}" class="logo" title="{{$configuracoes->name}}">
+                <img src="{{$configuracoes->getlogo()}}" alt="{{$configuracoes->name}}">
             </a>
             <button class="navbar-toggler" id="drawer" type="button">
                 <span class="fa fa-bars"></span>
@@ -118,7 +119,7 @@
                         <li class="nav-item"><a class="nav-link" href="{{route('web.lancamento')}}" title="Lançamento">Lançamento</a></li>
                     @endif 
 
-                    <li class="nav-item"><a class="nav-link" href="{{route('web.contact')}}" title="Atendimento">Atendimento</a></li>                    
+                    <li class="nav-item"><a class="nav-link" href="{{route('contact')}}" title="Atendimento">Atendimento</a></li>                    
                     {{--<li class="nav-item"><a class="nav-link" href="{{route('web.financiamento')}}" title="">Financiamento</a></li> --}}                   
                 </ul>
             </div>
@@ -135,7 +136,7 @@
     </div>
     <div class="sidebar-inner">
         <div class="sidebar-logo">
-            <img src="{{$configuracoes->getlogomarca()}}" alt="{{$configuracoes->name}}" title="{{$configuracoes->name}}">
+            <img src="{{$configuracoes->getlogo()}}" alt="{{$configuracoes->name}}" title="{{$configuracoes->name}}">
         </div>
         <div class="sidebar-navigation">
             <ul class="menu-list">
@@ -182,7 +183,7 @@
                 @if (!empty($lancamentoMenu) && $lancamentoMenu->count() > 0)
                     <li><a class="nav-link" href="{{route('web.lancamento')}}" title="Lançamento">Lançamento</a></li>
                 @endif 
-                <li><a href="{{route('web.contact')}}" title="Atendimento">Atendimento</a></li>
+                <li><a href="{{route('contact')}}" title="Atendimento">Atendimento</a></li>
                
                {{-- <li>
                     <a href="submit-property.html">Submit Property</a>
@@ -253,9 +254,10 @@
     </div>
 </nav>
 <!-- Sidenav end -->
-<div id="app">
-    @yield('content')
-</div>
+
+    {{ $slot }}
+    {{--@yield('content')--}}
+
 
 <!-- Intro section start -->
 <div class="intro-section">
@@ -266,7 +268,7 @@
                     <h3>Quer vender ou alugar seu imóvel?</h3>
                 </div>
                 <div class="col-lg-3 col-md-5 col-sm-12">
-                    <a class="btn-2 btn-white" href="{{route('web.contact')}}" title="Quer vender ou alugar seu imóvel?">
+                    <a class="btn-2 btn-white" href="{{route('contact')}}" title="Quer vender ou alugar seu imóvel?">
                         <span>Entrar em contato</span> <i class="arrow"></i>
                     </a>
                 </div>
@@ -350,7 +352,7 @@
                                 <a href="{{route('web.pesquisar-imoveis')}}" title="Pesquisar Imóveis">Pesquisar Imóveis</a>
                             </li>
                             <li>
-                                <a href="{{route('web.contact')}}" title="Atendimento">Atendimento</a>
+                                <a href="{{route('contact')}}" title="Atendimento">Atendimento</a>
                             </li>
                             <li>
                                 <a href="{{route('web.politica')}}" title="Política de Privacidade">Política de Privacidade</a>
@@ -513,5 +515,6 @@
     gtag('config', "{{$configuracoes->analytics_id}}");
 </script>
 
+    @livewireScripts
 </body>
 </html>
