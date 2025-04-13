@@ -28,7 +28,8 @@ Route::get('/', Home::class);
 Route::get('/atendimento', Contact::class)->name('contact');
 
 Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
-    //Route::get('/', Home::class);
+    /** Página Inicial */
+    Route::get('/', [WebController::class, 'home'])->name('home');
 
     /** FEED */
     Route::get('feed', [FeedController::class, 'feed'])->name('feed');
