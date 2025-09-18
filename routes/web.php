@@ -1,6 +1,19 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
+use App\Livewire\Auth\Login;
+use App\Livewire\Auth\Register;
+use App\Livewire\Dashboard\Dashboard;
+use App\Livewire\Dashboard\{
+    Settings,
+};
+use App\Livewire\Dashboard\Users\{
+    Time,
+    Users,
+    ViewUser,
+    Form,
+};
+use App\Livewire\Dashboard\Permissions\Index as PermissionIndex;
+use App\Livewire\Dashboard\Roles\Index as RoleIndex;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
     AdminController,
@@ -16,99 +29,85 @@ use App\Http\Controllers\Web\{
     SendEmailController,
     Webcontroller
 };
-use App\Livewire\Contact;
-use App\Livewire\Home;
-
-// Route::get('/teste', function() {
-//     return storage_path();
-// });
-Route::get('/', Home::class);
-
-//CLIENTE
-Route::get('/atendimento', Contact::class)->name('contact');
+use App\Livewire\Dashboard\Properties\Properties;
+use App\Livewire\Dashboard\Properties\PropertyForm;
 
 Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
-    /** Página Inicial */
-    Route::get('/', [WebController::class, 'home'])->name('home');
+//     /** Página Inicial */
+//     //Route::get('/', [WebController::class, 'home'])->name('home');
 
-    /** FEED */
-    Route::get('feed', [FeedController::class, 'feed'])->name('feed');
-    Route::get('/politica-de-privacidade', [WebController::class, 'politica'])->name('politica');
-    Route::get('/sitemap', [WebController::class, 'sitemap'])->name('sitemap');
+//     /** FEED */
+//     Route::get('feed', [FeedController::class, 'feed'])->name('feed');
+//     Route::get('/politica-de-privacidade', [WebController::class, 'politica'])->name('politica');
+//     Route::get('/sitemap', [WebController::class, 'sitemap'])->name('sitemap');
 
-    /** Página de Compra - Específica de um imóvel */
-    Route::match(['get', 'post'],'/imoveis/quero-comprar/{slug}', [WebController::class, 'buyProperty'])->name('buyProperty');
+     /** Página de Compra - Específica de um imóvel */
+     Route::match(['get', 'post'],'/imoveis/quero-comprar/{slug}', [WebController::class, 'buyProperty'])->name('buyProperty');
 
-    /** Página de Locaçãp - Específica de um imóvel */
-    Route::get('/quero-alugar/{slug}', [WebController::class, 'rentProperty'])->name('rentProperty');
+     /** Página de Locaçãp - Específica de um imóvel */
+     Route::get('imoveis/quero-alugar/{slug}', [WebController::class, 'rentProperty'])->name('rentProperty');
 
-    /** Lista todos os imóveis */
-    Route::get('/imoveis/{type}', [WebController::class, 'propertyList'])->name('propertyList');
+//     /** Lista todos os imóveis */
+//     Route::get('/imoveis/{type}', [WebController::class, 'propertyList'])->name('propertyList');
 
-    /** Página de Experiências - Específica de uma categoria */
-    Route::get('/experiencias/{slug}', [FilterController::class, 'experienceCategory'])->name('experienceCategory');
+//     /** Página de Experiências - Específica de uma categoria */
+//     Route::get('/experiencias/{slug}', [FilterController::class, 'experienceCategory'])->name('experienceCategory');
 
-    /** Pesquisa */
-    Route::get('/pesquisar-imoveis', [SiteController::class, 'pesquisaImoveis'])->name('pesquisar-imoveis');
-    Route::match(['post', 'get'], '/pesquisa', [SiteController::class, 'pesquisaImoveis'])->name('pesquisa');
+//     /** Pesquisa */
+//     Route::get('/pesquisar-imoveis', [SiteController::class, 'pesquisaImoveis'])->name('pesquisar-imoveis');
+//     Route::match(['post', 'get'], '/pesquisa', [SiteController::class, 'pesquisaImoveis'])->name('pesquisa');
 
-    //CLIENTE
-    //Route::get('/atendimento', [SendEmailController::class, 'contact'])->name('contact');
-    Route::post('/sendEmail', [SendEmailController::class, 'sendEmail'])->name('sendEmail');
-    Route::get('/sendNewsletter', [SendEmailController::class, 'sendNewsletter'])->name('sendNewsletter');
-    Route::get('/sendReserva', [SendEmailController::class, 'sendReserva'])->name('sendReserva');
+//     //CLIENTE
+//     //Route::get('/atendimento', [SendEmailController::class, 'contact'])->name('contact');
+//     Route::post('/sendEmail', [SendEmailController::class, 'sendEmail'])->name('sendEmail');
+//     Route::get('/sendNewsletter', [SendEmailController::class, 'sendNewsletter'])->name('sendNewsletter');
+//     Route::get('/sendReserva', [SendEmailController::class, 'sendReserva'])->name('sendReserva');
 
-    //****************************** Blog ***********************************************/
-    Route::get('/blog/artigo/{slug}', [SiteController::class, 'artigo'])->name('blog.artigo');
-    Route::get('/blog/categoria/{slug}', [SiteController::class, 'categoria'])->name('blog.categoria');
-    Route::get('/blog/artigos', [SiteController::class, 'artigos'])->name('blog.artigos');    
-    Route::match(['get', 'post'],'/blog/pesquisar', [WebController::class, 'searchBlog'])->name('blog.searchBlog');
+//     //****************************** Blog ***********************************************/
+//     Route::get('/blog/artigo/{slug}', [SiteController::class, 'artigo'])->name('blog.artigo');
+//     Route::get('/blog/categoria/{slug}', [SiteController::class, 'categoria'])->name('blog.categoria');
+//     Route::get('/blog/artigos', [SiteController::class, 'artigos'])->name('blog.artigos');    
+//     Route::match(['get', 'post'],'/blog/pesquisar', [WebController::class, 'searchBlog'])->name('blog.searchBlog');
 
-    //****************************** Notícias ***********************************************/
-    Route::get('/noticia/{slug}', [SiteController::class, 'noticia'])->name('noticia');
-    Route::get('/noticias/categoria/{slug}', [SiteController::class, 'categoria'])->name('noticia.categoria');
-    Route::get('/noticias', [SiteController::class, 'noticias'])->name('noticias'); 
+//     //****************************** Notícias ***********************************************/
+//     Route::get('/noticia/{slug}', [SiteController::class, 'noticia'])->name('noticia');
+//     Route::get('/noticias/categoria/{slug}', [SiteController::class, 'categoria'])->name('noticia.categoria');
+//     Route::get('/noticias', [SiteController::class, 'noticias'])->name('noticias'); 
 
-    //****************************** Páginas ***********************************************/
-    Route::get('/pagina/{slug}', [SiteController::class, 'pagina'])->name('pagina');
+//     //****************************** Páginas ***********************************************/
+//     Route::get('/pagina/{slug}', [SiteController::class, 'pagina'])->name('pagina');
 
-    //FILTROS
-    Route::post('main-filter/search', [FilterController::class, 'search'])->name('main-filter.search');
-    Route::post('main-filter/categoria', [FilterController::class, 'categoria'])->name('main-filter.categoria');
-    Route::post('main-filter/tipo', [FilterController::class, 'tipo'])->name('main-filter.tipo');
-    Route::post('main-filter/bairro', [FilterController::class, 'bairro'])->name('main-filter.bairro');
-    Route::post('main-filter/dormitorios', [FilterController::class, 'dormitorios'])->name('main-filter.dormitorios');
-    Route::post('main-filter/suites', [FilterController::class, 'suites'])->name('main-filter.suites');
-    Route::post('main-filter/banheiros', [FilterController::class, 'banheiros'])->name('main-filter.banheiros');
-    Route::post('main-filter/garagem', [FilterController::class, 'garagem'])->name('main-filter.garagem');
-    Route::post('main-filter/price-base', [FilterController::class, 'priceBase'])->name('main-filter.priceBase');
-    Route::post('main-filter/price-limit', [FilterController::class, 'priceLimit'])->name('main-filter.priceLimit');
+//     //FILTROS
+//     Route::post('main-filter/search', [FilterController::class, 'search'])->name('main-filter.search');
+//     Route::post('main-filter/categoria', [FilterController::class, 'categoria'])->name('main-filter.categoria');
+//     Route::post('main-filter/tipo', [FilterController::class, 'tipo'])->name('main-filter.tipo');
+//     Route::post('main-filter/bairro', [FilterController::class, 'bairro'])->name('main-filter.bairro');
+//     Route::post('main-filter/dormitorios', [FilterController::class, 'dormitorios'])->name('main-filter.dormitorios');
+//     Route::post('main-filter/suites', [FilterController::class, 'suites'])->name('main-filter.suites');
+//     Route::post('main-filter/banheiros', [FilterController::class, 'banheiros'])->name('main-filter.banheiros');
+//     Route::post('main-filter/garagem', [FilterController::class, 'garagem'])->name('main-filter.garagem');
+//     Route::post('main-filter/price-base', [FilterController::class, 'priceBase'])->name('main-filter.priceBase');
+//     Route::post('main-filter/price-limit', [FilterController::class, 'priceLimit'])->name('main-filter.priceLimit');
 });
 
-Route::prefix('admin')->middleware('auth')->group( function(){
+Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'admin'], function () {
 
-    Route::get('/', [AdminController::class, 'home'])->name('home');
+    Route::get('/', Dashboard::class)->name('admin');
+    Route::get('configuracoes', Settings::class)->name('settings');
 
     //******************************* Sitemap *********************************************/
-    Route::get('gerarxml', [SitemapController::class, 'gerarxml'])->name('admin.gerarxml');
+    // Route::get('gerarxml', [SitemapController::class, 'gerarxml'])->name('admin.gerarxml');
 
     
-    Route::put('listas/email/{id}', [NewsletterController::class, 'newsletterUpdate'])->name('listas.newsletter.update');
-    Route::get('listas/email/set-status', [NewsletterController::class, 'emailSetStatus'])->name('emails.emailSetStatus');
-    Route::get('listas/email/delete', [NewsletterController::class, 'emailDelete'])->name('emails.delete');
-    Route::delete('listas/email/deleteon', [NewsletterController::class, 'emailDeleteon'])->name('emails.deleteon');
-    Route::get('listas/email/{id}/edit', [NewsletterController::class, 'newsletterEdit'])->name('listas.newsletter.edit');
-    Route::get('listas/email/cadastrar', [NewsletterController::class, 'newsletterCreate'])->name('lista.newsletter.create');
-    Route::post('listas/email/store', [NewsletterController::class, 'newsletterStore'])->name('listas.newsletter.store');
-    Route::get('listas/emails/categoria/{categoria}', [NewsletterController::class, 'newsletters'])->name('lista.newsletters');
+    // Route::put('listas/email/{id}', [NewsletterController::class, 'newsletterUpdate'])->name('listas.newsletter.update');
+    // Route::get('listas/email/set-status', [NewsletterController::class, 'emailSetStatus'])->name('emails.emailSetStatus');
+    // Route::get('listas/email/delete', [NewsletterController::class, 'emailDelete'])->name('emails.delete');
+    // Route::delete('listas/email/deleteon', [NewsletterController::class, 'emailDeleteon'])->name('emails.deleteon');
+    // Route::get('listas/email/{id}/edit', [NewsletterController::class, 'newsletterEdit'])->name('listas.newsletter.edit');
+    // Route::get('listas/email/cadastrar', [NewsletterController::class, 'newsletterCreate'])->name('lista.newsletter.create');
+    // Route::post('listas/email/store', [NewsletterController::class, 'newsletterStore'])->name('listas.newsletter.store');
+    // Route::get('listas/emails/categoria/{categoria}', [NewsletterController::class, 'newsletters'])->name('lista.newsletters');
 
-    
-    //****************************** Configurações ***************************************/
-    Route::put('configuracoes/{config}', [ConfigController::class, 'update'])->name('configuracoes.update');
-    Route::get('configuracoes', [ConfigController::class, 'editar'])->name('configuracoes.editar');
-
-    
-    
     //******************* Templates ************************************************/
     Route::get('templates/set-status', [TemplateController::class, 'templateSetStatus'])->name('templates.templateSetStatus');
     Route::get('templates/delete', [TemplateController::class, 'delete'])->name('templates.delete');
@@ -128,24 +127,21 @@ Route::prefix('admin')->middleware('auth')->group( function(){
     Route::post('imoveis/image-set-cover', [PropertyController::class, 'setCover'])->name('property.setCover');
     Route::get('imoveis/set-status', [PropertyController::class, 'setStatus'])->name('property.setStatus');
     Route::delete('imoveis/image-remove', [PropertyController::class, 'imageRemove'])->name('property.imageRemove');
-    Route::put('imoveis/{id}', [PropertyController::class, 'update'])->name('property.update');
-    Route::get('imoveis/{id}/edit', [PropertyController::class, 'edit'])->name('property.edit');
-    Route::get('imoveis/create', [PropertyController::class, 'create'])->name('property.create');
-    Route::post('imoveis/store', [PropertyController::class, 'store'])->name('property.store');
-    Route::get('imoveis', [PropertyController::class, 'index'])->name('properties.index');
+    
+
+    Route::get('imoveis/{property}/editar', PropertyForm::class)->name('property.edit');
+    Route::get('imoveis/cadastrar', PropertyForm::class)->name('properties.create');
+    Route::get('imoveis', Properties::class)->name('properties.index');
 
     //*********************** Usuários *******************************************/
-    Route::match(['get', 'post'], 'usuarios/pesquisa', [UserController::class, 'search'])->name('users.search');
-    Route::delete('usuarios/deleteon', [UserController::class, 'deleteon'])->name('users.deleteon');
-    Route::get('usuarios/set-status', [UserController::class, 'userSetStatus'])->name('users.userSetStatus');
-    Route::get('usuarios/delete', [UserController::class, 'delete'])->name('users.delete');
-    Route::get('usuarios/time', [UserController::class, 'team'])->name('users.team')->middleware('can:time');
-    Route::get('usuarios/view/{id}', [UserController::class, 'show'])->name('users.view');
-    Route::put('usuarios/{id}', [UserController::class, 'update'])->name('users.update');
-    Route::get('usuarios/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::get('usuarios/create', [UserController::class, 'create'])->name('users.create');
-    Route::post('usuarios/store', [UserController::class, 'store'])->name('users.store');
-    Route::get('clientes', [UserController::class, 'index'])->name('users.index');  
+    Route::get('/cargos', RoleIndex::class)->name('admin.roles');
+    Route::get('/permissoes', PermissionIndex::class)->name('admin.permissions');
+
+    Route::get('usuarios/clientes', Users::class)->name('users.index');
+    Route::get('usuarios/time', Time::class)->name('users.time');
+    Route::get('usuarios/cadastrar', Form::class)->name('users.create');
+    Route::get('usuarios/{userId}/editar', Form::class)->name('users.edit');
+    Route::get('usuarios/{user}/visualizar', ViewUser::class)->name('users.view');  
 
     Route::view('posts/create', 'admin.posts.create');
 
@@ -158,4 +154,8 @@ Route::prefix('admin')->middleware('auth')->group( function(){
 });
 
 
-Auth::routes();
+// Authentication routes
+Route::group(['prefix' => 'auth'], function () {
+    Route::get('login', Login::class)->name('login');
+    Route::get('register', Register::class)->name('register');
+});

@@ -137,10 +137,51 @@ class Webcontroller extends Controller
                 route('web.home') ?? 'https://superimoveis.info',
                 $this->config->getMetaImg() ?? 'https://superimoveis.info/media/metaimg.jpg'
             );
-            return view('web.'.$this->config->template.'.properties.property', [
+            return view('web.properties.property', [
                 'head' => $head,
                 'property' => false,
                 'type' => 'venda',
+            ]);
+        }
+        
+    }
+
+    public function rentProperty($slug)
+    {
+        $property = Property::where('slug', $slug)
+                            ->available()
+                            ->location()
+                            ->first();
+        $properties = Property::where('id', '!=', $property->id)
+                            ->available()
+                            ->location()
+                            ->limit(4)
+                            ->get();
+
+        if($property){
+            $property->views = $property->views + 1;
+            $property->save();
+
+            $head = $this->seo->render($property->title ?? 'Sistema Imobiliário',
+                $property->headline ?? $property->title,
+                route('web.rentProperty', ['slug' => $property->slug]),
+                $property->nocover() ?? $this->tenant->getMetaImg()
+            );
+
+            return view('web.properties.property', [
+                'head' => $head,
+                'property' => $property,
+                'properties' => $properties
+            ]);
+        }else{
+            $head = $this->seo->render($this->tenant->name ?? 'Super Imóveis Sistema Imobiliário',
+                'Imóvel não encontrado!',
+                route('web.home') ?? 'https://superimoveis.info',
+                $this->tenant->getMetaImg() ?? 'https://superimoveis.info/media/metaimg.jpg'
+            );
+            return view('web.properties.property', [
+                'head' => $head,
+                'property' => false,
             ]);
         }
         

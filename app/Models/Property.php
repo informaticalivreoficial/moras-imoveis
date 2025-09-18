@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Cropper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -14,11 +15,9 @@ class Property extends Model
     protected $table = 'properties';
 
     protected $fillable = [
-        'sale',
-        'location',
+        'option',
         'category',
         'type',
-        'owner',
         'display_values',
         'sale_value',
         'rental_value',
@@ -72,17 +71,7 @@ class Property extends Model
     public function scopeUnavailable($query)
     {
         return $query->where('status', 0);
-    }
-
-    public function scopeSale($query)
-    {
-        return $query->where('sale', 1);
-    }
-
-    public function scopeLocation($query)
-    {
-        return $query->where('location', 1);
-    }
+    }    
 
     /**
      * Relationships
@@ -126,10 +115,27 @@ class Property extends Model
         }
         
         if(empty($cover['path']) || !Storage::disk()->exists($cover['path'])) {
-            return url(asset('backend/assets/images/image.jpg'));
+            return url(asset('theme/images/image.jpg'));
         }
         
-        return Storage::url($cover['path']);
+        return Storage::url(Cropper::thumb($cover['path'], 385, 180));        
+    }
+
+    public function nocover()
+    {
+        $images = $this->images();
+        $cover = $images->where('cover', 1)->first(['path']);
+
+        if(!$cover) {
+            $images = $this->images();
+            $cover = $images->first(['path']);
+        }
+        
+        if(empty($cover['path']) || !Storage::disk()->exists($cover['path'])) {
+            return url(asset('theme/images/image.jpg'));
+        }
+        
+        return Storage::url($cover['path']);        
     }
 
     public function getLocationPeriod()
