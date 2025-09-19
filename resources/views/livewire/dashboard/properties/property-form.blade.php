@@ -75,13 +75,13 @@
                             <div class="col-12 col-md-6 col-lg-6">
                                 <div class="form-group">
                                     <label class="labelforms"><b>Link Booking.com</b></label>
-                                    <input type="text" class="form-control" placeholder="Link Booking.com" name="url_booking" value="{{ old('url_booking') }}">
+                                    <input type="text" class="form-control" placeholder="Link Booking.com" wire:model="url_booking">
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 col-lg-6">
                                 <div class="form-group">
                                     <label class="labelforms"><b>Link Airbnb</b></label>
-                                    <input type="text" class="form-control" placeholder="Link Airbnb" name="url_arbnb" value="{{ old('url_arbnb') }}">
+                                    <input type="text" class="form-control" placeholder="Link Airbnb" wire:model="url_arbnb">
                                 </div>
                             </div>                    
                         </div>
@@ -89,33 +89,33 @@
                             <div class="col-12 col-md-6 col-lg-5">   
                                 <div class="form-group">
                                     <label class="labelforms"><b>*Título</b></label>
-                                    <input type="text" class="form-control" wire:model="title">
+                                    <input type="text" class="form-control @error('title') is-invalid @enderror"  wire:model="title">
+                                    @error('title')
+                                        <span class="error erro-feedback">{{ $message }}</span>
+                                    @enderror
                                 </div>                                                    
                             </div>   
                             <div class="col-12 col-md-3 col-lg-2"> 
                                 <div class="form-group">
                                     <label class="labelforms"><b>Referência</b></label>
-                                    <input type="text" class="form-control" id="reference" wire:model="reference">
+                                    <input type="text" class="form-control" wire:model="reference">
                                 </div>
                             </div> 
                             <div class="col-12 col-md-3 col-lg-2">
                                 <div class="form-group" x-data="{ value: @entangle('expired_at').defer }" x-init="initFlatpickr()" x-ref="datepicker">
                                     <label class="labelforms"><b>Data de Expiração</b></label>
-                                    <input type="text" class="form-control @error('expired_at') is-invalid @enderror" wire:model="expired_at" id="datepicker" />
-                                    @error('expired_at')
-                                        <span class="error erro-feedback">{{ $message }}</span>
-                                    @enderror                                                                                                                                      
+                                    <input type="text" class="form-control" wire:model="expired_at" id="datepicker" />                                                                                                                                                                          
                                 </div>
                             </div> 
                             <div class="col-12 col-md-6 col-lg-3"> 
                                 <div class="form-group">
                                     <label class="labelforms text-muted"><b>*Categoria</b></label>
-                                    <select class="form-control" name="categoria">
+                                    <select class="form-control @error('category') is-invalid @enderror" wire:model="category">
                                         <option value=""> Selecione </option>
-                                        <option value="Imóvel Residencial" {{(old('categoria') == 'Imóvel Residencial' ? 'selected' : '')}}>Imóvel Residencial</option>
-                                        <option value="Comercial/Industrial" {{(old('categoria') == 'Comercial/Industrial' ? 'selected' : '')}}>Comercial/Industrial</option>
-                                        <option value="Terreno" {{(old('categoria') == 'Terreno' ? 'selected' : '')}}>Terreno</option>
-                                        <option value="Rural" {{(old('categoria') == 'Rural' ? 'selected' : '')}}>Rural</option>
+                                        <option value="Imóvel Residencial">Imóvel Residencial</option>
+                                        <option value="Comercial/Industrial">Comercial/Industrial</option>
+                                        <option value="Terreno">Terreno</option>
+                                        <option value="Rural">Rural</option>
                                     </select>
                                 </div>
                             </div>               
@@ -124,24 +124,24 @@
                             <div class="col-12 col-md-6 col-lg-3"> 
                                 <div class="form-group">
                                     <label class="labelforms text-muted"><b>*Tipo</b></label>
-                                    <select class="form-control" name="tipo">
+                                    <select class="form-control @error('type') is-invalid @enderror" wire:model="type">
                                         <option value=""> Selecione </option>
-                                        <option value="Casa" {{(old('tipo') == 'Casa' ? 'selected' : '')}}>Casa</option>
-                                        <option value="Cobertura" {{(old('tipo') == 'Cobertura' ? 'selected' : '')}}>Cobertura</option>
-                                        <option value="Apartamento" {{(old('tipo') == 'Apartamento' ? 'selected' : '')}}>Apartamento</option>
-                                        <option value="Studio" {{(old('tipo') == 'Studio' ? 'selected' : '')}}>Studio</option>
-                                        <option value="Kitnet" {{(old('tipo') == 'Kitnet' ? 'selected' : '')}}>Kitnet</option>
-                                        <option value="Sala Comercial" {{(old('tipo') == 'Sala Comercial' ? 'selected' : '')}}>Sala Comercial</option>
-                                        <option value="Salão de Festa" {{(old('tipo') == 'Salão de Festa' ? 'selected' : '')}}>Salão de Festa</option>
-                                        <option value="Chalé" {{(old('tipo') == 'Chalé' ? 'selected' : '')}}>Chalé</option>
-                                        <option value="Hotel Pousada" {{(old('tipo') == 'Hotel Pousada' ? 'selected' : '')}}>Hotel/Pousada</option>
-                                        <option value="Sítio" {{(old('tipo') == 'Sítio' ? 'selected' : '')}}>Sítio</option>
-                                        <option value="Sobrado" {{(old('tipo') == 'Sobrado' ? 'selected' : '')}}>Sobrado</option>
-                                        <option value="Loja" {{(old('tipo') == 'Loja' ? 'selected' : '')}}>Loja</option>
-                                        <option value="Terreno em Condomínio" {{(old('tipo') == 'Terreno em Condomínio' ? 'selected' : '')}}>Terreno em Condomínio</option>
-                                        <option value="Terreno" {{(old('tipo') == 'Terreno' ? 'selected' : '')}}>Terreno</option>
-                                        <option value="Fazenda" {{(old('tipo') == 'Fazenda' ? 'selected' : '')}}>Fazenda</option>
-                                        <option value="Prédio Edifício Inteiro" {{(old('tipo') == 'Prédio Edifício Inteiro' ? 'selected' : '')}}>Prédio/Edifício Inteiro</option>
+                                        <option value="Casa">Casa</option>
+                                        <option value="Cobertura">Cobertura</option>
+                                        <option value="Apartamento">Apartamento</option>
+                                        <option value="Studio">Studio</option>
+                                        <option value="Kitnet">Kitnet</option>
+                                        <option value="Sala Comercial">Sala Comercial</option>
+                                        <option value="Salão de Festa">Salão de Festa</option>
+                                        <option value="Chalé">Chalé</option>
+                                        <option value="Hotel Pousada">Hotel/Pousada</option>
+                                        <option value="Sítio">Sítio</option>
+                                        <option value="Sobrado">Sobrado</option>
+                                        <option value="Loja">Loja</option>
+                                        <option value="Terreno em Condomínio">Terreno em Condomínio</option>
+                                        <option value="Terreno">Terreno</option>
+                                        <option value="Fazenda">Fazenda</option>
+                                        <option value="Prédio Edifício Inteiro">Prédio/Edifício Inteiro</option>
                                     </select>
                                 </div>
                             </div>
@@ -152,49 +152,61 @@
                                 <div class="form-group">
                                     <label class="labelforms text-muted"><b>Deseja exibir os valores?</b> <small class="text-info">(valores exibidos no layout do cliente)</small></label>
                                     <div class="form-check">
-                                        <input id="exibivaloresim" class="form-check-input" type="radio" value="1" name="exibivalores" {{(old('exibivalores') == '1' ? 'checked' : '')}}>
-                                        <label for="exibivaloressim" class="form-check-label mr-5">Sim</label>
-                                        <input id="exibivaloresnao" class="form-check-input" type="radio" value="0" name="exibivalores" {{(old('exibivalores') == '0' ? 'checked' : '')}}>
-                                        <label for="exibivaloresnao" class="form-check-label">Não</label>
+                                        <input id="display_valuessim" class="form-check-input" type="radio" value="1" wire:model="display_values">
+                                        <label for="display_valuessim" class="form-check-label mr-5">Sim</label>
+                                        <input id="display_valuesnao" class="form-check-input" type="radio" value="0" wire:model="display_values">
+                                        <label for="display_valuesnao" class="form-check-label">Não</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-3 col-lg-2"> 
-                                <div class="form-group">
+                                <div class="form-group" 
+                                    x-data="maskMoeda(@entangle('sale_value'))"
+                                    x-init="init()"         
+                                    >
                                     <label class="labelforms text-muted"><b>Venda</b></label>
-                                    <input type="text" class="form-control mask-money valor_venda" name="valor_venda" value="{{old('valor_venda')}}">
+                                    <input type="text" class="form-control" x-model="display">
                                 </div>
                             </div>
                             <div class="col-12 col-md-3 col-lg-2"> 
-                                <div class="form-group">
+                                <div class="form-group"
+                                    x-data="maskMoeda(@entangle('rental_value'))"
+                                    x-init="init()"         
+                                    >
                                     <label class="labelforms text-muted"><b>Locação</b></label>
-                                    <input type="text" class="form-control mask-money valor_locacao" name="valor_locacao" value="{{old('valor_locacao')}}">
+                                    <input type="text" class="form-control" x-model="display">
                                 </div>
                             </div>
                             <div class="col-12 col-md-3 col-lg-2"> 
-                                <div class="form-group">
+                                <div class="form-group"
+                                    x-data="maskMoeda(@entangle('iptu'))"
+                                    x-init="init()"         
+                                    >
                                     <label class="labelforms text-muted"><b>IPTU</b></label>
-                                    <input type="text" class="form-control mask-money" name="iptu" value="{{old('iptu')}}">
+                                    <input type="text" class="form-control" x-model="display">
                                 </div>
                             </div>
                             <div class="col-12 col-md-3 col-lg-2"> 
-                                <div class="form-group">
+                                <div class="form-group"
+                                    x-data="maskMoeda(@entangle('condominium'))"
+                                    x-init="init()"         
+                                    >
                                     <label class="labelforms text-muted"><b>Condomínio</b></label>
-                                    <input type="text" class="form-control mask-money" name="condominio" value="{{old('condominio')}}">
+                                    <input type="text" class="form-control" x-model="display">
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 col-lg-4"> 
                                 <div class="form-group">
                                     <label class="labelforms text-muted"><b>Período da Locação</b></label>
-                                    <select class="form-control" name="locacao_periodo">
+                                    <select class="form-control" wire:model="location_period">
                                         <option value=""> Selecione </option>
-                                        <option value="1" {{(old('locacao_periodo') == '1' ? 'selected' : '')}}>Diária</option>
-                                        <option value="2" {{(old('locacao_periodo') == '2' ? 'selected' : '')}}>Quinzenal</option>
-                                        <option value="3" {{(old('locacao_periodo') == '3' ? 'selected' : '')}}>Mensal</option>
-                                        <option value="4" {{(old('locacao_periodo') == '4' ? 'selected' : '')}}>Trimestral</option>
-                                        <option value="5" {{(old('locacao_periodo') == '5' ? 'selected' : '')}}>Semestral</option>
-                                        <option value="6" {{(old('locacao_periodo') == '6' ? 'selected' : '')}}>Anual</option>
-                                        <option value="7" {{(old('locacao_periodo') == '7' ? 'selected' : '')}}>Bianual</option>
+                                        <option value="1">Diária</option>
+                                        <option value="2">Quinzenal</option>
+                                        <option value="3">Mensal</option>
+                                        <option value="4">Trimestral</option>
+                                        <option value="5">Semestral</option>
+                                        <option value="6">Anual</option>
+                                        <option value="7">Bianual</option>
                                     </select>
                                 </div>
                             </div>
@@ -205,18 +217,18 @@
                                 <div class="form-group">
                                     <label class="labelforms text-muted"><b>Deseja exibir o endereço? <small class="text-info">(opção não exibir retornará somente a cidade e estado)</small></b></label>
                                     <div class="form-check">
-                                        <input id="exibirenderecosim" class="form-check-input" type="radio" value="1" name="exibirendereco" {{(old('exibirendereco') == '1' ? 'checked' : '')}}>
-                                        <label for="exibirenderecosim" class="form-check-label mr-5">Sim</label>
-                                        <input id="exibirendereconao" class="form-check-input" type="radio" value="0" name="exibirendereco" {{(old('exibirendereco') == '0' ? 'checked' : '' )}}>
-                                        <label for="exibirendereconao" class="form-check-label">Não</label>
+                                        <input id="display_addresssim" class="form-check-input" type="radio" value="1" wire:model="display_address">
+                                        <label for="display_addresssim" class="form-check-label mr-5">Sim</label>
+                                        <input id="display_addressnao" class="form-check-input" type="radio" value="0" wire:model="display_address">
+                                        <label for="display_addressnao" class="form-check-label">Não</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 col-lg-2"> 
                                 <div class="form-group">
                                     <label class="labelforms"><b>*CEP:</b></label>
-                                    <input type="text" x-mask="99.999-999" class="form-control @error('postcode') is-invalid @enderror" id="postcode" wire:model.lazy="postcode">
-                                    @error('postcode')
+                                    <input type="text" x-mask="99.999-999" class="form-control @error('zipcode') is-invalid @enderror" id="zipcode" wire:model.lazy="zipcode">
+                                    @error('zipcode')
                                         <span class="error erro-feedback">{{ $message }}</span>
                                     @enderror                                                    
                                 </div>
@@ -251,7 +263,7 @@
                             <div class="col-12 col-md-6 col-lg-2"> 
                                 <div class="form-group">
                                     <label class="labelforms"><b>Número:</b></label>
-                                    <input type="text" class="form-control" placeholder="Número do Endereço" id="number" wire:model="number">
+                                    <input type="text" class="form-control" id="number" wire:model="number">
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 col-lg-3"> 
@@ -261,62 +273,157 @@
                                 </div>
                             </div>   
                         </div>
+
+                        <hr class="my-4 border-gray-300">
+
+                        <div class="row mb-2">
+                            <div class="col-12 col-md-6 col-lg-2">   
+                                <div class="form-group">
+                                    <label class="labelforms text-muted"><b>*Dormitórios</b></label>
+                                    <input type="text" class="form-control" wire:model="dormitories">
+                                </div>                                                    
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-2">   
+                                <div class="form-group">
+                                    <label class="labelforms text-muted"><b>Suítes</b></label>
+                                    <input type="text" class="form-control" wire:model="suites">
+                                </div>                                                    
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-2">   
+                                <div class="form-group">
+                                    <label class="labelforms text-muted"><b>Banheiros</b></label>
+                                    <input type="text" class="form-control" wire:model="bathrooms">
+                                </div>                                                    
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-2">   
+                                <div class="form-group">
+                                    <label class="labelforms text-muted"><b>Salas</b></label>
+                                    <input type="text" class="form-control" wire:model="rooms">
+                                </div>                                                    
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-2">   
+                                <div class="form-group">
+                                    <label class="labelforms text-muted"><b>Garagem</b></label>
+                                    <input type="text" class="form-control" wire:model="garage">
+                                </div>                                                    
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-2">   
+                                <div class="form-group">
+                                    <label class="labelforms text-muted"><b>Garagem Coberta</b></label>
+                                    <input type="text" class="form-control" wire:model="covered_garage">
+                                </div>                                                    
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-2">   
+                                <div class="form-group">
+                                    <label class="labelforms text-muted"><b>Ano de Construção</b></label>
+                                    <input type="text" class="form-control" wire:model="construction_year">
+                                </div>                                                    
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-2">   
+                                <div class="form-group">
+                                    <label class="labelforms text-muted"><b>Área Total</b></label>
+                                    <input type="text" class="form-control" wire:model="total_area">
+                                </div>                                                    
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-2">   
+                                <div class="form-group">
+                                    <label class="labelforms text-muted"><b>Área Útil</b></label>
+                                    <input type="text" class="form-control" wire:model="useful_area">
+                                </div>                                                    
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-2">   
+                                <div class="form-group">
+                                    <label class="labelforms text-muted"><b>Medidas</b></label>
+                                    <select class="form-control" wire:model="measures">
+                                        <option value=""> Selecione </option>
+                                        <option value="m²">m²</option>
+                                        <option value="km²">km²</option>
+                                        <option value="hectare">hectare</option>
+                                        <option value="alqueire">alqueire</option>
+                                    </select>
+                                </div>                                                    
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-2">   
+                                <div class="form-group">
+                                    <label class="labelforms text-muted"><b>Latitude</b></label>
+                                    <input type="text" class="form-control" wire:model="latitude">
+                                </div>                                                    
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-2">   
+                                <div class="form-group">
+                                    <label class="labelforms text-muted"><b>Longitude</b></label>
+                                    <input type="text" class="form-control" wire:model="longitude">
+                                </div>                                                    
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-12" wire:ignore>   
+                                <label class="labelforms text-muted"><b>Descrição do Imóvel</b></label>
+                                <textarea id="description" wire:model="description">{{ $description ?? '' }}</textarea>                                                                                     
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-12">   
+                                <label class="labelforms text-muted"><b>Notas Adicionais</b></label>
+                                <textarea id="inputDescription" class="form-control" rows="5" wire:model="additional_notes">{{ $additional_notes ?? 'Os valores podem ser alterados sem aviso prévio. Informações e metragens sujeitos a confirmações. Crédito / Financiamento dependem de aprovação.'}}</textarea>                                                      
+                            </div>
+                        </div>  
                                                 
                     </div>
                 </div>
             </div>
             <div x-show="tab === 'estrutura'" x-transition>
-                <div class="bg-white">
+                <div class="bg-white p-4">
                     <div class="row mb-4">                                     
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3">                                        
                             <!-- checkbox -->
                             <div class="form-group p-3 mb-1">
                                 <div class="form-check mb-2">
-                                    <input id="areadelazer" class="form-check-input" type="checkbox" name="areadelazer" {{ (old('areadelazer') == 'on' || old('areadelazer') == true ? 'checked' : '') }}>
+                                    <input id="areadelazer" class="form-check-input" type="checkbox" wire:model="areadelazer">
                                     <label for="areadelazer" class="form-check-label">Área de Lazer</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="ar_condicionado" class="form-check-input" type="checkbox" name="ar_condicionado" {{ (old('ar_condicionado') == 'on' || old('ar_condicionado') == true ? 'checked' : '' ) }}>
+                                    <input id="ar_condicionado" class="form-check-input" type="checkbox" wire:model="ar_condicionado">
                                     <label for="ar_condicionado" class="form-check-label">Ar Condicionado</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="aquecedor_solar" class="form-check-input" type="checkbox" name="aquecedor_solar" {{ (old('aquecedor_solar') == 'on' || old('aquecedor_solar') == true ? 'checked' : '') }}>
+                                    <input id="aquecedor_solar" class="form-check-input" type="checkbox" wire:model="aquecedor_solar">
                                     <label for="aquecedor_solar" class="form-check-label">Aquecedor Solar</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="armarionautico" class="form-check-input" type="checkbox" name="armarionautico" {{ (old('armarionautico') == 'on' || old('armarionautico') == true ? 'checked' : '' ) }}>
+                                    <input id="armarionautico" class="form-check-input" type="checkbox" wire:model="armarionautico">
                                     <label for="armarionautico" class="form-check-label">Armário Náutico</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="balcaoamericano" class="form-check-input" type="checkbox"  name="balcaoamericano" {{ (old('balcaoamericano') == 'on' || old('balcaoamericano') == true ? 'checked' : '' ) }}>
+                                    <input id="balcaoamericano" class="form-check-input" type="checkbox"  wire:model="balcaoamericano">
                                     <label for="balcaoamericano" class="form-check-label">Balcão Americano</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="banheira" class="form-check-input" type="checkbox"  name="banheira" {{ (old('banheira') == 'on' || old('banheira') == true ? 'checked' : '' ) }}>
+                                    <input id="banheira" class="form-check-input" type="checkbox"  wire:model="banheira">
                                     <label for="banheira" class="form-check-label">Banheira</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="banheirosocial" class="form-check-input" type="checkbox"  name="banheirosocial" {{ (old('banheirosocial') == 'on' || old('banheirosocial') == true ? 'checked' : '') }}>
+                                    <input id="banheirosocial" class="form-check-input" type="checkbox"  wire:model="banheirosocial">
                                     <label for="banheirosocial" class="form-check-label">Banheiro Social</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="bar" class="form-check-input" type="checkbox" name="bar" {{ (old('bar') == 'on' || old('bar') == true ? 'checked' : '' ) }}>
+                                    <input id="bar" class="form-check-input" type="checkbox" wire:model="bar">
                                     <label for="bar" class="form-check-label">Bar Social</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="biblioteca" class="form-check-input" type="checkbox"  name="biblioteca" {{ (old('biblioteca') == 'on' || old('biblioteca') == true ? 'checked' : '' ) }}>
+                                    <input id="biblioteca" class="form-check-input" type="checkbox"  wire:model="biblioteca">
                                     <label for="biblioteca" class="form-check-label">Biblioteca</label>
                                 </div>  
                                 <div class="form-check mb-2">
-                                    <input id="brinquedoteca" class="form-check-input" type="checkbox"  name="brinquedoteca" {{ (old('brinquedoteca') == 'on' || old('brinquedoteca') == true ? 'checked' : '') }}>
+                                    <input id="brinquedoteca" class="form-check-input" type="checkbox"  wire:model="brinquedoteca">
                                     <label for="brinquedoteca" class="form-check-label">Brinquedoteca</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="condominiofechado" class="form-check-input" type="checkbox"  name="condominiofechado" {{ (old('condominiofechado') == 'on' || old('condominiofechado') == true ? 'checked' : '') }}>
+                                    <input id="condominiofechado" class="form-check-input" type="checkbox"  wire:model="condominiofechado">
                                     <label for="condominiofechado" class="form-check-label">Condomínio fechado</label>
                                 </div> 
                                 <div class="form-check mb-2">
-                                    <input id="cozinha_planejada" class="form-check-input" type="checkbox"  name="cozinha_planejada" {{ (old('cozinha_planejada') == 'on' || old('cozinha_planejada') == true ? 'checked' : '' ) }}>
+                                    <input id="cozinha_planejada" class="form-check-input" type="checkbox"  wire:model="cozinha_planejada">
                                     <label for="cozinha_planejada" class="form-check-label">Cozinha Planejada</label>
                                 </div>                        
                             </div>
@@ -325,51 +432,51 @@
                             <!-- checkbox -->
                             <div class="form-group p-3 mb-1"> 
                                 <div class="form-check mb-2">
-                                    <input id="cozinha_americana" class="form-check-input" type="checkbox"  name="cozinha_americana" {{ (old('cozinha_americana') == 'on' || old('cozinha_americana') == true ? 'checked' : '' ) }}>
+                                    <input id="cozinha_americana" class="form-check-input" type="checkbox"  wire:model="cozinha_americana">
                                     <label for="cozinha_americana" class="form-check-label">Cozinha Americana</label>
                                 </div>                                          
                                 <div class="form-check mb-2">
-                                    <input id="churrasqueira" class="form-check-input" type="checkbox"  name="churrasqueira" {{ (old('churrasqueira') == 'on' || old('churrasqueira') == true ? 'checked' : '' ) }}>
+                                    <input id="churrasqueira" class="form-check-input" type="checkbox"  wire:model="churrasqueira">
                                     <label for="churrasqueira" class="form-check-label">Churrasqueira</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="dispensa" class="form-check-input" type="checkbox"  name="dispensa" {{ (old('dispensa') == 'on' || old('dispensa') == true ? 'checked' : '' ) }}>
+                                    <input id="dispensa" class="form-check-input" type="checkbox"  wire:model="dispensa">
                                     <label for="dispensa" class="form-check-label">Despensa</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="edicula" class="form-check-input" type="checkbox" name="edicula" {{ (old('edicula') == 'on' || old('edicula') == true ? 'checked' : '' ) }}>
+                                    <input id="edicula" class="form-check-input" type="checkbox" wire:model="edicula">
                                     <label for="edicula" class="form-check-label">Edícula</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="elevador" class="form-check-input" type="checkbox"  name="elevador" {{ (old('elevador') == 'on' || old('elevador') == true ? 'checked' : '' ) }}>
+                                    <input id="elevador" class="form-check-input" type="checkbox"  wire:model="elevador">
                                     <label for="elevador" class="form-check-label">Elevador</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="escritorio" class="form-check-input" type="checkbox"  name="escritorio" {{ (old('escritorio') == 'on' || old('escritorio') == true ? 'checked' : '' ) }}>
+                                    <input id="escritorio" class="form-check-input" type="checkbox"  wire:model="escritorio">
                                     <label for="escritorio" class="form-check-label">Escritório</label>
                                 </div>                                            
                                 <div class="form-check mb-2">
-                                    <input id="espaco_fitness" class="form-check-input" type="checkbox"  name="espaco_fitness" {{ (old('espaco_fitness') == 'on' || old('espaco_fitness') == true ? 'checked' : '') }}>
+                                    <input id="espaco_fitness" class="form-check-input" type="checkbox"  wire:model="espaco_fitness">
                                     <label for="espaco_fitness" class="form-check-label">Espaço Fitness</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="estacionamento" class="form-check-input" type="checkbox"  name="estacionamento" {{ (old('estacionamento') == 'on' || old('estacionamento') == true ? 'checked' : '' ) }}>
+                                    <input id="estacionamento" class="form-check-input" type="checkbox"  wire:model="estacionamento">
                                     <label for="estacionamento" class="form-check-label">Estacionamento</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="fornodepizza" class="form-check-input" type="checkbox"  name="fornodepizza" {{ (old('fornodepizza') == 'on' || old('fornodepizza') == true ? 'checked' : '' ) }}>
+                                    <input id="fornodepizza" class="form-check-input" type="checkbox"  wire:model="fornodepizza">
                                     <label for="fornodepizza" class="form-check-label">Forno de Pizza</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="geladeira" class="form-check-input" type="checkbox"  name="geladeira" {{ (old('geladeira') == 'on' || old('geladeira') == true ? 'checked' : '') }}>
+                                    <input id="geladeira" class="form-check-input" type="checkbox"  wire:model="geladeira">
                                     <label for="geladeira" class="form-check-label">Geladeira</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="geradoreletrico" class="form-check-input" type="checkbox"  name="geradoreletrico" {{ (old('geradoreletrico') == 'on' || old('geradoreletrico') == true ? 'checked' : '') }}>
+                                    <input id="geradoreletrico" class="form-check-input" type="checkbox"  wire:model="geradoreletrico">
                                     <label for="geradoreletrico" class="form-check-label">Gerador elétrico</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="interfone" class="form-check-input" type="checkbox"  name="interfone" {{ (old('interfone') == 'on' || old('interfone') == true ? 'checked' : '') }}>
+                                    <input id="interfone" class="form-check-input" type="checkbox"  wire:model="interfone">
                                     <label for="interfone" class="form-check-label">Interfone</label>
                                 </div>
                             </div>
@@ -378,51 +485,51 @@
                             <!-- checkbox -->
                             <div class="form-group p-3 mb-1">                                            
                                 <div class="form-check mb-2">
-                                    <input id="internet" class="form-check-input" type="checkbox"  name="internet" {{ (old('internet') == 'on' || old('internet') == true ? 'checked' : '') }}>
+                                    <input id="internet" class="form-check-input" type="checkbox"  wire:model="internet">
                                     <label for="internet" class="form-check-label">Internet</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="jardim" class="form-check-input" type="checkbox"  name="jardim" {{ (old('jardim') == 'on' || old('jardim') == true ? 'checked' : '') }}>
+                                    <input id="jardim" class="form-check-input" type="checkbox"  wire:model="jardim">
                                     <label for="jardim" class="form-check-label">Jardim</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="lareira" class="form-check-input" type="checkbox"  name="lareira" {{ (old('lareira') == 'on' || old('lareira') == true ? 'checked' : '' ) }}>
+                                    <input id="lareira" class="form-check-input" type="checkbox"  wire:model="lareira">
                                     <label for="lareira" class="form-check-label">Lareira</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="lavabo" class="form-check-input" type="checkbox"  name="lavabo" {{ (old('lavabo') == 'on' || old('lavabo') == true ? 'checked' : '' ) }}>
+                                    <input id="lavabo" class="form-check-input" type="checkbox"  wire:model="lavabo">
                                     <label for="lavabo" class="form-check-label">Lavabo</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="lavanderia" class="form-check-input" type="checkbox"  name="lavanderia" {{ (old('lavanderia') == 'on' || old('lavanderia') == true ? 'checked' : '') }}>
+                                    <input id="lavanderia" class="form-check-input" type="checkbox"  wire:model="lavanderia">
                                     <label for="lavanderia" class="form-check-label">Lavanderia</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="mobiliado" class="form-check-input" type="checkbox"  name="mobiliado" {{ (old('mobiliado') == 'on' || old('mobiliado') == true ? 'checked' : '' ) }}>
+                                    <input id="mobiliado" class="form-check-input" type="checkbox"  wire:model="mobiliado">
                                     <label for="mobiliado" class="form-check-label">Mobiliado</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="pertodeescolas" class="form-check-input" type="checkbox" name="pertodeescolas" {{ (old('pertodeescolas') == 'on' || old('pertodeescolas') == true ? 'checked' : '') }}>
+                                    <input id="pertodeescolas" class="form-check-input" type="checkbox" wire:model="pertodeescolas">
                                     <label for="pertodeescolas" class="form-check-label">Perto de Escolas</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="piscina" class="form-check-input" type="checkbox" name="piscina" {{ (old('piscina') == 'on' || old('piscina') == true ? 'checked' : '' ) }}>
+                                    <input id="piscina" class="form-check-input" type="checkbox" wire:model="piscina">
                                     <label for="piscina" class="form-check-label">Piscina</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="portaria24hs" class="form-check-input" type="checkbox"  name="portaria24hs" {{ (old('portaria24hs') == 'on' || old('portaria24hs') == true ? 'checked' : '' ) }}>
+                                    <input id="portaria24hs" class="form-check-input" type="checkbox"  wire:model="portaria24hs">
                                     <label for="portaria24hs" class="form-check-label">Portaria 24 Horas</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="quadrapoliesportiva" class="form-check-input" type="checkbox"  name="quadrapoliesportiva" {{ (old('quadrapoliesportiva') == 'on' || old('quadrapoliesportiva') == true ? 'checked' : '') }}>
+                                    <input id="quadrapoliesportiva" class="form-check-input" type="checkbox"  wire:model="quadrapoliesportiva">
                                     <label for="quadrapoliesportiva" class="form-check-label">Quadra poliesportiva</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="quintal" class="form-check-input" type="checkbox"  name="quintal" {{ (old('quintal') == 'on' || old('quintal') == true ? 'checked' : '' ) }}>
+                                    <input id="quintal" class="form-check-input" type="checkbox"  wire:model="quintal">
                                     <label for="quintal" class="form-check-label">Quintal</label>
                                 </div> 
                                 <div class="form-check mb-2">
-                                    <input id="sauna" class="form-check-input" type="checkbox"  name="sauna" {{ (old('sauna') == 'on' || old('sauna') == true ? 'checked' : '' ) }}>
+                                    <input id="sauna" class="form-check-input" type="checkbox"  wire:model="sauna">
                                     <label for="sauna" class="form-check-label">Sauna</label>
                                 </div>                                           
                             </div>
@@ -431,39 +538,39 @@
                             <!-- checkbox -->
                             <div class="form-group p-3 mb-1"> 
                                 <div class="form-check mb-2">
-                                    <input id="saladetv" class="form-check-input" type="checkbox"  name="saladetv" {{ (old('saladetv') == 'on' || old('saladetv') == true ? 'checked' : '') }}>
+                                    <input id="saladetv" class="form-check-input" type="checkbox"  wire:model="saladetv">
                                     <label for="saladetv" class="form-check-label">Sala de TV</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="salaodefestas" class="form-check-input" type="checkbox"  name="salaodefestas" {{ (old('salaodefestas') == 'on' || old('salaodefestas') == true ? 'checked' : '') }}>
+                                    <input id="salaodefestas" class="form-check-input" type="checkbox"  wire:model="salaodefestas">
                                     <label for="salaodefestas" class="form-check-label">Salão de Festas</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="salaodejogos" class="form-check-input" type="checkbox"  name="salaodejogos" {{ (old('salaodejogos') == 'on' || old('salaodejogos') == true ? 'checked' : '') }}>
+                                    <input id="salaodejogos" class="form-check-input" type="checkbox"  wire:model="salaodejogos">
                                     <label for="salaodejogos" class="form-check-label">Salão de Jogos</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="zeladoria" class="form-check-input" type="checkbox"  name="zeladoria" {{ (old('zeladoria') == 'on' || old('zeladoria') == true ? 'checked' : '' ) }}>
+                                    <input id="zeladoria" class="form-check-input" type="checkbox"  wire:model="zeladoria">
                                     <label for="zeladoria" class="form-check-label">Serviço de Zeladoria</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="sistemadealarme" class="form-check-input" type="checkbox"  name="sistemadealarme" {{ (old('sistemadealarme') == 'on' || old('sistemadealarme') == true ? 'checked' : '') }}>
+                                    <input id="sistemadealarme" class="form-check-input" type="checkbox"  wire:model="sistemadealarme">
                                     <label for="sistemadealarme" class="form-check-label">Sistema de alarme</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="permiteanimais" class="form-check-input" type="checkbox"  name="permiteanimais" {{ (old('permiteanimais') == 'on' || old('permiteanimais') == true ? 'checked' : '') }}>
+                                    <input id="permiteanimais" class="form-check-input" type="checkbox"  wire:model="permiteanimais">
                                     <label for="permiteanimais" class="form-check-label">Permite animais</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="varandagourmet" class="form-check-input" type="checkbox"  name="varandagourmet" {{ (old('varandagourmet') == 'on' || old('varandagourmet') == true ? 'checked' : '') }}>
+                                    <input id="varandagourmet" class="form-check-input" type="checkbox"  wire:model="varandagourmet">
                                     <label for="varandagourmet" class="form-check-label">Varanda Gourmet</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="vista_para_mar" class="form-check-input" type="checkbox"  name="vista_para_mar" {{ (old('vista_para_mar') == 'on' || old('vista_para_mar') == true ? 'checked' : '' ) }}>
+                                    <input id="vista_para_mar" class="form-check-input" type="checkbox"  wire:model="vista_para_mar">
                                     <label for="vista_para_mar" class="form-check-label">Vista para o Mar</label>
                                 </div>
                                 <div class="form-check mb-2">
-                                    <input id="ventilador_teto" class="form-check-input" type="checkbox"  name="ventilador_teto" {{ (old('ventilador_teto') == 'on' || old('ventilador_teto') == true ? 'checked' : '' ) }}>
+                                    <input id="ventilador_teto" class="form-check-input" type="checkbox"  wire:model="ventilador_teto">
                                     <label for="ventilador_teto" class="form-check-label">Ventilador de Teto</label>
                                 </div>    
                             </div>
@@ -478,10 +585,10 @@
                             <div class="form-group text-muted">
                                 <label class="labelforms"><b>Deseja exibir uma Marca D'agua? </b><small class="text-info">(esta opção permite inserir uma marca em todas as imagens)</small></label>
                                 <div class="form-check">
-                                    <input id="exibirmarcadaguasim" class="form-check-input" type="radio" value="1" name="exibirmarcadagua" {{(old('exibirmarcadagua') == '1' ? 'checked' : '')}}>
-                                    <label for="exibirmarcadaguasim" class="form-check-label mr-5">Sim</label>
-                                    <input id="exibirmarcadaguanao" class="form-check-input" type="radio" value="0" name="exibirmarcadagua" {{(old('exibirmarcadagua') == '0' ? 'checked' : '')}}>
-                                    <label for="exibirmarcadaguanao" class="form-check-label">Não</label>
+                                    <input id="display_marked_watersim" class="form-check-input" type="radio" value="1" wire:model="display_marked_water">
+                                    <label for="display_marked_watersim" class="form-check-label mr-5">Sim</label>
+                                    <input id="display_marked_waternao" class="form-check-input" type="radio" value="0" wire:model="display_marked_water">
+                                    <label for="display_marked_waternao" class="form-check-label">Não</label>
                                 </div>
                             </div>
                         </div>
@@ -508,14 +615,25 @@
                     <div x-data="{ showModal: false, imageUrl: null }">
                         <div class="flex flex-wrap gap-4 mt-4">
                             {{-- Imagens já salvas (vindas do banco) --}}
-                                @foreach ($manifest->images ?? [] as $savedImage)
+                            @foreach ($property->images ?? [] as $savedImage)
                                 <div class="relative">
-                                    <img src="{{ Storage::url($savedImage->path) }}" class="w-40 h-40 object-cover rounded border cursor-pointer"
+                                    <img src="{{ Storage::url($savedImage->path) }}"
+                                        class="w-40 h-40 object-cover rounded border cursor-pointer
+                                                {{ $savedImage->cover ? 'ring-4 ring-green-500' : '' }}"
                                         @click="showModal = true; imageUrl = '{{ Storage::url($savedImage->path) }}'">
+
+                                    {{-- Botão de excluir --}}
                                     <button type="button"
                                             wire:click="removeSavedImage({{ $savedImage->id }})"
                                             class="absolute top-1 right-1 w-6 h-6 flex items-center justify-center bg-red-500 text-white rounded-full text-xs hover:bg-red-600">
                                         ✕
+                                    </button>
+
+                                    {{-- Botão de definir/remover capa --}}
+                                    <button type="button"
+                                            wire:click="toggleCover({{ $savedImage->id }})"
+                                            class="absolute bottom-1 left-1 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded hover:bg-black">
+                                        {{ $savedImage->cover ? 'Remover capa' : 'Definir capa' }}
                                     </button>
                                 </div>
                             @endforeach
@@ -549,11 +667,211 @@
                 </div>
             </div>
             <div x-show="tab === 'seo'" x-transition>
-                <div class="bg-white">
-
+                <div class="bg-white p-4">
+                    <div class="row mb-2 text-muted">                                   
+                            <div class="col-12 col-md-6 col-lg-6">   
+                                <div class="form-group">
+                                    <label class="labelforms"><b>Headline</b></label>
+                                    <input type="text" class="form-control" wire:model="headline">
+                                </div>                                                    
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-6"> 
+                                <div class="form-group">
+                                    <label class="labelforms"><b>Experiência</b></label>
+                                    <select class="form-control" wire:model="experience">
+                                        <option value=""> Selecione </option>
+                                        <option value="Cobertura">Cobertura</option>
+                                        <option value="Alto Padrão">Alto Padrão</option>
+                                        <option value="De Frente para o Mar">De Frente para o Mar</option>
+                                        <option value="Condomínio Fechado">Condomínio Fechado</option>
+                                        <option value="Compacto">Compacto</option>
+                                        <option value="Lojas e Salas">Lojas e Salas</option>
+                                    </select>
+                                </div>
+                            </div>                                    
+                            <div class="col-12 mb-1"> 
+                                <div class="form-group">
+                                    <label class="labelforms"><b>MetaTags</b></label>
+                                    <div 
+                                        x-data="{
+                                            tags: @entangle('metatags'),
+                                            input: '',
+                                            addTag() {
+                                                const trimmed = this.input.trim();
+                                                if (trimmed && !this.tags.includes(trimmed)) {
+                                                    this.tags.push(trimmed);
+                                                }
+                                                this.input = '';
+                                            },
+                                            removeTag(index) {
+                                                this.tags.splice(index, 1);
+                                            }
+                                        }"
+                                        class="p-4 border rounded shadow"
+                                        >
+                                        <div class="flex flex-wrap gap-2 mb-2">
+                                            <template x-for="(tag, index) in tags" :key="index">
+                                                <span class="flex items-center bg-blue-500 text-white px-3 py-1 rounded-full">
+                                                    <span x-text="tag"></span>
+                                                    <button type="button" @click="removeTag(index)" class="ml-2 hover:text-gray-200">&times;</button>
+                                                </span>
+                                            </template>
+                                        </div>                                    
+                                        <input 
+                                            type="text" 
+                                            x-model="input" 
+                                            @keydown.enter.prevent="addTag"
+                                            placeholder="Digite uma tag e pressione Enter"
+                                            class="border border-gray-300 rounded px-3 py-2 w-full"
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12"> 
+                                <div class="form-group">
+                                    <label class="labelforms"><b>Youtube Vídeo</b></label>
+                                    <textarea id="inputDescription" class="form-control" rows="5" wire:model="youtube_video"></textarea> 
+                                </div>
+                            </div> 
+                            <div class="col-12">   
+                                <label class="labelforms"><b>Mapa do Google</b> <small class="text-info">(Copie o código de incorporação do Google Maps e cole abaixo)</small></label>
+                                <textarea id="inputDescription" class="form-control" rows="5" wire:model="google_map"></textarea>                                                      
+                            </div>
+                        </div> 
+                    </div>
                 </div>
             </div>
-
+            <div class="row text-right p-4 bg-white">
+                <div class="col-12 mb-4">
+                    <button type="button" wire:click="save('draft')" class="btn btn-info"><i class="nav-icon fas fa-check mr-2"></i>{{ $property ? 'Atualizar Rascunho' : 'Cadastrar Rascunho' }}</button>
+                    <button type="button" wire:click="save('published')" class="btn btn-success"><i class="nav-icon fas fa-check mr-2"></i>{{ $property ? 'Atualizar e Publicar' : 'Cadastrar e Publicar' }}</button>
+                </div>
+            </div>
         </form>
     </div>
 </div>
+
+<script>
+
+    document.addEventListener('atualizado', function() {
+        Swal.fire({
+            title: 'Sucesso!',
+            text: "Imóvel atualizado com sucesso!",
+            icon: 'success',
+            timerProgressBar: true,
+            showConfirmButton: false,
+            timer: 3000 // Fecha automaticamente após 3 segundos
+        });
+    });
+
+    document.addEventListener('cadastrado', function() {
+        Swal.fire({
+            title: 'Sucesso!',
+            text: "Imóvel cadastrado com sucesso!",
+            icon: 'success',
+            timerProgressBar: true,
+            showConfirmButton: true,
+            timer: 3000 // Fecha automaticamente após 3 segundos
+        }).then(() => {
+            window.location.href = `/admin/imoveis/${tripId}/editar`;
+        });
+    });
+    
+    document.addEventListener("livewire:navigated", () => {
+        $('#description').summernote({
+            height: 300,
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']]
+            ],
+            callbacks: {
+                onChange: function(contents, $editable) {
+                    Livewire.dispatch('updatePrivacyPolicy', { value: contents });
+                }
+            }
+        });
+    });
+
+    function tagInputComponent(tagsBinding) {
+        return {
+            tags: tagsBinding,
+            input: '',
+            addTag() {
+                const trimmed = this.input.trim();
+                if (trimmed && !this.tags.includes(trimmed)) {
+                    this.tags.push(trimmed);
+                }
+                this.input = '';
+            },
+            removeTag(index) {
+                this.tags.splice(index, 1);
+            }
+        };
+    }
+
+    function initFlatpickr() {
+        let input = document.getElementById('datepicker');
+        if (!input) return;
+
+        flatpickr(input, {
+            dateFormat: "d/m/Y",
+            allowInput: true,
+            minDate: "today",
+            //defaultDate: input.value, // Carrega a data inicial corretamente
+            onChange: function(selectedDates, dateStr) {
+                input.dispatchEvent(new Event('input')); // Força atualização no Alpine.js
+            },
+            locale: {
+                firstDayOfWeek: 1,
+                weekdays: {
+                    shorthand: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+                    longhand: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
+                },
+                months: {
+                    shorthand: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    longhand: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                },
+                today: "Hoje",
+                clear: "Limpar",
+                weekAbbreviation: "Sem",
+                scrollTitle: "Role para aumentar",
+                toggleTitle: "Clique para alternar",
+            }
+        });
+    }
+
+    document.addEventListener("livewire:load", () => {
+        initFlatpickr();
+    });
+
+    document.addEventListener("livewire:updated", () => {
+        initFlatpickr();
+    });
+
+    function maskMoeda(livewireValue) {
+        return {
+            display: '',
+            raw: livewireValue,
+            init() {
+                this.display = this.format(this.raw);
+
+                this.$watch('display', value => {
+                    let number = value.replace(/\D/g, '');
+                    this.raw = number ? (number / 100) : null;
+                    this.display = this.format(this.raw);
+                });
+            },
+            format(value) {
+                if (!value) return '';
+                return (parseFloat(value)).toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                });
+            }
+        }
+    }
+</script>

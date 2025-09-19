@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('category');
             $table->string('type');
             $table->integer('status')->default('0');
-            $table->unsignedInteger('owner');
 
             /** pricing and values */
             $table->boolean('display_values')->nullable();
@@ -121,8 +120,7 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
             $table->integer('publication_type')->nullable();
-
-            $table->foreign('owner')->references('id')->on('users');
+            
         });
     }
 

@@ -18,12 +18,12 @@ class Property extends Model
         'option',
         'category',
         'type',
+        'expired_at',
         'display_values',
         'sale_value',
         'rental_value',
         'location_period',
         'iptu',
-        'construction_year',
         'reference',
         'condominium',
         'description',
@@ -44,14 +44,13 @@ class Property extends Model
         'number', 'complement', 'neighborhood', 'state', 'city',
 
         //accessories
-        'ar_condicionado', 'aquecedor_solar', 'bar', 'biblioteca', 'churrasqueira', 'estacionamento',
+        'ar_condicionado', 'areadelazer', 'aquecedor_solar', 'bar', 'banheirosocial', 'brinquedoteca',
+        'biblioteca', 'balcaoamericano', 'churrasqueira', 'condominiofechado', 'estacionamento',
         'cozinha_americana', 'cozinha_planejada', 'dispensa', 'edicula', 'espaco_fitness',
-        'escritorio', 'fornodepizza', 'armarionautico', 'portaria24hs', 'quintal', 'zeladoria',
-        'salaodejogos', 'saladetv', 'areadelazer', 'balcaoamericano', 'varandagourmet',
-        'banheirosocial', 'brinquedoteca', 'pertodeescolas', 'condominiofechado',
-        'interfone', 'sistemadealarme', 'jardim', 'salaodefestas', 'permiteanimais',
-        'quadrapoliesportiva', 'geradoreletrico', 'banheira', 'lareira', 'lavabo', 'lavanderia',
-        'elevador', 'mobiliado', 'vista_para_mar', 'piscina', 'sauna', 'ventilador_teto',
+        'escritorio', 'banheira', 'geradoreletrico', 'interfone', 'jardim', 'lareira', 'lavabo', 'lavanderia',
+        'elevador', 'mobiliado', 'vista_para_mar', 'piscina', 'quadrapoliesportiva', 'sauna', 'salaodejogos',
+        'salaodefestas', 'sistemadealarme', 'saladetv', 'ventilador_teto', 'armarionautico', 'fornodepizza',  
+        'portaria24hs', 'permiteanimais', 'pertodeescolas', 'quintal', 'zeladoria', 'varandagourmet', 
         'internet', 'geladeira',
 
         //SEO
@@ -170,90 +169,80 @@ class Property extends Model
         $this->attributes['display_marked_water'] = ($value == true || $value == '1' ? 1 : 0);
     }
     
-    public function setSaleAttribute($value)
-    {
-        $this->attributes['sale'] = ($value == true || $value == 'on' ? 1 : 0);
-    }
-
-    public function setLocationAttribute($value)
-    {
-        $this->attributes['location'] = ($value == true || $value == 'on' ? 1 : 0);
-    }
-
     public function setStatusAttribute($value)
     {
         $this->attributes['status'] = ($value == '1' ? 1 : 0);
     }
 
-    public function setSaleValueAttribute($value)
-    {
-        $this->attributes['sale_value'] = (!empty($value) ? floatval($this->convertStringToDouble($value)) : null);
-    }
+    // public function setSaleValueAttribute($value)
+    // {
+    //     $this->attributes['sale_value'] = (!empty($value) ? floatval($this->convertStringToDouble($value)) : null);
+    // }
 
-    public function getSaleValueAttribute($value)
-    {
-        if (empty($value)) {
-            return null;
-        }
+    // public function getSaleValueAttribute($value)
+    // {
+    //     if (empty($value)) {
+    //         return null;
+    //     }
 
-        return number_format($value, 2, ',', '.');
-    }
+    //     return number_format($value, 2, ',', '.');
+    // }
     
-    public function setRentalValueAttribute($value)
-    {
-        $this->attributes['rental_value'] = (!empty($value) ? floatval($this->convertStringToDouble($value)) : null);
-    }
+    // public function setRentalValueAttribute($value)
+    // {
+    //     $this->attributes['rental_value'] = (!empty($value) ? floatval($this->convertStringToDouble($value)) : null);
+    // }
 
-    public function getRentalValueAttribute($value)
-    {
-        if (empty($value)) {
-            return null;
-        }
+    // public function getRentalValueAttribute($value)
+    // {
+    //     if (empty($value)) {
+    //         return null;
+    //     }
 
-        return number_format($value, 2, ',', '.');
-    }
+    //     return number_format($value, 2, ',', '.');
+    // }
     
-    public function setIptuAttribute($value)
-    {
-        $this->attributes['iptu'] = (!empty($value) ? floatval($this->convertStringToDouble($value)) : null);
-    }
+    // public function setIptuAttribute($value)
+    // {
+    //     $this->attributes['iptu'] = (!empty($value) ? floatval($this->convertStringToDouble($value)) : null);
+    // }
 
-    public function getIptuAttribute($value)
-    {
-        if (empty($value)) {
-            return null;
-        }
+    // public function getIptuAttribute($value)
+    // {
+    //     if (empty($value)) {
+    //         return null;
+    //     }
 
-        return number_format($value, 2, ',', '.');
-    }
+    //     return number_format($value, 2, ',', '.');
+    // }
     
-    public function setCondominiumAttribute($value)
-    {
-        $this->attributes['condominium'] = (!empty($value) ? floatval($this->convertStringToDouble($value)) : null);
-    }
+    // public function setCondominiumAttribute($value)
+    // {
+    //     $this->attributes['condominium'] = (!empty($value) ? floatval($this->convertStringToDouble($value)) : null);
+    // }
 
-    public function getCondominiumAttribute($value)
-    {
-        if (empty($value)) {
-            return null;
-        }
+    // public function getCondominiumAttribute($value)
+    // {
+    //     if (empty($value)) {
+    //         return null;
+    //     }
 
-        return number_format($value, 2, ',', '.');
-    }
+    //     return number_format($value, 2, ',', '.');
+    // }
     
-    public function setZipcodeAttribute($value)
-    {
-        $this->attributes['zipcode'] = (!empty($value) ? $this->clearField($value) : null);
-    }
+    // public function setZipcodeAttribute($value)
+    // {
+    //     $this->attributes['zipcode'] = (!empty($value) ? $this->clearField($value) : null);
+    // }
 
-    public function getZipcodeAttribute($value)
-    {
-        if (empty($value)) {
-            return null;
-        }
+    // public function getZipcodeAttribute($value)
+    // {
+    //     if (empty($value)) {
+    //         return null;
+    //     }
 
-        return substr($value, 0, 5) . '-' . substr($value, 5, 3);
-    }
+    //     return substr($value, 0, 5) . '-' . substr($value, 5, 3);
+    // }
 
     public function setSlug()
     {
@@ -718,12 +707,34 @@ class Property extends Model
         $this->attributes['geladeira'] = (($value === true || $value === 'on') ? 1 : 0);
     }
 
+    public function setExpiredAtAttribute($value)
+    {
+        $this->attributes['expired_at'] = (!empty($value) ? $this->convertStringToDate($value) : null);
+    }
+    
+    public function getExpiredAtAttribute($value)
+    {
+        if (empty($value)) {
+            return null;
+        }
+        return date('d/m/Y', strtotime($value));
+    }
+
     private function convertStringToDouble($param)
     {
         if(empty($param)){
             return null;
         }
         return str_replace(',', '.', str_replace('.', '', $param));
+    }
+
+    private function convertStringToDate(?string $param)
+    {
+        if (empty($param)) {
+            return null;
+        }
+        list($day, $month, $year) = explode('/', $param);
+        return (new \DateTime($year . '-' . $month . '-' . $day))->format('Y-m-d');
     }
 
     private function clearField(?string $param)
