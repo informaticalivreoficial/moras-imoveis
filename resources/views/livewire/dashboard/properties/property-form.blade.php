@@ -59,17 +59,17 @@
                         <div class="row mt-2 mb-3">
                             <div class="col-12 col-sm-6 col-md-4 col-lg-2"> 
                                 <label class="labelforms"><b>Finalidade:</b></label>
-                                <div class="flex gap-3">
-                                    @foreach($types as $option)
-                                        <label class="inline-flex items-center space-x-2">
-                                            <input type="radio" x-model="option" wire:model="option" value="{{ $option }}" class="form-radio text-blue-600">
-                                            <span class="ml-2"> {{ $option }} </span>
-                                        </label>
-                                    @endforeach
+                                <div class="flex flex-row gap-x-4">
+                                    <label class="inline-flex items-center space-x-2">
+                                        <input type="checkbox" wire:model="sale" class="form-checkbox text-blue-600">
+                                        <span>Venda</span>
+                                    </label>
+                                    <label class="inline-flex items-center space-x-2">
+                                        <input type="checkbox" wire:model="location" class="form-checkbox text-blue-600">
+                                        <span>Locação</span>
+                                    </label>
                                 </div> 
                             </div>
-                            
-                                                       
                         </div>
                         <div class="row mt-2" x-show="option === 'locacao'">                           
                             <div class="col-12 col-md-6 col-lg-6">

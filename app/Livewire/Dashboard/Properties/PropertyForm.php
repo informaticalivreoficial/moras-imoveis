@@ -16,7 +16,6 @@ class PropertyForm extends Component
 
     public ?Property $property = null;
 
-    public string $option = 'venda';
     public array $types = ['venda', 'locacao'];
 
     public array $images = [];
@@ -52,6 +51,9 @@ class PropertyForm extends Component
 
        public array $metatags = [];
 
+       public bool $sale = false;
+       public bool $location = false;
+
     protected $booleanFields = [
         'display_values','display_address','ar_condicionado','aquecedor_solar','bar','biblioteca',
         'churrasqueira','estacionamento','cozinha_americana','cozinha_planejada','dispensa','edicula',
@@ -60,7 +62,7 @@ class PropertyForm extends Component
         'brinquedoteca','pertodeescolas','condominiofechado','interfone','sistemadealarme','jardim',
         'salaodefestas','permiteanimais','quadrapoliesportiva','geradoreletrico','banheira','lareira',
         'lavabo','lavanderia','elevador','mobiliado','vista_para_mar','piscina','sauna','ventilador_teto',
-        'internet','geladeira','display_marked_water',
+        'internet','geladeira','display_marked_water'
     ];
 
     public function render()
@@ -76,9 +78,14 @@ class PropertyForm extends Component
         if ($property->exists) {
             $this->property = $property;
 
+            $this->sale = (bool) $property->sale;
+            $this->location = (bool) $property->location;
+
             // Preenche todos os campos exceto metatags
             $data = collect($property->toArray())
                 ->except(['metatags'])
+                ->except(['sale'])
+                ->except(['location'])
                 ->toArray();
             $this->fill($data);
 

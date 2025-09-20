@@ -58,16 +58,16 @@
                                         <h5 class="widget-user-desc text-right">{{$property->category}} - {{$property->type}}</h5>
                                     </div>       
                                 </a>         
-                                <div class="card-footer">
+                                <div class="py-3 px-3">
                                     <div class="row">
                                         <div class="col-12 text-center mb-2">
-                                            @if($property->sale === 1 && $property->location == 0)
-                                                {{($property->sale_value != null ? 'Venda R$ ' . str_replace(',00', '', $property->sale_value) : '-----')}}
-                                            @elseif($property->sale == 1 && $property->location == 1)                                            
-                                                {{($property->sale_value != null ? 'Venda R$ ' . str_replace(',00', '', $property->sale_value) : '')}}
-                                                {{($property->rental_value != null ? '/ Locação R$ ' . str_replace(',00', '', $property->rental_value) : '')}}                                           
+                                            @if($property->sale && !$property->location)
+                                                {{ $property->formatted_sale_value ? 'Venda ' . $property->formatted_sale_value : '-----' }}
+                                            @elseif($property->sale && $property->location)
+                                                {{ $property->formatted_sale_value ? 'Venda ' . $property->formatted_sale_value : '' }}
+                                                {{ $property->formatted_rental_value ? '/ Locação ' . $property->formatted_rental_value : '' }}
                                             @else
-                                                {{($property->rental_value != null ? 'Locação R$ ' . str_replace(',00', '', $property->rental_value) : '-----')}}
+                                                {{ $property->formatted_rental_value ? 'Locação ' . $property->formatted_rental_value : '-----' }}
                                             @endif
                                         </div>
                                         <div class="col-12 text-center mb-2">                                            
@@ -75,7 +75,23 @@
                                                 <input type="checkbox" value="{{$property->status}}"  wire:change="toggleStatus({{$property->id}})" wire:loading.attr="disabled" {{$property->status ? 'checked': ''}}>
                                                 <span class="slider round"></span>
                                             </label>
-                                            <a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Marcar como Destaque" class="btn btn-xs {{ ($property->highlight == true ? 'btn-warning' : 'btn-secondary') }} icon-notext j_destaque" data-action="{{ route('property.highlight', ['id' => $property->id]) }}"><i class="fas fa-award"></i></a>
+                                            <div x-data="{ open: false }" class="d-inline-block ml-2 relative">
+                                                <button 
+                                                    wire:click="toggleHighlight({{ $property->id }})"
+                                                    @mouseenter="open = true" 
+                                                    @mouseleave="open = false"
+                                                    class="btn btn-xs {{ $property->highlight ? 'btn-warning' : 'btn-secondary' }} icon-notext"
+                                                >
+                                                    <i class="fas fa-award"></i>
+                                                </button>
+
+                                                <div 
+                                                    x-show="open" 
+                                                    class="absolute bottom-full mb-2 px-2 py-1 text-xs text-white bg-gray-700 rounded shadow"
+                                                >
+                                                    {{ $property->highlight ? 'Remover destaque' : 'Marcar como destaque' }}
+                                                </div>
+                                            </div>
                                             <button data-toggle="tooltip" data-placement="top" title="Inserir Marca D'agua" type="button" class="btn btn-xs btn-secondary text-white j_marcadagua {{$property->id}} @php if($property->imagesmarkedwater() >= 1){echo '';}else{echo 'disabled';}  @endphp" id="{{$property->id}}" data-id="{{$property->id}}"><i class="fas fa-copyright icon{{$property->id}}"></i></button>
                                             @if ($property->slug)
                                                 @if($property->sale == true && !empty($property->sale_value))
@@ -95,21 +111,21 @@
                                         <div class="col-sm-4 border-right">
                                             <div class="description-block">
                                                 <h5 class="description-header">{{$property->reference}}</h5>
-                                                <span class="description-text">Referencia</span>
+                                                <span>Referência</span>
                                             </div>                    
                                         </div>
                                         
                                         <div class="col-sm-4 border-right">
                                             <div class="description-block">
                                                 <h5 class="description-header">{{$property->views}}</h5>
-                                                <span class="description-text">Views</span>
+                                                <span>Views</span>
                                             </div>                    
                                         </div>
                                         
                                         <div class="col-sm-4">
                                             <div class="description-block">
                                                 <h5 class="description-header">{{$property->images()->count()}}</h5>
-                                                <span class="description-text">Imagens</span>
+                                                <span>Imagens</span>
                                             </div>                    
                                         </div>
                                     

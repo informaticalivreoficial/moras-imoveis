@@ -19,13 +19,14 @@ class StoreUpdatePropertyRequest extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+    */
     public function rules(): array
     {
         return [     
             // Basic Info  
-            'option'            => 'nullable|string|max:255',
-            'highlight'     => 'nullable|boolean',            
+            'sale'          => 'boolean',
+            'location'      => 'boolean',
+            //'highlight'     => 'nullable|boolean',            
             'title'         => 'required',
             'category'      => 'required|string',
             'expired_at'    => 'nullable|date_format:d/m/Y|after_or_equal:start', 

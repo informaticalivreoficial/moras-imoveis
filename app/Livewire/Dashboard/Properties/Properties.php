@@ -59,4 +59,12 @@ class Properties extends Component
         $property->save();
         $this->active = $property->status;
     }
+
+    public function toggleHighlight(Property $property)
+    {
+        $property->highlight = !$property->highlight;
+        $property->save();
+
+        $this->dispatch('highlightToggled'); // opcional: evento p/ mostrar toast
+    }
 }

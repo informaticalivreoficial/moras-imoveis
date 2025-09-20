@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('option')->nullable();
+            $table->boolean('sale')->nullable();
+            $table->boolean('location')->nullable();
             $table->boolean('highlight')->default('0');
             $table->string('category');
             $table->string('type');
