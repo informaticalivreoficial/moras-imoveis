@@ -118,7 +118,6 @@ return new class extends Migration
             
             $table->bigInteger('views')->default('0');
 
-            $table->softDeletes();
             $table->timestamps();
             $table->integer('publication_type')->nullable();
             

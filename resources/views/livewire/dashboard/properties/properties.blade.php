@@ -135,6 +135,13 @@
                         </div>
                     @endforeach            
                 </div>
+                @if($properties->hasMorePages())
+                    <div class="text-center mt-4">
+                        <button wire:click="loadMore" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                            Carregar mais
+                        </button>
+                    </div>
+                @endif
             @else
                 <div class="row mb-4">
                     <div class="col-12">                                                        
@@ -147,3 +154,32 @@
         </div>
     </div>
 </div>
+
+<script>    
+    document.addEventListener('livewire:initialized', () => {
+        @this.on('swal', (event) => {
+            const data = event
+            swal.fire({
+                icon:data[0]['icon'],
+                title:data[0]['title'],
+                text:data[0]['text'],
+            })
+        })
+
+        @this.on('delete-prompt', (event) => {
+            swal.fire({
+                icon: 'warning',
+                title: 'Atenção',
+                text: 'Você tem certeza que deseja excluir este Imóvel?',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, excluir!',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    @this.dispatch('goOn-Delete')
+                }
+            })
+        })
+    });
+</script>

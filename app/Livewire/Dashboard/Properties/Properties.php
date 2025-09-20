@@ -3,16 +3,23 @@
 namespace App\Livewire\Dashboard\Properties;
 
 use App\Models\Property;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\On;
 
 class Properties extends Component
 {
     use WithPagination;
 
+    // Quantidade de itens por página
+    public int $perPage = 12;
+
     protected $paginationTheme = 'bootstrap';
 
     public string $search = '';
+
+    protected $updatesQueryString = ['search'];
 
     public string $sortField = 'created_at';
 
@@ -20,12 +27,17 @@ class Properties extends Component
 
     public bool $active;
 
-    public $delete_id;
+    public ?int $delete_id = null;
 
     #{Url}
     public function updatingSearch(): void
     {
         $this->resetPage();
+    }
+
+    public function loadMore()
+    {
+        $this->perPage += 12; // aumenta a quantidade de itens carregados
     }
 
     public function sortBy(string $field): void
@@ -43,10 +55,17 @@ class Properties extends Component
     public function render()
     {
         $title = 'Lista de Imóveis';
-        $properties = Property::query()->when($this->search, function($query){
-            $query->orWhere('title', 'LIKE', "%{$this->search}%");
-            $query->orWhere('city', 'LIKE', "%{$this->search}%");
-        })->orderBy($this->sortField, $this->sortDirection)->paginate(35);
+        $searchableFields = ['title','city','state','reference','type','neighborhood'];
+        $properties = Property::query()
+            ->when($this->search, function ($query) use ($searchableFields) {
+                $query->where(function ($q) use ($searchableFields) {
+                    foreach ($searchableFields as $field) {
+                        $q->orWhere($field, 'LIKE', "%{$this->search}%");
+                    }
+                });
+            })
+            ->orderBy($this->sortField, $this->sortDirection)
+            ->paginate($this->perPage);
         return view('livewire.dashboard.properties.properties',[
             'properties' => $properties
         ])->with('title', $title);
@@ -65,6 +84,36 @@ class Properties extends Component
         $property->highlight = !$property->highlight;
         $property->save();
 
-        $this->dispatch('highlightToggled'); // opcional: evento p/ mostrar toast
+        //$this->dispatch('highlightToggled'); // opcional: evento p/ mostrar toast
     }
+
+    public function setDeleteId($id)
+    {
+        $this->delete_id = $id;
+        $this->dispatch('delete-prompt');        
+    }
+
+    #[On('goOn-Delete')]
+    public function delete(): void
+    {
+        try {
+            $property = Property::findOrFail($this->delete_id);
+
+            $property->delete(); // já dispara o hook no model
+
+            $this->delete_id = null;
+
+            $this->dispatch('swal', [
+                'title' => 'Sucesso!',
+                'icon'  => 'success',
+                'text'  => 'Imóvel e todas as imagens foram removidas!',
+            ]);
+        } catch (\Exception $e) {
+            $this->dispatch('swal', [
+                'title' => 'Erro!',
+                'icon'  => 'error',
+                'text'  => 'Não foi possível excluir o imóvel.',
+            ]);
+        }
+    }    
 }

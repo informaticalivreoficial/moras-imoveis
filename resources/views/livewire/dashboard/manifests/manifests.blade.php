@@ -110,8 +110,7 @@
 </div>
 
 
-<script>
-    
+<script>    
     document.addEventListener('livewire:initialized', () => {
         @this.on('swal', (event) => {
             const data = event
@@ -138,5 +137,4 @@
             })
         })
     });
-
 </script>

@@ -82,14 +82,25 @@ class Property extends Model
         return $query->where('location', 1);
     }
 
+    protected static function booted()
+    {
+        static::deleting(function ($property) {
+            // Deleta imagens físicas e registros relacionados
+            foreach ($property->images as $image) {
+                if ($image->path && Storage::disk('public')->exists($image->path)) {
+                    Storage::disk('public')->delete($image->path);
+                }
+                $image->delete();
+            }
+
+            // Deleta a pasta inteira do imóvel no storage
+            Storage::disk('public')->deleteDirectory("properties/{$property->id}");
+        });
+    }
+
     /**
      * Relationships
     */
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'owner', 'id');
-    }
-
     public function images()
     {
         return $this->hasMany(PropertyGb::class, 'property', 'id')->orderBy('cover', 'ASC');
