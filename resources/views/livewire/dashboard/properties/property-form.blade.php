@@ -651,6 +651,7 @@
                                 </div>
                             @endforeach
                         </div>
+
                         <!-- Modal de imagem -->
                         <div x-show="showModal" x-cloak
                             class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[9999]"
@@ -663,6 +664,7 @@
                                 </button>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>

@@ -47,17 +47,17 @@
             </div>
 
             @if ($properties->count())
-                <div class="row d-flex align-items-stretch">
+                <div class="row d-flex align-items-stretch" x-data="{ showModal: false, imageUrl: '' }">
                     @foreach($properties as $property)  
                         <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
                             <div class="card card-widget widget-user" style="{{ ($property->status == true ? '' : 'background: #fffed8 !important;')  }}">
-                                <a href="{{url($property->cover())}}" data-title="{{$property->title}}" data-toggle="lightbox">
+                                <div class="cursor-pointer" @click="showModal = true; imageUrl = '{{ url($property->nocover()) }}'">
                                     <div class="rounded-t h-[175px] p-4 text-center text-white" 
                                         style="background: url('{{url($property->cover())}}') center center;background-size: cover;">
                                         <h3 class="widget-user-username text-right">{{$property->title}}</h3>
                                         <h5 class="widget-user-desc text-right">{{$property->category}} - {{$property->type}}</h5>
                                     </div>       
-                                </a>         
+                                </div>        
                                 <div class="py-3 px-3">
                                     <div class="row">
                                         <div class="col-12 text-center mb-2">
@@ -92,7 +92,15 @@
                                                     {{ $property->highlight ? 'Remover destaque' : 'Marcar como destaque' }}
                                                 </div>
                                             </div>
-                                            <button data-toggle="tooltip" data-placement="top" title="Inserir Marca D'agua" type="button" class="btn btn-xs btn-secondary text-white j_marcadagua {{$property->id}} @php if($property->imagesmarkedwater() >= 1){echo '';}else{echo 'disabled';}  @endphp" id="{{$property->id}}" data-id="{{$property->id}}"><i class="fas fa-copyright icon{{$property->id}}"></i></button>
+                                            <button 
+                                                type="button" 
+                                                wire:click="applyWatermark({{ $property->id }})"
+                                                class="btn btn-xs {{ $property->display_marked_water ? 'btn-warning' : 'btn-secondary' }}"
+                                                title="Inserir Marca d'água"
+                                                @if($property->display_marked_water) disabled @endif
+                                            >
+                                                <i class="fas fa-copyright"></i>
+                                            </button>
                                             @if ($property->slug)
                                                 @if($property->sale == true && !empty($property->sale_value))
                                                     <a target="_blank" data-toggle="tooltip" data-placement="top" title="Visualizar Imóvel" class="btn btn-xs btn-info text-white" href="{{ route('web.buyProperty', ['slug' => $property->slug]) }}" title="{{$property->title}}"><i class="fas fa-search"></i></a>
@@ -133,8 +141,22 @@
                                 </div>
                             </div>
                         </div>
-                    @endforeach            
+                    @endforeach  
+                    
+                    <!-- Modal de imagem -->
+                    <div x-show="showModal" x-cloak
+                        class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[9999]"
+                        x-transition>
+                        <div class="relative">
+                            <img :src="imageUrl" class="max-w-[70vw] max-h-[70vh] object-contain mx-auto rounded shadow-lg">
+                            <button type="button" @click="showModal = false"
+                                    class="absolute top-2 right-2 text-white text-xl bg-black bg-opacity-50 rounded-full px-2 py-1">
+                                ✕
+                            </button>
+                        </div>
+                    </div>
                 </div>
+
                 @if($properties->hasMorePages())
                     <div class="text-center mt-4">
                         <button wire:click="loadMore" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
