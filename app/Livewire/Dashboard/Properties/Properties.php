@@ -25,7 +25,7 @@ class Properties extends Component
 
     public string $sortField = 'created_at';
 
-    public string $sortDirection = 'asc';
+    public string $sortDirection = 'desc';
 
     public bool $active;
 

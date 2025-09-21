@@ -4,13 +4,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1><i class="fas fa-file-alt mr-2"></i> {{ $property ? 'Editar Imóvel' : 'Cadastrar Imóvel' }}</h1>
+                    <h1><i class="fas fa-file-alt mr-2"></i> {{ $property->exists ? 'Editar Imóvel' : 'Cadastrar Imóvel' }}</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('admin') }}">Painel de Controle</a></li>
-                        <li class="breadcrumb-item"><a wire:navigate href="{{route('properties.index')}}">Imóveis</a></li>
-                        <li class="breadcrumb-item active">{{ $property ? 'Editar' : 'Cadastrar' }}</li>
+                        <li class="breadcrumb-item"><a href="{{route('properties.index')}}">Imóveis</a></li>
+                        <li class="breadcrumb-item active">{{ $property->exists ? 'Editar' : 'Cadastrar' }}</li>
                     </ol>
                 </div>
             </div>
@@ -54,24 +54,30 @@
         <form wire:submit.prevent="save" autocomplete="off">
             <!-- Conteúdo da aba Dados -->
             <div x-show="tab === 'dados'" x-transition>
-                <div class="bg-white">
-                    <div x-data="{ option: @entangle('option') }" class="card-body text-muted">
+                <div class="bg-white" x-data="{ sale: @entangle('sale'), location: @entangle('location') }">
+                    <div class="card-body text-muted">
                         <div class="row mt-2 mb-3">
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-2"> 
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12"> 
                                 <label class="labelforms"><b>Finalidade:</b></label>
                                 <div class="flex flex-row gap-x-4">
                                     <label class="inline-flex items-center space-x-2">
-                                        <input type="checkbox" wire:model="sale" class="form-checkbox text-blue-600">
+                                        <input type="checkbox" x-model="sale" wire:model="sale" class="form-checkbox text-blue-600">
                                         <span>Venda</span>
                                     </label>
                                     <label class="inline-flex items-center space-x-2">
-                                        <input type="checkbox" wire:model="location" class="form-checkbox text-blue-600">
+                                        <input type="checkbox" x-model="location" wire:model="location" class="form-checkbox text-blue-600">
                                         <span>Locação</span>
-                                    </label>
+                                    </label>                                    
                                 </div> 
+                                @error('sale')
+                                    <span class="error erro-feedback">{{ $message }}</span>
+                                @enderror
+                                @error('location')
+                                    <span class="error erro-feedback">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
-                        <div class="row mt-2" x-show="option === 'locacao'">                           
+                        <div class="row mt-2" x-show="!(sale && !location)">                           
                             <div class="col-12 col-md-6 col-lg-6">
                                 <div class="form-group">
                                     <label class="labelforms"><b>Link Booking.com</b></label>
@@ -117,6 +123,9 @@
                                         <option value="Terreno">Terreno</option>
                                         <option value="Rural">Rural</option>
                                     </select>
+                                    @error('category')
+                                        <span class="error erro-feedback">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>               
                         </div>
@@ -143,6 +152,9 @@
                                         <option value="Fazenda">Fazenda</option>
                                         <option value="Prédio Edifício Inteiro">Prédio/Edifício Inteiro</option>
                                     </select>
+                                    @error('type')
+                                        <span class="error erro-feedback">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -280,7 +292,10 @@
                             <div class="col-12 col-md-6 col-lg-2">   
                                 <div class="form-group">
                                     <label class="labelforms text-muted"><b>*Dormitórios</b></label>
-                                    <input type="text" class="form-control" wire:model="dormitories">
+                                    <input type="text" class="form-control @error('title') is-invalid @enderror" wire:model="dormitories">
+                                    @error('dormitories')
+                                        <span class="error erro-feedback">{{ $message }}</span>
+                                    @enderror
                                 </div>                                                    
                             </div>
                             <div class="col-12 col-md-6 col-lg-2">   
@@ -580,18 +595,7 @@
             </div>
             <div x-show="tab === 'imagens'" x-transition>
                 <div class="bg-white p-4">
-                    <div class="row">
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-6"> 
-                            <div class="form-group text-muted">
-                                <label class="labelforms"><b>Deseja exibir uma Marca D'agua? </b><small class="text-info">(esta opção permite inserir uma marca em todas as imagens)</small></label>
-                                <div class="form-check">
-                                    <input id="display_marked_watersim" class="form-check-input" type="radio" value="1" wire:model="display_marked_water">
-                                    <label for="display_marked_watersim" class="form-check-label mr-5">Sim</label>
-                                    <input id="display_marked_waternao" class="form-check-input" type="radio" value="0" wire:model="display_marked_water">
-                                    <label for="display_marked_waternao" class="form-check-label">Não</label>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="row">                        
                         <div class="col-12 col-sm-12 col-md-6 col-lg-6">   
                             <div class="form-group text-muted">
                                 <label class="labelforms"><b>Legenda da Imagem de Capa</b></label>
@@ -664,7 +668,7 @@
                                 </button>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -745,8 +749,8 @@
             </div>
             <div class="row text-right p-4 bg-white">
                 <div class="col-12 mb-4">
-                    <button type="button" wire:click="save('draft')" class="btn btn-info"><i class="nav-icon fas fa-check mr-2"></i>{{ $property ? 'Atualizar Rascunho' : 'Cadastrar Rascunho' }}</button>
-                    <button type="button" wire:click="save('published')" class="btn btn-success"><i class="nav-icon fas fa-check mr-2"></i>{{ $property ? 'Atualizar e Publicar' : 'Cadastrar e Publicar' }}</button>
+                    <button type="button" wire:click="save('draft')" class="btn btn-info"><i class="nav-icon fas fa-check mr-2"></i>{{ $property->exists ? 'Atualizar Rascunho' : 'Salvar Rascunho' }}</button>
+                    <button type="button" wire:click="save('published')" class="btn btn-success"><i class="nav-icon fas fa-check mr-2"></i>{{ $property->exists ? 'Atualizar e Publicar' : 'Salvar e Publicar' }}</button>
                 </div>
             </div>
         </form>
@@ -754,6 +758,16 @@
 </div>
 
 <script>
+
+    document.addEventListener('swal', function(e) {
+        const data = e.detail[0];
+        Swal.fire({
+            title: data.title,
+            text: data.text,
+            icon: data.icon,
+            confirmButtonText: 'OK'
+        })
+    });
 
     document.addEventListener('atualizado', function() {
         Swal.fire({
@@ -775,7 +789,7 @@
             showConfirmButton: true,
             timer: 3000 // Fecha automaticamente após 3 segundos
         }).then(() => {
-            window.location.href = `/admin/imoveis/${tripId}/editar`;
+            window.location.href = `/admin/imoveis/${property}/editar`;
         });
     });
     

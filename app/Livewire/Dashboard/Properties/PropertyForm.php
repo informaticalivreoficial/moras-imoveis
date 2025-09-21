@@ -24,14 +24,14 @@ class PropertyForm extends Component
     public string $currentTab = 'dados'; 
     public ?string $expired_at = null;
 
-    public $category, $type, $display_values,
+    public $category, $type,
        $sale_value, $rental_value, $location_period, $iptu, $construction_year,
        $reference, $condominium, $description, $additional_notes,
        $dormitories, $suites, $bathrooms, $rooms, $garage, $covered_garage,
        $total_area, $useful_area, $measures,
        $latitude, $longitude, 
        // Address
-       $display_address, $zipcode, $street, $number, $complement,
+       $zipcode, $street, $number, $complement,
        $neighborhood, $state, $city,
        
        // Acessórios
@@ -46,28 +46,32 @@ class PropertyForm extends Component
        $internet, $geladeira,
 
        $title, $slug, $url_booking, $url_arbnb, $status, $views,
-       $headline, $display_marked_water, $youtube_video, $caption_img_cover,
+       $headline, $youtube_video, $caption_img_cover,
        $google_map, $experience, $highlight, $publication_type;
 
-       public array $metatags = [];
+    public array $metatags = [];
 
-       public bool $sale = false;
-       public bool $location = false;
+    public bool $sale = false;
+    public bool $location = false;
+
+    public int $display_address = 0; // 0 = Não, 1 = Sim
+    public int $display_values = 0; // 0 = Não, 1 = Sim
+    public int $display_marked_water = 0; // 0 = Não, 1 = Sim
 
     protected $booleanFields = [
-        'display_values','display_address','ar_condicionado','aquecedor_solar','bar','biblioteca',
+        'ar_condicionado','aquecedor_solar','bar','biblioteca',
         'churrasqueira','estacionamento','cozinha_americana','cozinha_planejada','dispensa','edicula',
         'espaco_fitness','escritorio','fornodepizza','armarionautico','portaria24hs','quintal','zeladoria',
         'salaodejogos','saladetv','areadelazer','balcaoamericano','varandagourmet','banheirosocial',
         'brinquedoteca','pertodeescolas','condominiofechado','interfone','sistemadealarme','jardim',
         'salaodefestas','permiteanimais','quadrapoliesportiva','geradoreletrico','banheira','lareira',
         'lavabo','lavanderia','elevador','mobiliado','vista_para_mar','piscina','sauna','ventilador_teto',
-        'internet','geladeira','display_marked_water'
+        'internet','geladeira'
     ];
 
     public function render()
     {
-        $titlee = $this->property ? 'Editar Imóvel' : 'Cadastrar Imóvel';
+        $titlee = $this->property->exists ? 'Editar Imóvel' : 'Cadastrar Imóvel';
         return view('livewire.dashboard.properties.property-form')->with([
             'titlee' => $titlee,
         ]);
@@ -78,14 +82,16 @@ class PropertyForm extends Component
         if ($property->exists) {
             $this->property = $property;
 
+            $this->display_address = $property->exists ? (int) $property->display_address : 0;
+            $this->display_values = $property->exists ? (int) $property->display_values : 0;
+            $this->display_marked_water = $property->exists ? (int) $property->display_marked_water : 0;
+
             $this->sale = (bool) $property->sale;
             $this->location = (bool) $property->location;
 
             // Preenche todos os campos exceto metatags
             $data = collect($property->toArray())
-                ->except(['metatags'])
-                ->except(['sale'])
-                ->except(['location'])
+                ->except(['metatags', 'sale', 'location'])
                 ->toArray();
             $this->fill($data);
 
@@ -116,21 +122,35 @@ class PropertyForm extends Component
 
             foreach ($this->booleanFields as $field) {
                 $validated[$field] = (bool) $this->{$field};
-            }
+            }            
 
             if($this->property->exists){
                 //Atualizar
-                
+
                 $this->property->update($validated);
                 $this->property->setSlug();
 
                 // Validação das imagens
                 $this->validate([
                     'images.*' => 'image|max:2048',
-                ]);
+                ]);                
+
+                $maxImages = env('MAX_PROPERTY_IMAGES', 20);
+                $existingImages = $this->property->images()->count();
+                $allowed = $maxImages - $existingImages;
+                if (count($this->images ?? []) > $allowed) {
+                    $this->dispatch('swal', [
+                        'title' => 'Atenção!',
+                        'text' => "Você já atingiu o limite máximo de {$maxImages} imagens para este imóvel.",
+                        'icon' => 'warning',
+                    ]);
+                    return;
+                }
 
                 // Salvar imagens
-                foreach ($this->images as $image) {
+                foreach ($this->images as $index => $image) {
+                    if ($index >= $allowed) break; // garante que só serão salvas as permitidas
+
                     $path = $image->store('properties/' . $this->property->id, 'public');
                     PropertyGb::create([
                         'property' => $this->property->id,
@@ -144,14 +164,25 @@ class PropertyForm extends Component
                 $this->dispatch(['atualizado']);
             }else{
                 //Criar
+                if (!$this->sale && !$this->location) {
+                    $this->dispatch('swal', [
+                        'title' => 'Erro!',
+                        'icon'  => 'error',
+                        'text'  => 'Selecione pelo menos uma finalidade (Venda ou Locação).'
+                    ]);
+                    throw \Illuminate\Validation\ValidationException::withMessages([
+                        'sale' => 'Selecione pelo menos uma finalidade (Venda ou Locação).',
+                    ]);
+                }
                 
                 $property = Property::create($validated);
-                session()->flash('message', 'Imóvel cadastrado com sucesso!');
-                return redirect()->route('dashboard.properties.edit', $property);
+                $this->reset('images');
+                $this->dispatch(['cadastrado']);
+                $this->property = $property; // Atualiza a propriedade para o novo registro
             }
 
         } catch (\Illuminate\Validation\ValidationException $e) {
-            dd($e->errors());
+            //dd($e->errors());
             // Muda para a aba "dados" se houver erro
             $this->currentTab = 'dados';
             throw $e; // Deixa Livewire lidar com os erros e mostrar mensagens
@@ -173,7 +204,7 @@ class PropertyForm extends Component
             Storage::disk('public')->delete($image->path);
             $image->delete();
             $this->savedImages = collect($this->savedImages)->filter(fn ($img) => $img->id !== $id);
-            $this->manifest->refresh(); // Para garantir que os dados estejam atualizados
+            $this->property->refresh(); // Para garantir que os dados estejam atualizados
         }
     }
 

@@ -24,8 +24,8 @@ class StoreUpdatePropertyRequest extends FormRequest
     {
         return [     
             // Basic Info  
-            'sale'          => 'boolean',
-            'location'      => 'boolean',
+            'sale'     => 'boolean',
+            'location' => 'boolean',
             //'highlight'     => 'nullable|boolean',            
             'title'         => 'required',
             'category'      => 'required|string',
@@ -54,7 +54,7 @@ class StoreUpdatePropertyRequest extends FormRequest
             // Description
             'description'       => 'nullable|string',
             'additional_notes'  => 'nullable|string',
-            'dormitories'       => 'nullable|integer',
+            'dormitories'       => 'required|integer',
             'suites'            => 'nullable|integer',
             'bathrooms'         => 'nullable|integer',
             'rooms'             => 'nullable|integer',
@@ -129,5 +129,16 @@ class StoreUpdatePropertyRequest extends FormRequest
             'youtube_video'         => 'nullable|string',                            
             'publication_type'      => 'nullable|integer',                            
         ];
+    }
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $sale     = $this->input('sale', false);
+            $location = $this->input('location', false);
+
+            if (!$sale && !$location) {
+                $validator->errors()->add('sale', 'Selecione pelo menos uma finalidade (Venda ou Locação).');
+            }
+        });
     }
 }
