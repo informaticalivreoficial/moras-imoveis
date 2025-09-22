@@ -33,8 +33,8 @@ use App\Livewire\Dashboard\Properties\Properties;
 use App\Livewire\Dashboard\Properties\PropertyForm;
 
 Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
-//     /** Página Inicial */
-//     //Route::get('/', [WebController::class, 'home'])->name('home');
+    /** Página Inicial */
+    Route::get('/', [WebController::class, 'home'])->name('home');
 
 //     /** FEED */
 //     Route::get('feed', [FeedController::class, 'feed'])->name('feed');

@@ -11,14 +11,15 @@ var properties = {
             "latitude": 51.541599,
             "longitude": -0.112588,
             "address": "123 Kathal St. Tampa City, ",
-            "area": 1000,
+            "area": 2123,
             "room": 4,
             "bathroom": 3,
             "balcony": 3,
             "lounge": 1,
             "garage": 1,
             "image": "img/properties/properties-1.jpg",
-            "type_icon": "img/building.png"
+            "type_icon": "img/building.png",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing"
         },
         {
             "id": 2,
@@ -31,14 +32,15 @@ var properties = {
             "latitude": 51.538395,
             "longitude": -0.097418,
             "address": "123 Kathal St. Tampa City, ",
-            "area": 2500,
+            "area": 2123,
             "room": 4,
             "bathroom": 3,
             "balcony": 3,
             "lounge": 1,
             "garage": 1,
             "image": "img/properties/properties-2.jpg",
-            "type_icon": "img/building.png"
+            "type_icon": "img/building.png",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing"
         },
         {
             "id": 3,
@@ -58,7 +60,8 @@ var properties = {
             "lounge": 1,
             "garage": 1,
             "image": "img/properties/properties-3.jpg",
-            "type_icon": "img/building.png"
+            "type_icon": "img/building.png",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing"
         },
         {
             "id": 4,
@@ -78,7 +81,8 @@ var properties = {
             "lounge": 1,
             "garage": 1,
             "image": "img/properties/properties-5.jpg",
-            "type_icon": "img/building.png"
+            "type_icon": "img/building.png",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing"
         },
         {
             "id": 5,
@@ -98,7 +102,8 @@ var properties = {
             "lounge": 1,
             "garage": 1,
             "image": "img/properties/properties-5.jpg",
-            "type_icon": "img/building.png"
+            "type_icon": "img/building.png",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing"
         },
         {
             "id": 6,
@@ -118,7 +123,8 @@ var properties = {
             "lounge": 1,
             "garage": 1,
             "image": "img/properties/properties-6.jpg",
-            "type_icon": "img/building.png"
+            "type_icon": "img/building.png",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing"
         },
         {
             "id": 7,
@@ -138,7 +144,8 @@ var properties = {
             "lounge": 1,
             "garage": 1,
             "image": "img/properties/properties-5.jpg",
-            "type_icon": "img/building.png"
+            "type_icon": "img/building.png",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing"
         },
         {
             "id": 8,
@@ -158,7 +165,8 @@ var properties = {
             "lounge": 1,
             "garage": 1,
             "image": "img/properties/properties-4.jpg",
-            "type_icon": "img/building.png"
+            "type_icon": "img/building.png",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing"
         },
         {
             "id": 9,
@@ -177,8 +185,9 @@ var properties = {
             "balcony": 3,
             "lounge": 1,
             "garage": 1,
-            "image": "img/properties/properties-3.jpg",
-            "type_icon": "img/building.png"
+            "image": "img/properties/properties-1.jpg",
+            "type_icon": "img/building.png",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing"
         },
         {
             "id": 10,
@@ -197,8 +206,9 @@ var properties = {
             "balcony": 3,
             "lounge": 1,
             "garage": 1,
-            "image": "img/properties/properties-2.jpg",
-            "type_icon": "img/building.png"
+            "image": "img/properties/properties-1.jpg",
+            "type_icon": "img/building.png",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing"
         },
         {
             "id": 11,
@@ -218,7 +228,8 @@ var properties = {
             "lounge": 1,
             "garage": 1,
             "image": "img/properties/properties-1.jpg",
-            "type_icon": "img/building.png"
+            "type_icon": "img/building.png",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing"
         },
         {
             "id": 12,
@@ -237,8 +248,9 @@ var properties = {
             "balcony": 3,
             "lounge": 1,
             "garage": 1,
-            "image": "img/properties/properties-6.jpg",
-            "type_icon": "img/building.png"
+            "image": "img/properties/properties-9.jpg",
+            "type_icon": "img/building.png",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing"
         },
         {
             "id": 13,
@@ -257,8 +269,9 @@ var properties = {
             "balcony": 3,
             "lounge": 1,
             "garage": 1,
-            "image": "img/properties/properties-5.jpg",
-            "type_icon": "img/building.png"
+            "image": "img/properties/properties-8.jpg",
+            "type_icon": "img/building.png",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing"
         },
         {
             "id": 14,
@@ -277,8 +290,9 @@ var properties = {
             "balcony": 3,
             "lounge": 1,
             "garage": 1,
-            "image": "img/properties/properties-4.jpg",
-            "type_icon": "img/building.png"
+            "image": "img/properties/properties-1.jpg",
+            "type_icon": "img/building.png",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing"
         },
         {
             "id": 15,
@@ -297,8 +311,9 @@ var properties = {
             "balcony": 3,
             "lounge": 1,
             "garage": 1,
-            "image": "img/properties/properties-3.jpg",
-            "type_icon": "img/building.png"
+            "image": "img/properties/properties-7.jpg",
+            "type_icon": "img/building.png",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing"
         }
 
     ]
@@ -450,162 +465,121 @@ function insertPropertyToArray(property, layout) {
     var element = '';
 
     if(layout == 'grid_layout'){
-        element = '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 property-hover" id="'+property.id+'"><div class="property">\n' +
-            '                            <!-- Property img -->\n' +
-            '                            <div class="property-img">\n' +
-                                                is_featured +
-            '                                <div class="property-tag button sale">For '+listing_for+'</div>\n' +
-            '                                <div class="property-price">$'+price+'</div>\n' +
-            '                                <img src="'+image+'" alt="fp" class="img-fluid">\n' +
-            '                                <div class="property-overlay">\n' +
-            '                                    <a href="properties-details.html" class="overlay-link">\n' +
-            '                                        <i class="fa fa-link"></i>\n' +
-            '                                    </a>\n' +
-            '                                    <a class="overlay-link property-video" title="Lexus GS F">\n' +
-            '                                        <i class="fa fa-video-camera"></i>\n' +
-            '                                    </a>\n' +
-            '                                    <div class="property-magnify-gallery">\n' +
-            '                                        <a href="'+image+'" class="overlay-link">\n' +
-            '                                            <i class="fa fa-expand"></i>\n' +
-            '                                        </a>\n' +
-            '\n' +
-            '                                        <a href="img/properties/properties-2.jpg" class="hidden"></a>\n' +
-            '                                        <a href="img/properties/properties-3.jpg" class="hidden"></a>\n' +
-            '                                    </div>\n' +
-            '                                </div>\n' +
-            '                            </div>\n' +
-            '                            <!-- Property content -->\n' +
-            '                            <div class="property-content">\n' +
-            '                                <!-- info -->\n' +
-            '                                <div class="info">\n' +
-            '                                    <!-- title -->\n' +
-            '                                    <h1 class="title">\n' +
-            '                                        <a href="properties-details.html">'+title+'</a>\n' +
-            '                                    </h1>\n' +
-            '                                    <!-- Property address -->\n' +
-            '                                    <h3 class="property-address">\n' +
-            '                                        <a href="properties-details.html">\n' +
-            '                                            <i class="fa fa-map-marker"></i>'+address+',\n' +
-            '                                        </a>\n' +
-            '                                    </h3>\n' +
-            '                                    <!-- Facilities List -->\n' +
-            '                                    <ul class="facilities-list clearfix">\n' +
-            '                                        <li>\n' +
-            '                                            <i class="flaticon-square-layouting-with-black-square-in-east-area"></i>\n' +
-            '                                            <span>'+area+' sq ft</span>\n' +
-            '                                        </li>\n' +
-            '                                        <li>\n' +
-            '                                            <i class="flaticon-bed"></i>\n' +
-            '                                            <span>'+Beds+' Beds</span>\n' +
-            '                                        </li>\n' +
-            '                                        <li>\n' +
-            '                                            <i class="flaticon-monitor"></i>\n' +
-            '                                            <span>TV </span>\n' +
-            '                                        </li>\n' +
-            '                                        <li>\n' +
-            '                                            <i class="flaticon-holidays"></i>\n' +
-            '                                            <span> '+bathroom+' Baths</span>\n' +
-            '                                        </li>\n' +
-            '                                        <li>\n' +
-            '                                            <i class="flaticon-vehicle"></i>\n' +
-            '                                            <span>'+garage+' Garage</span>\n' +
-            '                                        </li>\n' +
-            '                                        <li>\n' +
-            '                                            <i class="flaticon-building"></i>\n' +
-            '                                            <span> '+balcony+' Balcony</span>\n' +
-            '                                        </li>\n' +
-            '                                    </ul>\n' +
-            '                                </div>\n' +
-            '                                <!-- Property footer -->\n' +
-            '                                <div class="property-footer">\n' +
-            '                                <span class="left">\n' +
-            '                                    <a href="#"><i class="fa fa-user"></i>'+author+'</a>\n' +
-            '                                </span>\n' +
-            '                                    <span class="right">\n' +
-            '                                    <i class="fa fa-calendar"></i>' + date +
-            '                                </span>\n' +
-            '                                </div>\n' +
-            '                            </div>\n' +
-            '                        </div>';
-            '                        </div>';
+        element = '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"><div class="property">' +
+            '<!-- Property img --> ' +
+            '<a href="properties-details.html" class="property-img">' +
+            is_featured +
+            '<div class="property-tag button sale">'+listing_for+'</div> ' +
+            '<div class="property-price">$'+price+'</div> ' +
+            '<img src="'+image+'" alt="properties-3" class="img-responsive"> ' +
+            '</a>' +
+            '<!-- Property content --> ' +
+            '<div class="property-content"> ' +
+            '<!-- title --> ' +
+            '<h1 class="title">' +
+            '<a href="properties-details.html">'+title+'</a> ' +
+            '</h1> ' +
+            '<!-- Property address --> ' +
+            '<h3 class="property-address"> ' +
+            '<a href="properties-details.html"> ' +
+            '<i class="fa fa-map-marker"></i>'+address+' ' +
+            '</a> ' +
+            '</h3> ' +
+            '<!-- Facilities List --> ' +
+            '<ul class="facilities-list clearfix"> ' +
+            '<li> ' +
+            '<i class="flaticon-square-layouting-with-black-square-in-east-area"></i> ' +
+            '<span>'+area+' sq ft</span> ' +
+            '</li> ' +
+            '<li> ' +
+            '<i class="flaticon-bed"></i> ' +
+            '<span>'+Beds+' Beds</span> ' +
+            '</li> ' +
+            '<li> ' +
+            '<i class="flaticon-monitor"></i> ' +
+            '<span>TV </span> ' +
+            '</li> ' +
+            '<li> ' +
+            '<i class="flaticon-holidays"></i> ' +
+            '<span> '+bathroom+' Baths</span> ' +
+            '</li> ' +
+            '<li> ' +
+            '<i class="flaticon-vehicle"></i> ' +
+            '<span>'+garage+' Garage</span> ' +
+            '</li> ' +
+            '<li> ' +
+            '<i class="flaticon-building"></i> ' +
+            '<span> '+balcony+' Balcony</span> ' +
+            '</li> ' +
+            '</ul> ' +
+            '<!-- Property footer --> ' +
+            '<div class="property-footer"> ' +
+            '<a class="left"><i class="fa fa-user"></i>'+author+'</a> ' +
+            '<span class="right"> ' +
+            '<i class="fa fa-calendar"></i>' + date +
+            '</span> ' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+            '</div>';
     }
     else{
-        element = '<div class="property row g-0 fp2 clearfix property-hover" id="'+property.id+'">\n' +
-            '                    <div class="col-lg-5 col-md-5 col-sm-12">\n' +
-            '                        <!-- Property img -->\n' +
-            '                        <div class="property-img">\n' +
-                                        is_featured +
-            '                            <div class="property-tag button sale">For '+listing_for+'</div>\n' +
-            '                            <div class="property-price">$'+price+'</div>\n' +
-            '                            <img src="img/properties/properties-list-1.jpg" alt="fp-list" class="img-responsive hp-1">\n' +
-            '                            <div class="property-overlay">\n' +
-            '                                <a href="properties-details.html" class="overlay-link">\n' +
-            '                                    <i class="fa fa-link"></i>\n' +
-            '                                </a>\n' +
-            '                                <a class="overlay-link property-video" title="Lexus GS F">\n' +
-            '                                    <i class="fa fa-video-camera"></i>\n' +
-            '                                </a>\n' +
-            '                                <div class="property-magnify-gallery">\n' +
-            '                                    <a href="img/properties/properties-1.jpg" class="overlay-link">\n' +
-            '                                        <i class="fa fa-expand"></i>\n' +
-            '                                    </a>\n' +
-            '                                    <a href="img/properties/properties-2.jpg" class="hidden"></a>\n' +
-            '                                    <a href="img/properties/properties-3.jpg" class="hidden"></a>\n' +
-            '                                </div>\n' +
-            '                            </div>\n' +
-            '                        </div>\n' +
-            '                    </div>\n' +
-            '                    <div class="col-lg-7 col-md-7 col-sm-12 property-content">\n' +
-            '                        <div class="info">\n' +
-            '                            <!-- title -->\n' +
-            '                            <h1 class="title">\n' +
-            '                                <a href="properties-details.html">'+title+'</a>\n' +
-            '                            </h1>\n' +
-            '                            <!-- Property address -->\n' +
-            '                            <h3 class="property-address">\n' +
-            '                                <a href="properties-details.html">\n' +
-            '                                    <i class="fa fa-map-marker"></i> '+address+',\n' +
-            '                                </a>\n' +
-            '                            </h3>\n' +
-            '                            <!-- Facilities List -->\n' +
-            '                            <ul class="facilities-list clearfix">\n' +
-            '                                <li>\n' +
-            '                                    <i class="flaticon-square-layouting-with-black-square-in-east-area"></i>\n' +
-            '                                    <span>'+area+' sq ft</span>\n' +
-            '                                </li>\n' +
-            '                                <li>\n' +
-            '                                    <i class="flaticon-bed"></i>\n' +
-            '                                    <span>'+Beds+' Beds</span>\n' +
-            '                                </li>\n' +
-            '                                <li>\n' +
-            '                                    <i class="flaticon-monitor"></i>\n' +
-            '                                    <span>TV </span>\n' +
-            '                                </li>\n' +
-            '                                <li>\n' +
-            '                                    <i class="flaticon-holidays"></i>\n' +
-            '                                    <span> '+bathroom+' Baths</span>\n' +
-            '                                </li>\n' +
-            '                                <li>\n' +
-            '                                    <i class="flaticon-vehicle"></i>\n' +
-            '                                    <span>'+garage+' Garage</span>\n' +
-            '                                </li>\n' +
-            '                                <li>\n' +
-            '                                    <i class="flaticon-building"></i>\n' +
-            '                                    <span> '+balcony+' Balcony</span>\n' +
-            '                                </li>\n' +
-            '                            </ul>\n' +
-            '                            <!-- Property footer -->\n' +
-            '                        </div>\n' +
-            '                        <div class="property-footer">\n' +
-            '                            <span class="left">\n' +
-            '                                <a href="#"><i class="fa fa-user"></i>'+author+'</a>\n' +
-            '                            </span>\n' +
-            '                            <span class="right">\n' +
-            '                                <i class="fa fa-calendar"></i>' + date +
-            '                            </span>\n' +
-            '                        </div>\n' +
-            '                    </div>\n' +
-            '                </div>';
+        element = '' +
+            '<div class="property map-properties-list clearfix"> ' +
+            '<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 col-pad"> ' +
+            '<a href="properties-details.html" class="property-img height"> ' +
+            is_featured +
+            '<div class="property-tag button sale">'+listing_for+'</div> ' +
+            '<div class="property-price">$'+price+'</div> ' +
+            '<img src="'+image+'" alt="properties" class="img-responsive img-inside-map"> ' +
+            '</a> ' +
+            '</div> ' +
+            '<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 property-content "> ' +
+            '<!-- title --> ' +
+            '<h1 class="title"> ' +
+            '<a href="properties-details.html">'+title+'</a> </h1> ' +
+            '<!-- Property address --> ' +
+            '<h3 class="property-address"> ' +
+            '<a href="properties-details.html"> ' +
+            '<i class="fa fa-map-marker"></i>'+address+', ' +
+            '</a>' +
+            '</h3>' +
+            '<!-- Facilities List --> ' +
+            '<ul class="facilities-list clearfix"> ' +
+            '<li> ' +
+            '<i class="flaticon-square-layouting-with-black-square-in-east-area"></i> ' +
+            '<span>'+area+' sq ft</span> ' +
+            '</li> ' +
+            '<li> ' +
+            '<i class="flaticon-bed"></i> ' +
+            '<span>'+Beds+' Beds</span> ' +
+            '</li> ' +
+            '<li> ' +
+            '<i class="flaticon-monitor"></i> ' +
+            '<span>TV </span> ' +
+            '</li> ' +
+            '<li> ' +
+            '<i class="flaticon-holidays"></i>' +
+            '<span> '+bathroom+' Baths</span> ' +
+            '</li> ' +
+            '<li> ' +
+            '<i class="flaticon-vehicle"></i>' +
+            '<span>'+garage+' Garage</span>' +
+            '</li> ' +
+            '<li> ' +
+            '<i class="flaticon-building"></i> ' +
+            '<span> '+balcony+' Balcony</span> ' +
+            '</li> ' +
+            '</ul> ' +
+            '<!-- Property footer --> ' +
+            '<div class="property-footer"> ' +
+            '<a class="left" href="#"><i class="fa fa-user"></i>'+author+'</a> ' +
+            '<span class="right"> ' +
+            '<i class="fa fa-calendar"></i>' + date +
+            '</span> ' +
+            '</div> ' +
+            '</div> ' +
+            '</div>';
     }
     return element;
 }
@@ -638,11 +612,6 @@ function generateMap(latitude, longitude, mapProvider, layout) {
         zoom: 14,
         scrollWheelZoom: false
     });
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
 
     L.tileLayer.provider(mapProvider).addTo(map);
     var markers = L.markerClusterGroup({
@@ -694,7 +663,7 @@ function generateMap(latitude, longitude, mapProvider, layout) {
         animatedMarkers(map, propertiesMarkers, properties, layout);
     });
 
-    $('.fetching-properties .property-hover').hover(
+    $('.fetching-properties .item').hover(
         function () {
             propertiesMarkers[$(this).attr('id') - 1]._icon.className = 'leaflet-marker-icon leaflet-zoom-animated leaflet-clickable marker-loaded marker-active';
         },
@@ -702,8 +671,6 @@ function generateMap(latitude, longitude, mapProvider, layout) {
             propertiesMarkers[$(this).attr('id') - 1]._icon.className = 'leaflet-marker-icon leaflet-zoom-animated leaflet-clickable marker-loaded';
         }
     );
-
-
 
     $('.geolocation').on("click", function () {
         map.locate({setView: true})

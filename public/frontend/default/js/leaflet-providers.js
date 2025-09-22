@@ -152,8 +152,8 @@
             url: 'http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg',
             options: {
                 attribution:
-                    'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; ' +
-                    'Map data {attribution.OpenStreetMap}',
+                'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; ' +
+                'Map data {attribution.OpenStreetMap}',
                 subdomains: '1234'
             },
             variants: {
@@ -162,8 +162,8 @@
                     url: 'http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg',
                     options: {
                         attribution:
-                            'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; ' +
-                            'Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
+                        'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; ' +
+                        'Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
                     }
                 }
             }
@@ -174,8 +174,8 @@
             },
             options: {
                 attribution:
-                    'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; ' +
-                    'Map data {attribution.OpenStreetMap}',
+                'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; ' +
+                'Map data {attribution.OpenStreetMap}',
                 subdomains: 'abcd'
             }
         },
@@ -183,9 +183,9 @@
             url: 'http://{s}.tile.stamen.com/{variant}/{z}/{x}/{y}.png',
             options: {
                 attribution:
-                    'Map tiles by <a href="http://stamen.com">Stamen Design</a>, ' +
-                    '<a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' +
-                    'Map data {attribution.OpenStreetMap}',
+                'Map tiles by <a href="http://stamen.com">Stamen Design</a>, ' +
+                '<a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; ' +
+                'Map data {attribution.OpenStreetMap}',
                 subdomains: 'abcd',
                 minZoom: 0,
                 maxZoom: 20,
@@ -231,8 +231,8 @@
                 WorldStreetMap: {
                     options: {
                         attribution:
-                            '{attribution.Esri} &mdash; ' +
-                            'Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+                        '{attribution.Esri} &mdash; ' +
+                        'Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
                     }
                 },
                 DeLorme: {
@@ -247,16 +247,16 @@
                     options: {
                         variant: 'World_Topo_Map',
                         attribution:
-                            '{attribution.Esri} &mdash; ' +
-                            'Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
+                        '{attribution.Esri} &mdash; ' +
+                        'Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
                     }
                 },
                 WorldImagery: {
                     options: {
                         variant: 'World_Imagery',
                         attribution:
-                            '{attribution.Esri} &mdash; ' +
-                            'Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                        '{attribution.Esri} &mdash; ' +
+                        'Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
                     }
                 },
                 WorldTerrain: {
@@ -264,8 +264,8 @@
                         variant: 'World_Terrain_Base',
                         maxZoom: 13,
                         attribution:
-                            '{attribution.Esri} &mdash; ' +
-                            'Source: USGS, Esri, TANA, DeLorme, and NPS'
+                        '{attribution.Esri} &mdash; ' +
+                        'Source: USGS, Esri, TANA, DeLorme, and NPS'
                     }
                 },
                 WorldShadedRelief: {
@@ -336,9 +336,9 @@
              * envirionments.
              */
             url:
-                'http://{s}.{base}.maps.cit.api.here.com/maptile/2.1/' +
-                'maptile/{mapID}/{variant}/{z}/{x}/{y}/256/png8?' +
-                'app_id={app_id}&app_code={app_code}',
+            'http://{s}.{base}.maps.cit.api.here.com/maptile/2.1/' +
+            'maptile/{mapID}/{variant}/{z}/{x}/{y}/256/png8?' +
+            'app_id={app_id}&app_code={app_code}',
             options: {
                 attribution:
                     'Map &copy; 1987-2014 <a href="http://developer.here.com">HERE</a>',

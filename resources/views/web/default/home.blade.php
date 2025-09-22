@@ -1,0 +1,1 @@
+@extends("web.$configuracoes->template.master.master")

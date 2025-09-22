@@ -489,9 +489,13 @@
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
+.map-img {
+    margin: -21px;
+}
+
 .map-content-sidebar {
     background-color: #f4f4f2;
-    padding: 25px;
+    padding: 20px 0 20px 0;
     overflow: hidden;
     min-height: auto;
 }
@@ -642,18 +646,8 @@
 }
 
 .map-content .search-fields {
-    min-height: 50px !important;
-}
-
-.map-content .search-fields .btn {
-    display: inline-block;
-    padding: 13px 12px 11px;
-    margin-bottom: 0;
-    font-size: 16px;
-}
-
-.map-content .form-group{
-    margin-bottom: 15px;
+    min-height: 40px !important;
+    padding: 3px 0 !important;
 }
 
 .map-content .form-control {
@@ -689,6 +683,14 @@
 
 }
 
+.properties-map-search {
+    margin: 0 15px 0 15px;
+}
+
+.map-content-sidebar .title-area {
+    margin: 0 15px 15px 15px;
+}
+
 .map-content-sidebar .title-area .btns-area {
     display: inline-table;
 }
@@ -696,17 +698,18 @@
 .map-content-sidebar .title-area .active-view-btn,
 .map-content-sidebar .title-area .change-view-btn {
     padding: 3px 6px;
-    margin-left: 5px;
 }
 
 .map-content-sidebar .title-area h2 {
-    font-size: 17px;
+    margin: 0 15px 0 0;
+    font-size: 14px;
     font-weight: 600;
-    margin-bottom: 0;
+    text-transform: uppercase;
 }
 
-.map-content-sidebar .title-area{
-    margin-bottom: 15px;
+.map-content-sidebar .map-content-separater {
+    border-bottom: 1px solid #dcdcce;
+    margin: 15px 0;
 }
 
 /* Map properties (popup) */
@@ -716,7 +719,6 @@
 
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
     box-shadow: none;
-    border: none;
 }
 
 .leaflet-popup-tip-container {
@@ -725,7 +727,6 @@
 
 .map-properties {
     max-width: 370px;
-    padding: 0!important;
 }
 
 .map-content-top{
@@ -733,50 +734,48 @@
 }
 
 .map-properties .address {
-    color: #535353;
-    font-size: 15px;
+    color: #777;
+    font-size: 13px;
     margin-top: 0px;
-    font-weight: 500;
-    margin-bottom: 10px;
+    padding-bottom: 14px;
+    margin-bottom: 15px;
+    border-bottom: solid 1px #f1f1f1;
 }
 
 .map-properties .address i {
-    margin-right: 3px;
+    margin-right: 5px;
 }
 
 .map-properties .description {
-    font-size: 15px;
-    color: #535353;
-    line-height: 26px;
+    font-size: 13px;
+    color: #777;
+    line-height: 21px;
     font-weight: 400;
-    margin: 10px 0;
 }
 
 .map-properties .map-img img {
     width: 100%;
+    margin-bottom: 15px;
 }
 
 .map-properties .map-content {
     box-shadow: none;
-    padding: 20px!important;
+    margin-top: 25px;
 }
 
 .map-properties .map-content h4 {
     margin: 0 0 7px 0;
-    font-weight: 400;
-    font-size: 20px;
+    font-weight: 600;
+    font-size: 19px;
 }
 
 .map-properties .map-content h4 a:hover{
     color: #545454;
 }
 
-.map .map-content{
-    padding: 0!important;
-}
-
 .map-properties-btns {
     display: inline-flex;
+    margin-top: 10px;
 }
 
 .map-properties-btns .button-theme {
@@ -786,7 +785,7 @@
 }
 
 .map-properties .map-properties-fetures {
-    margin: 0 0 15px;
+    margin: 15px 0;
 }
 
 .map-properties .map-properties-list {
@@ -797,9 +796,9 @@
 .map-properties .map-properties-list li {
     list-style: none;
     margin-bottom: 6px;
-    color: #535353;
-    font-weight: 400;
+    color: #999;
 }
+
 
 .map-properties .map-properties-fetures span {
     margin-right: 10px;
