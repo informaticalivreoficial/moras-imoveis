@@ -31,6 +31,8 @@ use App\Http\Controllers\Web\{
 };
 use App\Livewire\Dashboard\Properties\Properties;
 use App\Livewire\Dashboard\Properties\PropertyForm;
+use App\Livewire\Dashboard\Slides\SlideForm;
+use App\Livewire\Dashboard\Slides\Slides;
 
 Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
     /** Página Inicial */
@@ -119,19 +121,14 @@ Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'admin'], functi
     Route::get('templates', [TemplateController::class, 'index'])->name('templates.index');
 
     /** Imóveis */
-    Route::match(['post', 'get'], 'imoveis/destaque', [PropertyController::class, 'highlightMark'])->name('property.highlight');
-    Route::match(['get', 'post'], 'imoveis/pesquisa', [PropertyController::class, 'search'])->name('property.search');
-    Route::get('imoveis/marcadagua', [PropertyController::class, 'imageWatermark'])->name('property.watermark');
-    Route::get('imoveis/delete', [PropertyController::class, 'delete'])->name('property.delete');
-    Route::delete('imoveis/deleteon', [PropertyController::class, 'deleteon'])->name('property.deleteon');
-    Route::post('imoveis/image-set-cover', [PropertyController::class, 'setCover'])->name('property.setCover');
-    Route::get('imoveis/set-status', [PropertyController::class, 'setStatus'])->name('property.setStatus');
-    Route::delete('imoveis/image-remove', [PropertyController::class, 'imageRemove'])->name('property.imageRemove');
-    
-
     Route::get('imoveis/{property}/editar', PropertyForm::class)->name('property.edit');
     Route::get('imoveis/cadastrar', PropertyForm::class)->name('properties.create');
     Route::get('imoveis', Properties::class)->name('properties.index');
+
+    //*********************** Slides *********************************************/
+    Route::get('slides/{slide}/editar', SlideForm::class)->name('slides.edit');
+    Route::get('slides/cadastrar', SlideForm::class)->name('slides.create');
+    Route::get('slides', Slides::class)->name('slides.index');
 
     //*********************** Usuários *******************************************/
     Route::get('/cargos', RoleIndex::class)->name('admin.roles');

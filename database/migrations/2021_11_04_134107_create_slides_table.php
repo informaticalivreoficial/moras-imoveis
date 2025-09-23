@@ -21,12 +21,12 @@ class CreateSlidesTable extends Migration
             $table->string('image')->nullable();
             $table->text('content')->nullable();
             $table->string('link')->nullable();
-            $table->integer('target')->nullable();
+            $table->boolean('target')->nullable();
             $table->string('slug')->nullable();
             $table->string('category')->nullable();
             $table->date('expired_at')->nullable();
-            $table->integer('status')->nullable();
-            $table->integer('view_title')->nullable();
+            $table->boolean('status')->nullable();
+            $table->boolean('view_title')->nullable();
             
             $table->timestamps();
         });

@@ -31,8 +31,7 @@ class Slide extends Model
 
     /**
      * Scopes
-     */
-
+    */
     public function scopeAvailable($query)
     {
         return $query->where('status', 1);
@@ -45,23 +44,14 @@ class Slide extends Model
 
     /**
      * Accerssors and Mutators
-     */
-
+    */
     public function getimagem()
     {
         if(empty($this->image) || !Storage::disk()->exists($this->image)) {
-            return url(asset('backend/assets/images/image.jpg'));
+            return url(asset('theme/images/image.jpg'));
         } 
-        return Storage::url($this->image);
+        return Storage::url(Cropper::thumb($this->image, 2200, 1200));
     }
-
-    public function getUrlImagemAttribute()
-    {
-        if (!empty($this->image)) {
-            return Storage::url($this->image);
-        }
-        return '';
-    }  
     
     public function getExpiredAt()
     {

@@ -71,12 +71,9 @@
                     </a>
                 </li>     
                 <li class="nav-item">
-                    <a href="{{--route('companies.index')--}}" class="nav-link {{-- Route::is('companies.*') ? 'active' : '' --}}">
-                        <i class="nav-icon fas fa-industry"></i>
-                        <p>
-                            Empresas
-                            <span class="badge badge-info right">{{--$companyCount--}}</span>
-                        </p>
+                    <a href="{{route('slides.index')}}" class="nav-link {{ Route::is('slides.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-film"></i>
+                        <p>Banners</p>
                     </a>
                 </li>     
                 <li class="nav-item">
