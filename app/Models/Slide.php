@@ -52,12 +52,6 @@ class Slide extends Model
         } 
         return Storage::url(Cropper::thumb($this->image, 2200, 1200));
     }
-    
-    public function getExpiredAt()
-    {
-        $diff =  Carbon::now()->gt($this->expira);        
-        return $diff;        
-    }
 
     public function setExpiredAtAttribute($value)
     {
@@ -74,12 +68,13 @@ class Slide extends Model
         $this->attributes['status'] = ($value == '1' ? 1 : 0);
     }
     
-    public function getExpiredAttribute($value)
+    public function getExpiredAtAttribute($value): ?string
     {
         if (empty($value)) {
             return null;
         }
-        return date('d/m/Y', strtotime($value));
+
+        return \Carbon\Carbon::parse($value)->format('d/m/Y');
     }
 
     public function getCreatedAtAttribute($value)
@@ -87,7 +82,7 @@ class Slide extends Model
         if (empty($value)) {
             return null;
         }
-        return date('d/m/Y', strtotime($value));
+        return \Carbon\Carbon::parse($value)->format('d/m/Y');
     }
 
     public function setSlug()
@@ -103,12 +98,12 @@ class Slide extends Model
         }
     }
 
-    private function convertStringToDate(?string $param)
+    private function convertStringToDate(?string $param): ?\Carbon\Carbon
     {
         if (empty($param)) {
             return null;
         }
-        list($day, $month, $year) = explode('/', $param);
-        return (new \DateTime($year . '-' . $month . '-' . $day))->format('Y-m-d');
+
+        return \Carbon\Carbon::createFromFormat('d/m/Y', $param);
     }
 }

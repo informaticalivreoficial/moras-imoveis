@@ -75,55 +75,8 @@
                         <i class="nav-icon fas fa-film"></i>
                         <p>Banners</p>
                     </a>
-                </li>     
-                <li class="nav-item">
-                    <a href="{{--route('trips.index')--}}" class="nav-link">
-                        <i class="nav-icon fas fa-ship"></i>
-
-                        <p>
-                            Viagens
-                            <span class="badge badge-info right">{{--$tripCount--}}</span>
-                        </p>
-                    </a>
-                </li>     
-                <li class="nav-item {{ Route::is('manifests.*') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ Route::is('manifests.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-file-alt"></i>
-                        <p>Manifestos <i class="fas fa-angle-left right"></i></p>                        
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item ">
-                            <a href="{{--route('manifests.index')--}}" class="nav-link {{-- Route::is('manifests.index') ? 'active' : '' --}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Na Conferência <span class="badge badge-info right">{{--$manifestCount--}}</span></p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{--route('manifests.comercial')--}}" class="nav-link {{-- Route::is('manifests.comercial') ? 'active' : '' --}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>No Comercial <span class="badge badge-info right">{{--$manifestComercialCount--}}</span></p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{--route('manifests.finance')--}}" class="nav-link {{-- Route::is('manifests.finance') ? 'active' : '' --}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>No Financeiro <span class="badge badge-info right">{{--$manifestFinanceCount--}}</span></p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Finalizados <span class="badge badge-info right">{{--$manifestFinishCount--}}</span></p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{--route('manifests.create')--}}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Cadastrar Novo</p>
-                            </a>
-                        </li>
-                    </ul>                    
-                </li>     
+                </li>  
+                    
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-chart-bar"></i>

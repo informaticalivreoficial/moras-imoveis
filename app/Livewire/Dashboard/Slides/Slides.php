@@ -17,7 +17,7 @@ class Slides extends Component
     protected $updatesQueryString = ['search'];
     public string $sortField = 'created_at';
     public string $sortDirection = 'desc';
-    public bool $active;
+    public bool $active = false;
     public ?int $delete_id = null; 
 
     #{Url}

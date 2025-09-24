@@ -125,12 +125,19 @@
                         </div>
                     </div>
                 </div>
-
-                
-
-                
-
-                
+                <div class="mb-4 mt-4">
+                    <label for="inputDescription" class="block text-sm font-medium text-gray-700 mb-2">
+                        <b>Descrição</b>
+                    </label>
+                    <textarea
+                        id="inputDescription"
+                        wire:model.defer="content"
+                        rows="5"
+                        class="w-full rounded-lg border border-gray-300 shadow-sm p-3
+                            focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                        placeholder="Digite a descrição do banner..."
+                    ></textarea>
+                </div>
 
                 <div class="row text-right mt-3">
                     <div class="col-12 mb-4">

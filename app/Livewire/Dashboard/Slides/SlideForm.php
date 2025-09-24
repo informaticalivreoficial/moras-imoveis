@@ -12,14 +12,14 @@ class SlideForm extends Component
 
     public ?Slide $slide = null;
 
-    public ?string $title = null;
-    public ?string $link = null;
-    public ?bool $target = null;
-    public ?string $content = null;
-    public ?string $category = null;
-    public $expired_at = null;
-    public ?bool $status = null;
-
+    public $title;
+    public $link;
+    public $target;
+    public $view_title;
+    public $content;
+    //public ?string $category = null;
+    public $expired_at;
+    public $status;
     public $image;
 
     public bool $isEditing = false; // flag para simplificar no Blade
@@ -39,10 +39,10 @@ class SlideForm extends Component
             $this->isEditing = true; // Estamos editando
             $this->title = $slide->title;
             $this->link = $slide->link;
-            $this->target = $slide->target;
             $this->content = $slide->content;
-            $this->target = $slide->exists ? (bool) $slide->target : 0;
-            $this->category = $slide->category;
+            $this->target = $slide->target;       // pega do banco
+            $this->view_title = $slide->view_title; // pega do banco
+            //$this->category = $slide->category;
             $this->expired_at = $slide->expired_at;
             $this->status = $slide->status;
         } else {            
@@ -65,9 +65,10 @@ class SlideForm extends Component
 
         $this->slide->title = $this->title;
         $this->slide->link = $this->link;
-        $this->slide->target = $this->target;
+        $this->slide->target = $this->target;        // ✅ salvar corretamente
+        $this->slide->view_title = $this->view_title; // ✅ salvar corretamente
         $this->slide->content = $this->content;
-        $this->slide->category = $this->category;
+        //$this->slide->category = $this->category;
         $this->slide->expired_at = $this->expired_at;
         $this->slide->status = $this->status;
 
