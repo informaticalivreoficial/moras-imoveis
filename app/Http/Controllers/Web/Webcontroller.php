@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Config;
 use App\Models\Property;
+use App\Models\Slide;
 use App\Support\Seo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class Webcontroller extends Controller
@@ -32,11 +34,10 @@ class Webcontroller extends Controller
                             ->limit(18)
                             ->get(); 
                             
-        // $slides = Slide::orderBy('created_at', 'DESC')
-        //                     ->available()
-        //                     ->where('tenant_id', $this->tenant->id)
-        //                     ->where('expira', '>=', Carbon::now())
-        //                     ->get();
+        $slides = Slide::orderBy('created_at', 'DESC')
+                            ->available()
+                            ->whereDate('expired_at', '>=', Carbon::today())
+                            ->get();
         
         $destaque = Property::where('highlight', 1)->available()->first();
 
@@ -66,7 +67,7 @@ class Webcontroller extends Controller
             'destaque' => $destaque,
             //'artigos' => $artigos,
             'head' => $head,
-            //'slides' => $slides,
+            'slides' => $slides,
             'experienceCobertura' => $experienceCobertura,
             'experienceCondominioFechado' => $experienceCondominioFechado,
             'experienceAltoPadrao' => $experienceAltoPadrao,

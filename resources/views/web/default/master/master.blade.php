@@ -60,11 +60,11 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <div class="list-inline">
-                            @if ($configuracoes->phone)
-                                <a href="tel:{{$configuracoes->phone}}"><i class="fa fa-phone"></i>{{$configuracoes->phone}}</a>
+                            @if ($configuracoes->cell_phone)
+                                <a href="tel:{{$configuracoes->cell_phone}}"><i class="fa fa-phone"></i>{{$configuracoes->cell_phone}}</a>
                             @endif
-                            @if ($configuracoes->phone2)
-                                <a target="_blank" href="{{getNumZap($tenant->whatsapp ,'Atendimento '.$tenant->name)}}"><i class="fa fa-whatsapp"></i>{{$configuracoes->whatsapp}}</a>
+                            @if ($configuracoes->whatsapp)
+                                <a target="_blank" href="{{\App\Helpers\WhatsApp::getNumZap($configuracoes->whatsapp ,'Atendimento '.$configuracoes->name)}}"><i class="fa fa-whatsapp"></i>{{$configuracoes->whatsapp}}</a>
                             @endif
                             @if ($configuracoes->email)
                                 <a href="mailto:{{$configuracoes->email}}"><i class="fa fa-envelope"></i>{{$configuracoes->email}}</a>                                
@@ -165,6 +165,62 @@
         </div>
     </header>
     <!-- Main header end -->
+    @if ($slides && $slides->count())
+        <!-- Banner start -->
+        <div class="banner">
+            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner" role="listbox">
+                    @foreach ($slides as $key => $slide)
+                        <div class="item banner-max-height {{ $key == 0 ? 'active' : '' }}">
+                            <img src="{{ $slide->getimagem() }}" alt="{{ $slide->titulo }}">
+                            <div class="carousel-caption banner-slider-inner">
+                                <div class="banner-content">                
+
+                                    {{-- título opcional --}}
+                                    @if ($slide->view_title)
+                                        <h1 data-animation="animated fadeInDown delay-05s">{{ $slide->titulo }}</h1>
+                                    @endif 
+
+                                    {{-- conteúdo opcional --}}
+                                    @if ($slide->content)
+                                        <p data-animation="animated fadeInUp delay-1s">{{ $slide->content }}</p>
+                                    @endif
+
+                                    {{-- botão/link --}}
+                                    <a 
+                                        href="{{ $slide->link ?: '#' }}" 
+                                        title="{{ $slide->titulo }}" 
+                                        class="btn button-md button-theme" 
+                                        @if ($slide->target == 1) target="_blank" @endif
+                                        data-animation="animated fadeInUp delay-15s"
+                                    >
+                                        Clique aqui!
+                                    </a> 
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach 
+                </div>
+
+                <!-- Controls -->
+                <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                    <span class="slider-mover-left" aria-hidden="true">
+                        <i class="fa fa-angle-left"></i>
+                    </span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                    <span class="slider-mover-right" aria-hidden="true">
+                        <i class="fa fa-angle-right"></i>
+                    </span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+        <!-- Banner end -->
+    @endif
 
         <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery-2.2.0.min.js'))}}"></script>
         <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.form.js'))}}"></script>
