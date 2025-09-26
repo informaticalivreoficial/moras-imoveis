@@ -102,13 +102,7 @@
                                                 <i class="fas fa-copyright"></i>
                                             </button>
                                             @if ($property->slug)
-                                                @if($property->sale == true && !empty($property->sale_value))
-                                                    <a target="_blank" data-toggle="tooltip" data-placement="top" title="Visualizar Imóvel" class="btn btn-xs btn-info text-white" href="{{ route('web.buyProperty', ['slug' => $property->slug]) }}" title="{{$property->title}}"><i class="fas fa-search"></i></a>
-                                                @elseif($property->location == true && !empty($property->rental_value))
-                                                    <a target="_blank" data-toggle="tooltip" data-placement="top" title="Visualizar Imóvel" class="btn btn-xs btn-info text-white" href="{{ route('web.rentProperty', ['slug' => $property->slug]) }}" title="{{$property->title}}"><i class="fas fa-search"></i></a>
-                                                @else
-                                                    <a target="_blank" data-toggle="tooltip" data-placement="top" title="Visualizar Imóvel" class="btn btn-xs btn-info text-white" href="#" title="{{$property->title}}"><i class="fas fa-search"></i></a>
-                                                @endif
+                                                <a target="_blank" data-toggle="tooltip" data-placement="top" title="Visualizar Imóvel" class="btn btn-xs btn-info text-white" href="{{ route('web.property', ['slug' => $property->slug]) }}" title="{{$property->title}}"><i class="fas fa-search"></i></a>
                                             @endif                            
                                             <a wire:navigate title="Editar Imóvel" href="{{ route('property.edit', [ 'property' => $property->id ]) }}" class="btn btn-xs btn-default"><i class="fas fa-pen"></i></a>
                                             <button type="button" class="btn btn-xs btn-danger text-white p-0" wire:click="setDeleteId({{$property->id}})" title="Excluir" style="width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center;">

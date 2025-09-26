@@ -44,10 +44,12 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
 //     Route::get('/sitemap', [WebController::class, 'sitemap'])->name('sitemap');
 
      /** Página de Compra - Específica de um imóvel */
-     Route::match(['get', 'post'],'/imoveis/quero-comprar/{slug}', [WebController::class, 'buyProperty'])->name('buyProperty');
+     //Route::match(['get', 'post'],'/imoveis/quero-comprar/{slug}', [WebController::class, 'buyProperty'])->name('buyProperty');
 
      /** Página de Locaçãp - Específica de um imóvel */
-     Route::get('imoveis/quero-alugar/{slug}', [WebController::class, 'rentProperty'])->name('rentProperty');
+     //Route::get('imoveis/quero-alugar/{slug}', [WebController::class, 'rentProperty'])->name('rentProperty');
+     Route::get('imoveis/{slug}', [WebController::class, 'Property'])->name('property');
+     Route::get('imoveis', [WebController::class, 'Properties'])->name('properties');
 
 //     /** Lista todos os imóveis */
 //     Route::get('/imoveis/{type}', [WebController::class, 'propertyList'])->name('propertyList');

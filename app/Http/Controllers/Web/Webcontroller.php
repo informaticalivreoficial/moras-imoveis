@@ -9,6 +9,7 @@ use App\Models\Slide;
 use App\Support\Seo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class Webcontroller extends Controller
 {
@@ -22,25 +23,36 @@ class Webcontroller extends Controller
 
     public function home()
     {
-        $propertiesForSale = Property::orderBy('created_at', 'DESC')
-                            ->sale()
-                            ->available()
-                            ->limit(18)
-                            ->get();
-
-        $propertiesForRent = Property::orderBy('created_at', 'DESC')
-                            ->location()
-                            ->available()
-                            ->limit(18)
-                            ->get(); 
-                            
+        $propertiesHighlights = Property::orderBy('created_at', 'DESC')
+                                ->available()
+                                ->where('highlight', 1)
+                                ->limit(18)
+                                ->get();                            
+        $propertiesViews = Property::orderBy('created_at', 'DESC')
+                                ->available()
+                                ->limit(8)
+                                ->get();                            
         $slides = Slide::orderBy('created_at', 'DESC')
                             ->available()
                             ->whereDate('expired_at', '>=', Carbon::today())
-                            ->get();
-        
-        $destaque = Property::where('highlight', 1)->available()->first();
+                            ->get(); 
 
+        // Total de visualizações para cálculo de estrelas
+        $totalViews = DB::table('properties')->where('status', 1)->sum('views');
+
+        // Função auxiliar para calcular estrelas
+        $calculateStars = function($imoveis) use ($totalViews) {
+            foreach ($imoveis as $imovel) {
+                if ($imovel->views > 0 && $totalViews > 0) {
+                    $percent = ($imovel->views / $totalViews) * 100;
+                    $imovel->stars = ceil($percent / 20); // 0 a 5 estrelas
+                } else {
+                    $imovel->stars = 0;
+                }
+            }
+            return $imoveis;
+        };
+        
         // $artigos = Post::orderBy('created_at', 'DESC')
         //                     ->where('tipo', 'artigo')
         //                     ->where('tenant_id', $this->tenant->id)
@@ -62,9 +74,8 @@ class Webcontroller extends Controller
         );
 
         return view('web.'.$this->config->template.'.home',[
-            'propertiesForSale' => $propertiesForSale,
-            'propertiesForRent' => $propertiesForRent,
-            'destaque' => $destaque,
+            'propertiesHighlights' => $propertiesHighlights,
+            'propertiesViews' => $propertiesViews,
             //'artigos' => $artigos,
             'head' => $head,
             'slides' => $slides,

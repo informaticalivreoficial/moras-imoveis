@@ -54,9 +54,9 @@ class PropertyForm extends Component
     public bool $sale = false;
     public bool $location = false;
 
-    public int $display_address = 0; // 0 = Não, 1 = Sim
+    public ?int $display_address = 0; // 0 = Não, 1 = Sim
     public int $display_values = 0; // 0 = Não, 1 = Sim
-    public int $display_marked_water = 0; // 0 = Não, 1 = Sim
+    public ?int $display_marked_water = 0; // 0 = Não, 1 = Sim
 
     protected $booleanFields = [
         'ar_condicionado','aquecedor_solar','bar','biblioteca',
@@ -91,7 +91,7 @@ class PropertyForm extends Component
 
             // Preenche todos os campos exceto metatags
             $data = collect($property->toArray())
-                ->except(['metatags', 'sale', 'location'])
+                ->except(['metatags', 'sale', 'location', 'display_marked_water'])
                 ->toArray();
             $this->fill($data);
 
@@ -118,7 +118,8 @@ class PropertyForm extends Component
             // Converte array de metatags em string para o banco
             $validated['metatags'] = implode(',', $this->metatags ?? []);
             // status depende do botão
-            $validated['status'] = $mode === 'published' ? 1 : 0;            
+            $validated['status'] = $mode === 'published' ? 1 : 0;  
+                      
 
             foreach ($this->booleanFields as $field) {
                 $validated[$field] = (bool) $this->{$field};

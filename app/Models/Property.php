@@ -118,7 +118,7 @@ class Property extends Model
 
     /**
      * Accerssors and Mutators
-    */    
+    */  
     public function getContentWebAttribute()
     {
         return Str::words($this->description, '20', ' ...');
@@ -158,21 +158,38 @@ class Property extends Model
         return Storage::url($cover['path']);        
     }
 
-    public function getLocationPeriod()
+    public function getLocationPeriod(): ?string
     {
         if (empty($this->location_period)) {
             return null;
         }
 
-        $periodo = ($this->location_period == 1 ? 'Diária' : 
-                   ($this->location_period == 2 ? 'Quinzenal' : 
-                   ($this->location_period == 3 ? 'Mensal' : 
-                   ($this->location_period == 4 ? 'Trimestral' : 
-                   ($this->location_period == 5 ? 'Semestral' : 
-                   ($this->location_period == 6 ? 'Anual' : 
-                   ($this->location_period == 7 ? 'Bianual' : 'Diária')))))));
+        $periods = [
+            1 => 'Diária',
+            2 => 'Quinzenal',
+            3 => 'Mensal',
+            4 => 'Trimestral',
+            5 => 'Semestral',
+            6 => 'Anual',
+            7 => 'Bianual',
+        ];
 
-        return $periodo;
+        // Retorna o valor correspondente ou 'Diária' como padrão
+        return $periods[$this->location_period] ?? 'Diária';
+    }
+
+    public function getStarsAttribute(): int
+    {
+        $totalViews = self::where('status', 1)->sum('views');
+
+        if ($this->views <= 0 || $totalViews <= 0) {
+            return 0;
+        }
+
+        $percent = ($this->views / $totalViews) * 100;
+
+        // transforma em número de estrelas (0 a 5)
+        return ceil($percent / 20);
     }
 
     public function setDisplayAddressAttribute($value)
