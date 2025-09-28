@@ -11,14 +11,14 @@ class Dashboard extends Component
     {
         
 
-        //$manifestCount = Trip::count();
-        //$manifestYearCount = Trip::whereYear('start', now()->year)->count();
+        $propertyCount = Property::count();
+        $propertyYearCount = Property::whereYear('created_at', now()->year)->count();
         
 
         return view('livewire.dashboard.dashboard',[
             
-            //'manifestCount' => $manifestCount,
-            //'manifestYearCount' => $manifestYearCount,
+            'propertyCount' => $propertyCount,
+            'propertyYearCount' => $propertyYearCount,
         ]);
     }
 }

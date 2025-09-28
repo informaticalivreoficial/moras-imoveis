@@ -622,7 +622,7 @@
                             @foreach ($property->images ?? [] as $savedImage)
                                 <div class="relative">
                                     <img src="{{ Storage::url($savedImage->path) }}"
-                                        class="w-40 h-40 object-cover rounded border cursor-pointer
+                                        class="w-32 h-32 object-cover rounded border cursor-pointer
                                                 {{ $savedImage->cover ? 'ring-4 ring-green-500' : '' }}"
                                         @click="showModal = true; imageUrl = '{{ Storage::url($savedImage->path) }}'">
 

@@ -21,12 +21,12 @@
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <div class="info-box">
-                        <span class="info-box-icon bg-info"><a href="{{-- route('trips.index') --}}" title="Viagens"><i class="fa far fa-ship"></i></a></span>
+                        <span class="info-box-icon bg-info"><a href="{{ route('properties.index') }}" title="Imóveis"><i class="fa far fa-home"></i></a></span>
             
                         <div class="info-box-content">
-                            <span class="info-box-text"><b>Viagens</b></span>
-                            <span class="info-box-text">{{-- now()->year --}}: {{-- $tripYearCount --}}</span>
-                            <span class="info-box-text">Total: {{-- $tripCount --}}</span>
+                            <span class="info-box-text"><b>Imóveis</b></span>
+                            <span class="info-box-text">{{ now()->year }}: {{ $propertyYearCount }}</span>
+                            <span class="info-box-text">Total: {{ $propertyCount }}</span>
                         </div>            
                     </div>
                 </div>
