@@ -58,12 +58,11 @@ class Config extends Model
         'sitemap', 
         'sitemap_data',
         'analytics_id'
-    ];
+    ];    
 
     /**
      * Accerssors and Mutators
-     */
-    
+    */    
     public function getmetaimg()
     {
         if(empty($this->metaimg) || !Storage::disk()->exists($this->metaimg)) {
@@ -117,14 +116,14 @@ class Config extends Model
         $this->attributes['zipcode'] = (!empty($value) ? $this->clearField($value) : null);
     }
     
-    public function getZipcodeAttribute($value)
-    {
-        if (empty($value)) {
-            return null;
-        }
+    // public function getZipcodeAttribute($value)
+    // {
+    //     if (empty($value)) {
+    //         return null;
+    //     }
 
-        return substr($value, 0, 5) . '-' . substr($value, 5, 3);
-    }
+    //     return substr($value, 0, 5) . '-' . substr($value, 5, 3);
+    // }
     
     public function setWhatsappAttribute($value)
     {
@@ -132,17 +131,17 @@ class Config extends Model
     }
     
     //Formata o celular para exibir
-    public function getWhatsappAttribute($value)
-    {
-        if (empty($value)) {
-            return null;
-        }
-        return  
-            substr($value, 0, 0) . '(' .
-            substr($value, 0, 2) . ') ' .
-            substr($value, 2, 5) . '-' .
-            substr($value, 7, 4) ;
-    }
+    // public function getWhatsappAttribute($value)
+    // {
+    //     if (empty($value)) {
+    //         return null;
+    //     }
+    //     return  
+    //         substr($value, 0, 0) . '(' .
+    //         substr($value, 0, 2) . ') ' .
+    //         substr($value, 2, 5) . '-' .
+    //         substr($value, 7, 4) ;
+    // }
 
     public function setPhoneAttribute($value)
     {
@@ -150,17 +149,17 @@ class Config extends Model
     }
     
     //Formata o celular para exibir
-    public function getPhoneAttribute($value)
-    {
-        if (empty($value)) {
-            return null;
-        }
-        return  
-            substr($value, 0, 0) . '(' .
-            substr($value, 0, 2) . ') ' .
-            substr($value, 2, 5) . '-' .
-            substr($value, 7, 4) ;
-    }
+    // public function getPhoneAttribute($value)
+    // {
+    //     if (empty($value)) {
+    //         return null;
+    //     }
+    //     return  
+    //         substr($value, 0, 0) . '(' .
+    //         substr($value, 0, 2) . ') ' .
+    //         substr($value, 2, 5) . '-' .
+    //         substr($value, 7, 4) ;
+    // }
 
     public function setCellPhoneAttribute($value)
     {
@@ -168,17 +167,17 @@ class Config extends Model
     }
     
     //Formata o celular para exibir
-    public function getCellPhoneAttribute($value)
-    {
-        if (empty($value)) {
-            return null;
-        }
-        return  
-            substr($value, 0, 0) . '(' .
-            substr($value, 0, 2) . ') ' .
-            substr($value, 2, 5) . '-' .
-            substr($value, 7, 4) ;
-    }
+    // public function getCellPhoneAttribute($value)
+    // {
+    //     if (empty($value)) {
+    //         return null;
+    //     }
+    //     return  
+    //         substr($value, 0, 0) . '(' .
+    //         substr($value, 0, 2) . ') ' .
+    //         substr($value, 2, 5) . '-' .
+    //         substr($value, 7, 4) ;
+    // }
 
     
     private function convertStringToDate(?string $param)

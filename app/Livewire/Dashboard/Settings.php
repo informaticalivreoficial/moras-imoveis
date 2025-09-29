@@ -31,6 +31,87 @@ class Settings extends Component
 
     public array $tags = [];
 
+    public function updatedLogo($file)
+    {
+        $this->saveImage('logo', $file);
+    }
+
+    public function updatedLogoAdmin($file)
+    {
+        $this->saveImage('logo_admin', $file);
+    }
+
+    public function updatedLogoFooter($file)
+    {
+        $this->saveImage('logo_footer', $file);
+    }
+
+    public function updatedFavicon($file)
+    {
+        $this->saveImage('favicon', $file);
+    }
+
+    public function updatedWatermark($file)
+    {
+        $this->saveImage('watermark', $file);
+    }
+
+    public function updatedMetaimg($file)
+    {
+        $this->saveImage('metaimg', $file);
+    }
+
+    public function updatedImgheader($file)
+    {
+        $this->saveImage('imgheader', $file);
+    }
+
+    /**
+     * Função genérica para salvar imagens automaticamente
+     */
+    protected function saveImage(string $key, $file)
+    {
+        if ($file instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
+            // Deleta a antiga
+            if (!empty($this->configData[$key]) && Storage::disk('public')->exists($this->configData[$key])) {
+                Storage::disk('public')->delete($this->configData[$key]);
+            }
+
+            // Salva sempre com o mesmo nome (sobrescrevendo)
+            $path = $file->storeAs(
+                'config',
+                "{$key}.".$file->getClientOriginalExtension(),
+                'public'
+            );
+
+            // Atualiza no array
+            $this->configData[$key] = $path;
+
+            // Salva no banco imediatamente
+            Config::where('id', 1)->update([$key => $path]);
+
+            // Atualiza o preview
+            $this->loadLogos();
+        }
+    }
+
+    public function updated($field, $value)
+    {
+        $uploadableFields = [
+            'logo',
+            'logo_admin',
+            'logo_footer',
+            'favicon',
+            'metaimg',
+            'imgheader',
+            'watermark'
+        ];
+
+        if (in_array($field, $uploadableFields)) {
+            $this->saveImage($field, $this->$field);
+        }
+    }
+
     protected function imageValidationRules(): array
     {
         $rules = [];
@@ -66,8 +147,17 @@ class Settings extends Component
     {
         $config = Config::findOrFail(1);
         $this->configData = $config->toArray();
+
+        // Converte os campos de imagem salvos no banco para URLs
+        foreach (['logo','logo_admin','logo_footer','favicon','metaimg','imgheader','watermark'] as $field) {
+            if (!empty($config->$field)) {
+                $this->$field = asset("storage/" . $config->$field);
+            } else {
+                $this->$field = asset("theme/images/image.jpg"); // fallback
+            }
+        }
+
         $this->tags = explode(',', $config->metatags ?? '');
-        $this->loadLogos();
     }
 
     public function render()
@@ -79,32 +169,36 @@ class Settings extends Component
     public function update()
     {      
         try {
-            $validated = $this->validate();            
-            $this->handleImageUploads();            
-            $this->configData['metatags'] = implode(',', $this->tags ?? []);            
-            Config::updateOrCreate(['id' => 1], $this->configData);
-            $this->resetImages();
+            $validated = $this->validate();     
+
+            // Salva os uploads e atualiza configData com os novos caminhos       
+            $this->handleImageUploads();  
+            
+            // remove campos que não podem ser atualizados manualmente
+            unset($this->configData['id'], $this->configData['created_at'], $this->configData['updated_at']);
+            $this->configData['metatags'] = implode(',', $this->tags ?? []);  
+
+            // Salva no banco
+            Config::where('id', 1)->update($this->configData);
+
+            // Recarrega as imagens para o preview
+            $this->loadLogos();
+
+            //$this->resetImages();
+
             $this->dispatch(['atualizado']);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
-            // Captura a primeira chave com erro
             $firstErrorKey = array_key_first($e->validator->errors()->messages());
 
-            // Define a aba correta com base no campo com erro
             $this->currentTab = match (true) {
                 str_starts_with($firstErrorKey, 'configData.app_name') => 'dados',
-
-                //str_starts_with($firstErrorKey, 'configData.logo'),
-                //$firstErrorKey === 'configData.logo' => 'imagens',
-
                 str_starts_with($firstErrorKey, 'configData.meta_') => 'seo',
-
                 str_starts_with($firstErrorKey, 'configData.contact_') => 'contato',
-
                 default => 'dados',
             };
 
-            throw $e; // Repassa a exceção para o Livewire exibir os erros no frontend
+            throw $e;
         } 
                 
     }    
@@ -219,13 +313,18 @@ class Settings extends Component
 
         foreach ($images as $key => $file) {
             if ($file instanceof TemporaryUploadedFile) {
-                $currentPath = $this->configData[$key] ?? null;
-
-                if (!empty($currentPath) && Storage::disk('public')->exists($currentPath)) {
-                    Storage::disk('public')->delete($currentPath);
+                // Apaga a imagem antiga, se existir
+                if (!empty($this->configData[$key]) && Storage::disk('public')->exists($this->configData[$key])) {
+                    Storage::disk('public')->delete($this->configData[$key]);
                 }
 
-                $path = $file->store('config', 'public');
+                // Salva a nova
+                $path = $file->storeAs(
+                    'config',
+                    "{$key}." . $file->getClientOriginalExtension(), // força o mesmo nome
+                    'public'
+                );
+
                 $this->configData[$key] = $path;
             }
         }

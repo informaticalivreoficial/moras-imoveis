@@ -29,6 +29,8 @@ use App\Http\Controllers\Web\{
     SendEmailController,
     Webcontroller
 };
+use App\Livewire\Dashboard\Posts\PostForm;
+use App\Livewire\Dashboard\Posts\Posts;
 use App\Livewire\Dashboard\Properties\Properties;
 use App\Livewire\Dashboard\Properties\PropertyForm;
 use App\Livewire\Dashboard\Slides\SlideForm;
@@ -132,6 +134,11 @@ Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'admin'], functi
     Route::get('slides/cadastrar', SlideForm::class)->name('slides.create');
     Route::get('slides', Slides::class)->name('slides.index');
 
+    //*********************** Posts *********************************************/
+    Route::get('posts/{post}/editar', PostForm::class)->name('posts.edit');
+    Route::get('posts/cadastrar', PostForm::class)->name('posts.create');
+    Route::get('posts', Posts::class)->name('posts.index');
+
     //*********************** Usuários *******************************************/
     Route::get('/cargos', RoleIndex::class)->name('admin.roles');
     Route::get('/permissoes', PermissionIndex::class)->name('admin.permissions');
@@ -141,8 +148,6 @@ Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'admin'], functi
     Route::get('usuarios/cadastrar', Form::class)->name('users.create');
     Route::get('usuarios/{userId}/editar', Form::class)->name('users.edit');
     Route::get('usuarios/{user}/visualizar', ViewUser::class)->name('users.view');  
-
-    Route::view('posts/create', 'admin.posts.create');
 
     //*********************** Email **********************************************/
     Route::get('email/suporte', [EmailController::class, 'suporte'])->name('email.suporte');
