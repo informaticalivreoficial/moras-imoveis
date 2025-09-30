@@ -3,60 +3,93 @@
 namespace App\Livewire\Dashboard\Posts;
 
 use App\Models\CatPost;
+use Illuminate\Validation\Rule;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CatPostForm extends Component
 {
-    public ?int $parent = null;
-    public ?CatPost $catPai = null;
+    public ?int $id = null;
+    public ?string $title = null;
+    public int $status = 1;
+    public ?string $type = null;
+    public ?int $parentId = null;
 
-    public $title;
-    public $status = 1;
-    public $type;
-    public $id_pai;
-
-    public bool $isEditing = false;
-
-    public function mount($parent = null)
+    #[On('loadCategory')]
+    public function loadCategory($payload = [])
     {
-        $this->parent = $parent;
+        // Garante que pegamos a chave correta
+        $data = $payload['payload'] ?? $payload;
 
-        if ($this->parent) {
-            $this->catPai = CatPost::find($this->parent);
-            $this->id_pai = $this->catPai->id;
-            $this->type = $this->catPai->type; // força tipo da subcategoria igual ao pai
+        // Edição
+        if (!empty($data['editId'])) {
+            $category = CatPost::find($data['editId']);
+            if ($category) {
+                $this->id       = $category->id;
+                $this->title    = $category->title;
+                $this->status   = $category->status;
+                $this->type     = $category->type;
+                $this->parentId = $category->id_pai;
+            }
+        }
+
+        // Nova subcategoria
+        if (!empty($data['categoryId'])) {
+            $this->parentId = $data['categoryId'];
+            $parent = CatPost::find($this->parentId);
+            if ($parent) {
+                $this->type = $parent->type;
+            }
         }
     }
 
-    public function save()
+    public function save(): void
     {
         $this->validate([
             'title' => 'required|string|max:255',
-            'type' => 'required|string',
+            'type' => Rule::requiredIf($this->parentId === null),
             'status' => 'required|boolean',
-            'id_pai' => 'nullable|exists:cat_posts,id',
+            'parentId' => 'nullable|exists:cat_post,id',
         ]);
 
-        // Força tipo igual ao pai novamente por segurança
-        if ($this->catPai) {
-            $this->type = $this->catPai->type;
+        CatPost::updateOrCreate(
+            ['id' => $this->id],
+            [
+                'title' => $this->title,
+                'type' => $this->type,
+                'status' => $this->status,
+                'id_pai' => $this->parentId,
+            ]
+        );
+
+        // Fecha modal
+        $this->dispatch('category-saved');
+
+        $this->resetForm();
+    }
+
+    #[On('resetForm')]
+    public function resetForm()
+    {
+        $this->reset(['id', 'title', 'type', 'status', 'parentId']);
+        $this->status = 1;
+    }
+
+    public function getModalTitleProperty()
+    {
+        if ($this->id) {
+            return 'Editar Categoria';
         }
 
-        CatPost::create([
-            'title' => $this->title,
-            'status' => $this->status,
-            'type' => $this->type,
-            'id_pai' => $this->id_pai,
-        ]);
+        if ($this->parentId) {
+            return 'Cadastrar Subcategoria';
+        }
 
-        session()->flash('message', 'Categoria salva com sucesso!');
-        return redirect()->route('posts.categories.index');
+        return 'Cadastrar Nova Categoria';
     }
 
     public function render()
     {
-        return view('livewire.dashboard.posts.cat-post-form',[
-            'titlee' => $this->isEditing ? 'Editar Categoria' : 'Cadastrar Categoria',
-        ]);
+        return view('livewire.dashboard.posts.cat-post-form');
     }
 }

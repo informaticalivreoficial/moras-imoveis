@@ -46,19 +46,19 @@ class CatPost extends Model
     /**
      * Accerssors and Mutators
      */
-    public function getStatusAttribute($value)
-    {
-        if(empty($value)){
-            return null;
-        }
+    // public function getStatusAttribute($value)
+    // {
+    //     if(empty($value)){
+    //         return null;
+    //     }
 
-        return ($value == '1' ? 'Sim' : 'Não');
-    }
+    //     return ($value == '1' ? 'Sim' : 'Não');
+    // }
 
-    public function setStatusAttribute($value)
-    {
-        $this->attributes['status'] = ($value == '1' ? 1 : 0);
-    }
+    // public function setStatusAttribute($value)
+    // {
+    //     $this->attributes['status'] = ($value == '1' ? 1 : 0);
+    // }
 
     public function countposts()
     {

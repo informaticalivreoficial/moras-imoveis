@@ -29,10 +29,10 @@ class AppServiceProvider extends ServiceProvider
         Blade::aliasComponent('admin.components.message', 'message');
 
         //Links
-        $Links = \App\Models\Menu::whereNull('id_pai')->orderby('created_at', 'DESC')
-                        ->available()
-                        ->get();        
-        View()->share('Links', $Links);
+        // $Links = \App\Models\Menu::whereNull('id_pai')->orderby('created_at', 'DESC')
+        //                 ->available()
+        //                 ->get();        
+        // View()->share('Links', $Links);
 
         $configuracoes = \App\Models\Config::first(); 
         View()->share('configuracoes', $configuracoes);

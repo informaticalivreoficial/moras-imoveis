@@ -27,6 +27,8 @@ class CatPosts extends Component
 
     public ?int $delete_id = null;
 
+    protected $listeners = ['category-saved' => '$refresh'];
+
     #{Url}
     public function updatingSearch(): void
     {
@@ -64,5 +66,45 @@ class CatPosts extends Component
             'title' => $title,
             'categories' => $categories,
         ]);
+    }
+
+    public function setDeleteId($id)
+    {
+        $this->delete_id = $id;
+        $this->dispatch('delete-prompt');        
+    }
+
+    #[On('goOn-Delete')]
+    public function delete(): void
+    {
+        try {
+            $category = CatPost::with('children')->findOrFail($this->delete_id);
+
+            // Verifica se possui subcategorias
+            if ($category->children->count() > 0) {
+                $this->dispatch('swal', [
+                    'title' => 'Erro!',
+                    'icon'  => 'error',
+                    'text'  => 'Não é possível excluir uma categoria que possui subcategorias.',
+                ]);
+                return;
+            }
+
+            $category->delete(); // já dispara o hook no model
+
+            $this->delete_id = null;
+
+            $this->dispatch('swal', [
+                'title' => 'Sucesso!',
+                'icon'  => 'success',
+                'text'  => 'Categoria Removida!',
+            ]);
+        } catch (\Exception $e) {
+            $this->dispatch('swal', [
+                'title' => 'Erro!',
+                'icon'  => 'error',
+                'text'  => 'Não foi possível excluir a categoria.',
+            ]);
+        }
     }
 }
