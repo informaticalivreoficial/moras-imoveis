@@ -29,6 +29,8 @@ use App\Http\Controllers\Web\{
     SendEmailController,
     Webcontroller
 };
+use App\Livewire\Dashboard\Posts\CatPostForm;
+use App\Livewire\Dashboard\Posts\CatPosts;
 use App\Livewire\Dashboard\Posts\PostForm;
 use App\Livewire\Dashboard\Posts\Posts;
 use App\Livewire\Dashboard\Properties\Properties;
@@ -129,7 +131,7 @@ Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'admin'], functi
     Route::get('imoveis/cadastrar', PropertyForm::class)->name('properties.create');
     Route::get('imoveis', Properties::class)->name('properties.index');
 
-    //*********************** Slides *********************************************/
+    //*********************** Slides ********************************************/
     Route::get('slides/{slide}/editar', SlideForm::class)->name('slides.edit');
     Route::get('slides/cadastrar', SlideForm::class)->name('slides.create');
     Route::get('slides', Slides::class)->name('slides.index');
@@ -138,6 +140,11 @@ Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'admin'], functi
     Route::get('posts/{post}/editar', PostForm::class)->name('posts.edit');
     Route::get('posts/cadastrar', PostForm::class)->name('posts.create');
     Route::get('posts', Posts::class)->name('posts.index');
+
+    //*********************** Categorias de Posts ********************************/
+    Route::get('posts/categorias', CatPosts::class)->name('posts.categories.index');
+    Route::get('posts/categorias/cadastrar/{parent?}', CatPostForm::class)->name('posts.categories.create');
+    Route::get('posts/categorias/{category}/editar', CatPostForm::class)->name('posts.categories.edit');
 
     //*********************** Usuários *******************************************/
     Route::get('/cargos', RoleIndex::class)->name('admin.roles');

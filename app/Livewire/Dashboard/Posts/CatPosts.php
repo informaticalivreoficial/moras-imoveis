@@ -2,12 +2,12 @@
 
 namespace App\Livewire\Dashboard\Posts;
 
-use App\Models\Post;
+use App\Models\CatPost;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
 
-class Posts extends Component
+class CatPosts extends Component
 {
     use WithPagination;
 
@@ -33,11 +33,6 @@ class Posts extends Component
         $this->resetPage();
     }
 
-    public function loadMore()
-    {
-        $this->perPage += 12; // aumenta a quantidade de itens carregados
-    }
-
     public function sortBy(string $field): void
     {
         if ($this->sortField === $field) {
@@ -52,9 +47,10 @@ class Posts extends Component
 
     public function render()
     {
-        $title = 'Lista de Posts';
-        $searchableFields = ['title','content','slug','category'];
-        $posts = Post::query()
+        $title = 'Categorias de Posts';
+        $searchableFields = ['title','content','slug'];
+        $categories = CatPost::query()
+            ->whereNull('id_pai')
             ->when($this->search, function ($query) use ($searchableFields) {
                 $query->where(function ($q) use ($searchableFields) {
                     foreach ($searchableFields as $field) {
@@ -64,41 +60,9 @@ class Posts extends Component
             })
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate($this->perPage);
-        return view('livewire.dashboard.posts.posts',[
+        return view('livewire.dashboard.posts.cat-posts',[
             'title' => $title,
-            'posts' => $posts,
+            'categories' => $categories,
         ]);
     }
-
-    public function toggleStatus($id)
-    {              
-        $post = Post::find($id);
-        $post->status = !$this->active;        
-        $post->save();
-        $this->active = $post->status;
-    }
-
-    #[On('goOn-Delete')]
-    public function delete(): void
-    {
-        try {
-            $post = Post::findOrFail($this->delete_id);
-
-            $post->delete(); // já dispara o hook no model
-
-            $this->delete_id = null;
-
-            $this->dispatch('swal', [
-                'title' => 'Sucesso!',
-                'icon'  => 'success',
-                'text'  => 'Imóvel e todas as imagens foram removidas!',
-            ]);
-        } catch (\Exception $e) {
-            $this->dispatch('swal', [
-                'title' => 'Erro!',
-                'icon'  => 'error',
-                'text'  => 'Não foi possível excluir o imóvel.',
-            ]);
-        }
-    }    
 }

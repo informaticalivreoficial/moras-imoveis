@@ -76,6 +76,26 @@
                         <p>Banners</p>
                     </a>
                 </li>  
+                <li class="nav-item {{ Route::is('posts.*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ Route::is('posts.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-pencil-alt"></i>
+                        <p>Posts <i class="fas fa-angle-left right"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('posts.index')}}" class="nav-link {{ Route::is('posts.index') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Listar Todos</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('posts.categories.index')}}" class="nav-link {{ Route::is('posts.categories.index') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Categorias</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>  
                     
                 <li class="nav-item">
                     <a href="#" class="nav-link">

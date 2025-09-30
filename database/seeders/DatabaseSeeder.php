@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
             TemplateTableSeeder::class,
             PropertyTableSeeder::class,
             PropertyGbTableSeeder::class,
+            CatPostSeeder::class
         ]);
     }
 }

@@ -35,17 +35,7 @@
             </div>
         </div>
 
-        <div class="card-body">
-            <div class="row">
-                <div class="col-12">                
-                    @if(session()->exists('message'))
-                        @message(['color' => session()->get('color')])
-                            {{ session()->get('mensagem') }}
-                        @endmessage
-                    @endif
-                </div>            
-            </div>
-
+        <div class="card-body"> 
             @if ($properties->count())
                 <div class="row d-flex align-items-stretch" x-data="{ showModal: false, imageUrl: '' }">
                     @foreach($properties as $property)  
