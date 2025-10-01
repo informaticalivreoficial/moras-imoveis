@@ -143,8 +143,8 @@ Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'admin'], functi
 
     //*********************** Categorias de Posts ********************************/
     Route::get('posts/categorias', CatPosts::class)->name('posts.categories.index');
-    Route::get('posts/categorias/cadastrar/{parent?}', CatPostForm::class)->name('posts.categories.create');
-    Route::get('posts/categorias/{category}/editar', CatPostForm::class)->name('posts.categories.edit');
+    //Route::get('posts/categorias/cadastrar/{parent?}', CatPostForm::class)->name('posts.categories.create');
+    //Route::get('posts/categorias/{category}/editar', CatPostForm::class)->name('posts.categories.edit');
 
     //*********************** Usuários *******************************************/
     Route::get('/cargos', RoleIndex::class)->name('admin.roles');
