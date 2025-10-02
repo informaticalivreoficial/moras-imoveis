@@ -85,7 +85,10 @@
                         <li class="nav-item">
                             <a href="{{route('posts.index')}}" class="nav-link {{ Route::is('posts.index') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Listar Todos</p>
+                                <p>
+                                    Listar Todos
+                                    <span class="badge badge-info right">{{$postsCount}}</span>
+                                </p>
                             </a>
                         </li>
                         <li class="nav-item">

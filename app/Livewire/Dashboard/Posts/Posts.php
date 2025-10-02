@@ -94,6 +94,12 @@ class Posts extends Component
         }
     }
 
+    public function setDeleteId($id)
+    {
+        $this->delete_id = $id;
+        $this->dispatch('delete-prompt');        
+    }
+
     #[On('goOn-Delete')]
     public function delete(): void
     {
@@ -107,13 +113,13 @@ class Posts extends Component
             $this->dispatch('swal', [
                 'title' => 'Sucesso!',
                 'icon'  => 'success',
-                'text'  => 'Imóvel e todas as imagens foram removidas!',
+                'text'  => 'O Post e todas as imagens foram removidas!',
             ]);
         } catch (\Exception $e) {
             $this->dispatch('swal', [
                 'title' => 'Erro!',
                 'icon'  => 'error',
-                'text'  => 'Não foi possível excluir o imóvel.',
+                'text'  => 'Não foi possível excluir o post.',
             ]);
         }
     }    

@@ -85,6 +85,22 @@ class Post extends Model
         }
     }
 
+    protected static function booted()
+    {
+        static::deleting(function ($post) {
+            // Deleta imagens físicas e registros relacionados
+            foreach ($post->images as $image) {
+                if ($image->path && Storage::disk('public')->exists($image->path)) {
+                    Storage::disk('public')->delete($image->path);
+                }
+                $image->delete();
+            }
+
+            // Deleta a pasta inteira do imóvel no storage
+            Storage::disk('public')->deleteDirectory("posts/{$post->id}");
+        });
+    }
+
     /**
      * Scopes
     */

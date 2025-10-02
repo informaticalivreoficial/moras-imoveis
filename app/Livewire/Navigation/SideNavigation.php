@@ -2,9 +2,8 @@
 
 namespace App\Livewire\Navigation;
 
-use App\Models\Company;
 use App\Models\Config;
-use App\Models\Manifest;
+use App\Models\Post;
 use App\Models\Property;
 use App\Models\User;
 use Livewire\Component;
@@ -19,7 +18,7 @@ class SideNavigation extends Component
                 ->orWhere('admin', 1)
                 ->orWhere('superadmin', 1);
         })->count();
-        //$companyCount = Company::count();
+        $postsCount = Post::count();
         $propertyCount = Property::count();
         // Manifest count
         //$manifestCount = Manifest::where(function($query) {
@@ -36,13 +35,9 @@ class SideNavigation extends Component
 
         return view('livewire.navigation.side-navigation',[
             'clientCount' => $clientCount,
-            'timeCount' => $timeCount,            
-            //'companyCount' => $companyCount,
+            'timeCount' => $timeCount,   
+            'postsCount' => $postsCount, 
             'propertyCount' => $propertyCount,
-            //'manifestCount' => $manifestCount,
-            //'manifestComercialCount' => $manifestComercialCount,
-            //'manifestFinanceCount' => $manifestFinanceCount,
-            //'manifestFinishCount' => $manifestFinishCount,
             'config' => $config,
         ]);
     }
