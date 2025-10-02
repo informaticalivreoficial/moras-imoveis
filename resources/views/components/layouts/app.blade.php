@@ -37,7 +37,8 @@
 
     {{-- General Styles --}}
     <link rel="stylesheet" href="{{ asset('theme/dist/css/styles.css') }}">
-   
+    <link rel="stylesheet" href="{{ asset('theme/dist/css/action-buttons.css') }}">
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 

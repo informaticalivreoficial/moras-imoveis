@@ -319,7 +319,7 @@ class Property extends Model
         if (empty($value)) {
             return null;
         }
-        return date('d/m/Y', strtotime($value));
+        return \Carbon\Carbon::parse($value)->format('d/m/Y');
     }
 
     private function convertStringToDouble($param)

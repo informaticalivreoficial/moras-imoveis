@@ -141,6 +141,14 @@ class User extends Authenticatable
         $this->attributes['birthday'] = (!empty($value) ? $this->convertStringToDate($value) : null);
     }
 
+    public function getBirthdayAttribute($value)
+    {
+        if (empty($value)) {
+            return null;
+        }
+        return \Carbon\Carbon::parse($value)->format('d/m/Y');
+    }
+
     public function setAdminAttribute($value)
     {
         $this->attributes['admin'] = ($value === true || $value === 'on' ? 1 : 0);

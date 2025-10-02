@@ -24,7 +24,7 @@ class Post extends Model
         'tags',
         'views',
         'category',
-        'coments',
+        'comments',
         'highlight',
         'cat_pai',        
         'status',
@@ -33,10 +33,61 @@ class Post extends Model
         'publish_at'
     ];
 
+    protected $casts = [
+        'publish_at' => 'datetime',
+        'status' => 'boolean',
+        'coments' => 'boolean',
+    ];
+
+    /**
+     * Boot do model - executado automaticamente
+    */
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Antes de salvar (criar ou atualizar)
+        static::saving(function ($post) {
+            if (empty($post->slug) && !empty($post->title)) {
+                $post->slug = $post->generateUniqueSlug($post->title);
+            }
+        });
+    }
+
+    /**
+     * Gera um slug único
+    */
+    public function generateUniqueSlug($title)
+    {
+        $slug = Str::slug($title);
+        $originalSlug = $slug;
+        $counter = 1;
+
+        // Verifica se já existe, excluindo o próprio post em caso de edição
+        while (static::where('slug', $slug)
+                    ->where('id', '!=', $this->id ?? 0)
+                    ->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
+    }
+
+    /**
+     * Método manual para atualizar o slug (se necessário)
+    */
+    public function updateSlug()
+    {
+        if (!empty($this->title)) {
+            $this->slug = $this->generateUniqueSlug($this->title);
+            $this->save();
+        }
+    }
+
     /**
      * Scopes
-     */
-
+    */
     public function scopePostson($query)
     {
         return $query->where('status', 1);
@@ -56,9 +107,9 @@ class Post extends Model
         return $this->belongsTo(User::class, 'autor', 'id');
     }
     
-    public function categoriaObject()
+    public function category()
     {
-        return $this->hasOne(CatPost::class, 'id', 'categoria');
+        return $this->hasOne(CatPost::class, 'id', 'category');
     }
     
     public function userObject()
@@ -96,7 +147,7 @@ class Post extends Model
         }
 
         if(empty($cover['path']) || !Storage::disk()->exists($cover['path'])) {
-            return url(asset('backend/assets/images/image.jpg'));
+            return url(asset('theme/images/image.jpg'));
         }
 
         //return Storage::url(Cropper::thumb($cover['path'], 720, 480));
@@ -135,26 +186,13 @@ class Post extends Model
         $this->attributes['publish_at'] = (!empty($value) ? $this->convertStringToDate($value) : null);
     }
     
-    public function getPublishAtAttribute($value)
-    {
-        if (empty($value)) {
-            return null;
-        }
-        return date('d/m/Y', strtotime($value));
-    }
-    
-    public function setSlug()
-    {
-        if(!empty($this->titulo)){
-            $post = Post::where('titulo', $this->titulo)->first(); 
-            if(!empty($post) && $post->id != $this->id){
-                $this->attributes['slug'] = Str::slug($this->titulo) . '-' . $this->id;
-            }else{
-                $this->attributes['slug'] = Str::slug($this->titulo);
-            }            
-            $this->save();
-        }
-    }
+    // public function getPublishAtAttribute($value)
+    // {
+    //     if (empty($value)) {
+    //         return null;
+    //     }
+    //     return date('d/m/Y', strtotime($value));
+    // }
     
     private function convertStringToDate(?string $param)
     {

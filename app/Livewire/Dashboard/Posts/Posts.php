@@ -23,7 +23,7 @@ class Posts extends Component
 
     public string $sortDirection = 'desc';
 
-    public bool $active;
+    public bool $active = false;
 
     public ?int $delete_id = null;
 
@@ -70,12 +70,28 @@ class Posts extends Component
         ]);
     }
 
-    public function toggleStatus($id)
-    {              
-        $post = Post::find($id);
-        $post->status = !$this->active;        
-        $post->save();
-        $this->active = $post->status;
+    public function toggleStatus($postId)
+    {
+        try {
+            $post = Post::findOrFail($postId);
+            $post->status = !$post->status;
+            $post->save();
+
+            // $this->dispatch('swal', [
+            //     'icon' => 'success',
+            //     'title' => 'Status atualizado!',
+            //     'text' => $post->status ? 'Post publicado' : 'Post despublicado',
+            //     'timer' => 2000,
+            //     'showConfirmButton' => false,
+            // ]);
+
+        } catch (\Exception $e) {
+            $this->dispatch('swal', [
+                'icon' => 'error',
+                'title' => 'Erro ao atualizar status',
+                'text' => $e->getMessage(),
+            ]);
+        }
     }
 
     #[On('goOn-Delete')]

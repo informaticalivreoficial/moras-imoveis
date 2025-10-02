@@ -40,7 +40,9 @@ class CatPost extends Model
      */
     public function children()
     {
-        return $this->hasMany(CatPost::class, 'id_pai', 'id');
+        return $this->hasMany(CatPost::class, 'id_pai')
+            ->where('status', 1)
+            ->orderBy('title');
     }
 
     /**

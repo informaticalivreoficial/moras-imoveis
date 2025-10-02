@@ -29,7 +29,7 @@ class Time extends Component
 
         $users = User::query()
             ->where(function($query) {
-                $query->where('editor', 1)->orWhere('superadmin', 1);
+                $query->where('editor', 1)->orWhere('admin', 1);
             })
             ->when($this->search, function($query) {
                 $query->where(function($q) {
