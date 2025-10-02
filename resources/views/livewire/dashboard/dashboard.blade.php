@@ -1,5 +1,5 @@
 <div>   
-
+    @section('title', $title) 
     <div class="content-header">
         <div class="container-fluid">
             <div class="row">
@@ -21,8 +21,11 @@
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <div class="info-box">
-                        <span class="info-box-icon bg-info"><a href="{{ route('properties.index') }}" title="Imóveis"><i class="fa far fa-home"></i></a></span>
-            
+                        <span class="info-box-icon bg-info">
+                            <a href="{{ route('properties.index') }}" title="Imóveis">
+                                <i class="fa far fa-home"></i>
+                            </a>
+                        </span>            
                         <div class="info-box-content">
                             <span class="info-box-text"><b>Imóveis</b></span>
                             <span class="info-box-text">{{ now()->year }}: {{ $propertyYearCount }}</span>
@@ -32,12 +35,15 @@
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <div class="info-box">
-                        <span class="info-box-icon bg-teal"><a href="{{-- route('manifests.index') --}}" title="Manifestos"><i class="fa far fa-file-alt"></i></a></span>
-            
+                        <span class="info-box-icon bg-teal">
+                            <a href="{{ route('posts.index') }}" title="Posts">
+                                <i class="fa far fa-pencil-alt"></i>
+                            </a>
+                        </span>            
                         <div class="info-box-content">
-                            <span class="info-box-text"><b>Manifestos</b></span>
-                            <span class="info-box-text">{{-- now()->year --}}: {{-- $manifestYearCount --}}</span>
-                            <span class="info-box-text">Total: {{-- $manifestCount --}}</span>
+                            <span class="info-box-text"><b>Posts</b></span>
+                            <span class="info-box-text">{{ now()->year }}: {{ $postsYearCount }}</span>
+                            <span class="info-box-text">Total: {{ $postsCount }}</span>
                         </div>            
                     </div>
                 </div>

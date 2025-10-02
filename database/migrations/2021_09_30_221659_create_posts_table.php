@@ -20,7 +20,7 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->longText('content')->nullable();
             $table->string('slug')->nullable();
-            $table->string('tags')->nullable();
+            $table->text('tags')->nullable();
             $table->bigInteger('views')->default(0);
             $table->unsignedInteger('category');
             $table->integer('cat_pai')->nullable();

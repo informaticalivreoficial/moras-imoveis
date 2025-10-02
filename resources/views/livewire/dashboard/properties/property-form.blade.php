@@ -717,7 +717,7 @@
                                         >
                                         <div class="flex flex-wrap gap-2 mb-2">
                                             <template x-for="(tag, index) in tags" :key="index">
-                                                <span class="flex items-center bg-blue-500 text-white px-3 py-1 rounded-full">
+                                                <span class="flex items-center bg-teal-500 text-white px-3 py-1 rounded-full">
                                                     <span x-text="tag"></span>
                                                     <button type="button" @click="removeTag(index)" class="ml-2 hover:text-gray-200">&times;</button>
                                                 </span>
