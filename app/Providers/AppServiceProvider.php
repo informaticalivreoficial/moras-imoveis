@@ -46,5 +46,6 @@ class AppServiceProvider extends ServiceProvider
         View()->share('postsfooter', $postsfooter);
 
         Paginator::useBootstrap();
+        
     }
 }

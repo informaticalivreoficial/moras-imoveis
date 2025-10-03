@@ -303,24 +303,24 @@
         <div class="container">
             <div class="main-title"><h1>Acompanhe nosso Blog</h1></div>
             <div class="row">   
-            @foreach($artigos as $blog)
-                <div class="col-lg-4 col-md-4 col-sm-6 wow fadeInLeft delay-04s">
-                    <div class="thumbnail blog-box-2 clearfix" style="min-height: 470px;">
-                        <div class="blog-photo">
-                            <img src="{{$blog->cover()}}" alt="{{$blog->title}}" class="img-responsive">                
-                        </div>
-                        <div class="caption detail">
-                            @php
-                                $tipo = $blog->type == 'noticia' ? 'noticia' : 'artigo';
-                            @endphp
-                            <h4><a href="{{route('web.blog.'.$tipo.'',['slug' => $blog->slug])}}">{{$blog->title}}</a></h4>
-                            {!!$blog->content_web!!}
-                            <div class="clearfix"></div>
-                            <a href="{{route('web.blog.'.$tipo.'',['slug' => $blog->slug])}}" class="read-more">Leia +</a>
+                @foreach($artigos as $blog)
+                    <div class="col-lg-4 col-md-4 col-sm-6 wow fadeInLeft delay-04s">
+                        <div class="thumbnail blog-box-2 clearfix" style="min-height: 470px;">
+                            <div class="blog-photo">
+                                <img src="{{$blog->cover()}}" alt="{{$blog->title}}" class="img-responsive">                
+                            </div>
+                            <div class="caption detail">
+                                @php
+                                    $tipo = $blog->type == 'noticia' ? 'noticia' : 'artigo';
+                                @endphp
+                                <h4><a href="{{route('web.blog.'.$tipo.'',['slug' => $blog->slug])}}">{{$blog->title}}</a></h4>
+                                {!!$blog->content_web!!}
+                                <div class="clearfix"></div>
+                                <a href="{{route('web.blog.'.$tipo.'',['slug' => $blog->slug])}}" class="read-more">Leia +</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
             </div>
         </div>
     </div>    

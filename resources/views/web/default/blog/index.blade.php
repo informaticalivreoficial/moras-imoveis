@@ -16,59 +16,64 @@
 <!-- Banner end -->
 
 <!-- Blog body start -->
-<div class="blog-body content-area">
-    <div class="container">
-        <div class="row">
-            @if($posts && $posts->count())
-                <div class="row mb-40">
-                    <div class="col-lg-12">                
-                        <div class="alert alert-info wow fadeInRight delay-03s" role="alert" style="visibility: visible; animation-name: fadeInRight;">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                            <strong>Desculpe!</strong> Não encontramos nenhum artigo publicado!
-                        </div>                
-                    </div>
-                </div>
-            @else       
+<div class="blog-body content-area py-10">
+    <div class="container mx-auto px-4">
+        @if($posts && $posts->count() > 0)
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($posts as $art)
-                    <div class="col-lg-4 col-md-4 col-sm-6 ">
-                        <div class="thumbnail blog-box-2 clearfix" style="min-height: 470px;">
-                            <div class="blog-photo">
-                                <img src="{{$art->cover()}}" alt="{{$art->title}}" class="img-responsive">
+                    <article class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col h-full">
+                        <!-- Imagem -->
+                        <figure class="relative w-full h-80 overflow-hidden">
+                            <img src="{{ $art->cover() }}" alt="{{ $art->title }}" 
+                                 class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
+                        </figure>
+
+                        <!-- Autor -->
+                        @if ($art->autor && $art->user)
+                            <div class="flex items-center gap-2 px-4 py-3 border-b">
+                                <img src="{{ $art->user->url_avatar }}" alt="{{ $art->user->name }}" 
+                                     class="w-16 h-16 rounded-full object-cover">
+                                <span class="text-md font-medium text-gray-700">{{ $art->user->name }}</span>
                             </div>
-                            @if ($art->autor)
-                                <div class="post-meta">
-                                    <ul>
-                                        <li class="profile-user">
-                                            <img src="{{$art->autor->url_avatar}}" alt="{{$art->autor->name}}">                                        
-                                        </li>
-                                        <li><span>{{$art->autor->name}}</span></li>
-                                    </ul>
-                                </div>
-                            @endif
-                            
-                            <!-- Detail -->
-                            <div class="caption detail">
-                                <h4><a href="<?= BASE;?>/blog/artigo/<?= $url;?>">{{$art->title}}</a></h4>
-                                <!-- paragraph -->
-                                <?= Check::Words($content,20);?>
-                                <div class="clearfix"></div>
-                                <!-- Btn -->
-                                <a href="<?= BASE;?>/blog/artigo/<?= $url;?>" class="read-more">Leia +</a>
-                            </div>
+                        @endif
+
+                        <!-- Detalhes -->
+                        <div class="flex flex-col flex-1 p-4">
+                            @php
+                                $tipo = $art->type == 'noticia' ? 'noticia' : 'artigo';
+                            @endphp
+
+                            <h4 class="text-md font-semibold text-gray-800 mb-2 line-clamp-2">
+                                <a href="{{ route('web.blog.'.$tipo,['slug' => $art->slug]) }}" 
+                                   class="hover:text-indigo-600 transition-colors">
+                                    {{ $art->title }}
+                                </a>
+                            </h4>
+
+                            <p class="text-md text-gray-600 flex-1 mb-3">
+                                {{ Str::limit(strip_tags($art->content_web), 160) }}
+                            </p>
+
+                            <a href="{{ route('web.blog.'.$tipo,['slug' => $art->slug]) }}" 
+                               class="mt-auto inline-block text-indigo-600 hover:text-indigo-800 text-md font-medium">
+                                Leia +
+                            </a>
                         </div>
-                    </div>
+                    </article>
                 @endforeach
-            @endif
-            
-            
-            <div class="col-lg-12">
-                <!-- Page navigation start -->
-                <nav aria-label="Page navigation">
-                    {{ $posts->links('vendor.pagination.default') }}
-                </nav>
-                <!-- Page navigation end -->
-            </div>            
-        </div>
+                <!-- Paginação -->
+                <div class="mt-8">
+                    {{ $posts->links('vendor.pagination.tailwind') }}
+                </div>
+            </div>
+        @else
+            <div class="col-span-3">
+                <div class="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded relative" role="alert">
+                    <strong class="font-bold">Desculpe!</strong>
+                    <span class="block">Não encontramos nenhum post publicado!</span>
+                </div>
+            </div>
+        @endif
     </div>
 </div>
 <!-- Blog body end -->

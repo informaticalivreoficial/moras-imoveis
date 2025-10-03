@@ -206,7 +206,7 @@ class Webcontroller extends Controller
                             ->where('type', 'artigo')
                             ->orWhere('type', 'noticia')
                             ->postson()
-                            ->paginate(24);
+                            ->paginate(3);
 
         $head = $this->seo->render('Blog - ' . $this->config->app_name ?? env('APP_NAME'),
             'Confira nossos artigos e notícias sobre o mercado imobiliário.',
@@ -214,7 +214,7 @@ class Webcontroller extends Controller
             $this->config->getmetaimg() ?? url(asset('theme/images/image.jpg'))
         );
 
-        return view('web.'.$this->config->template.'.blog.index',[
+        return view("web.{$this->config->template}.blog.index",[
             'head' => $head,
             'posts' => $posts,
         ]);
