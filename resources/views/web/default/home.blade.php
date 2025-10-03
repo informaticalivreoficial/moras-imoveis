@@ -310,10 +310,13 @@
                             <img src="{{$blog->cover()}}" alt="{{$blog->title}}" class="img-responsive">                
                         </div>
                         <div class="caption detail">
-                            <h4><a href="{{route('web.blog.artigo',['slug' => $blog->slug])}}">{{$blog->title}}</a></h4>
+                            @php
+                                $tipo = $blog->type == 'noticia' ? 'noticia' : 'artigo';
+                            @endphp
+                            <h4><a href="{{route('web.blog.'.$tipo.'',['slug' => $blog->slug])}}">{{$blog->title}}</a></h4>
                             {!!$blog->content_web!!}
                             <div class="clearfix"></div>
-                            <a href="{{route('web.blog.artigo',['slug' => $blog->slug])}}" class="read-more">Leia +</a>
+                            <a href="{{route('web.blog.'.$tipo.'',['slug' => $blog->slug])}}" class="read-more">Leia +</a>
                         </div>
                     </div>
                 </div>
@@ -322,7 +325,6 @@
         </div>
     </div>    
 @endif
-
 
 @endsection
 

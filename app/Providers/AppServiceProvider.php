@@ -37,6 +37,14 @@ class AppServiceProvider extends ServiceProvider
         $configuracoes = \App\Models\Config::first(); 
         View()->share('configuracoes', $configuracoes);
 
+        $postsfooter = \App\Models\Post::orderBy('created_at', 'DESC')
+                            ->where('type', 'artigo')
+                            ->orWhere('type', 'noticia')
+                            ->postson()
+                            ->limit(3)
+                            ->get();
+        View()->share('postsfooter', $postsfooter);
+
         Paginator::useBootstrap();
     }
 }

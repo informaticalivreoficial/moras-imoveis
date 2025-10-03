@@ -199,4 +199,24 @@ class Webcontroller extends Controller
         }
         
     }
+
+    public function blog()
+    {
+        $posts = Post::orderBy('created_at', 'DESC')
+                            ->where('type', 'artigo')
+                            ->orWhere('type', 'noticia')
+                            ->postson()
+                            ->paginate(24);
+
+        $head = $this->seo->render('Blog - ' . $this->config->app_name ?? env('APP_NAME'),
+            'Confira nossos artigos e notícias sobre o mercado imobiliário.',
+            route('web.blog.index'),
+            $this->config->getmetaimg() ?? url(asset('theme/images/image.jpg'))
+        );
+
+        return view('web.'.$this->config->template.'.blog.index',[
+            'head' => $head,
+            'posts' => $posts,
+        ]);
+    }
 }

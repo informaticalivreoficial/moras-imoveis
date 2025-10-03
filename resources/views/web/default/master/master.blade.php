@@ -243,7 +243,7 @@
                             </div>
                             <ul class="links">
                                 <li><a href="{{route('web.home')}}">Início </a></li>
-                                <li><a href="/blog/artigos">Blog</a></li>
+                                <li><a href="{{route('web.blog.index')}}">Blog</a></li>
                                 <li><a href="/imoveis/index">Imóveis</a></li>
                                 <li><a target="_blank" href="/pagina/simulador">Financiamento</a></li>
                                 <li><a href="/imoveis/busca-por-referencia">Busca</a></li>
@@ -258,15 +258,18 @@
                             <div class="main-title-2">
                                 <h1>Blog</h1>
                             </div>                            
-                            @if($artigos && $artigos->count())
-                                @foreach($artigos as $blog)
+                            @if(postsfooter && postsfooter->count())
+                                @foreach(postsfooter as $blog)
+                                    @php
+                                        $tipo = $blog->type == 'noticia' ? 'noticia' : 'artigo';
+                                    @endphp
                                     <div class="media">
                                         <div class="media-left">
                                             <img width="90" class="media-object" src="{{$blog->cover()}}" alt="{{$blog->title}}">                                    
                                         </div>
                                         <div class="media-body">
                                             <h3 class="media-heading">
-                                                <a href="'.BASE.'/blog/artigo/'.$blog['url'].'">{{$blog->title}}</a>
+                                                <a href="{{route('web.blog.'.$tipo.'',['slug' => $blog->slug])}}">{{$blog->title}}</a>
                                             </h3>
                                             <p>{{ $blog->created_at->format('d M, Y') }}</p>                                    
                                         </div>
@@ -290,23 +293,34 @@
                 </div>
                 <div class="col-md-4 col-sm-12">
                     <ul class="social-list clearfix">
-                        <?php
-                            // if(FACEBOOK):
-                            // echo '<li><a target="_blank" href="'.FACEBOOK.'" class="facebook"><i class="fa fa-facebook"></i></a></li>';
-                            // endif;
-                            // if(TWITTER):
-                            //     echo '<li><a target="_blank" href="'.TWITTER.'" class="twitter"><i class="fa fa-twitter"></i></a></li>';
-                            // endif;
-                            // if(LINKEDIN):
-                            //     echo '<li><a target="_blank" href="'.LINKEDIN.'" class="linkedin"><i class="fa fa-linkedin"></i></a></li>';
-                            // endif;
-                            // if(GOOGLE):
-                            //     echo '<li><a target="_blank" href="'.GOOGLE.'" class="google"><i class="fa fa-google-plus"></i></a></li>';
-                            // endif;
-                            // if(INSTAGRAN):
-                            //     echo '<li><a target="_blank" href="'.INSTAGRAN.'" class="instagram"><i class="fa fa-instagram"></i></a></li>';
-                            // endif;
-                        ?>
+                        @if ($configuracoes->facebook)
+                            <li>
+                                <a target="_blank" href="{{$configuracoes->facebook}}" class="facebook">
+                                    <i class="fa fa-facebook"></i>
+                                </a>
+                            </li>                            
+                        @endif
+                        @if ($configuracoes->twitter)
+                            <li>
+                                <a target="_blank" href="{{$configuracoes->twitter}}" class="twitter">
+                                    <i class="fa fa-twitter"></i>
+                                </a>
+                            </li>
+                        @endif
+                        @if ($configuracoes->linkedin)
+                            <li>
+                                <a target="_blank" href="{{$configuracoes->linkedin}}" class="linkedin">
+                                    <i class="fa fa-linkedin"></i>
+                                </a>
+                            </li>
+                        @endif
+                        @if ($configuracoes->instagram)
+                            <li>
+                                <a target="_blank" href="{{$configuracoes->instagram}}" class="instagram">
+                                    <i class="fa fa-instagram"></i>
+                                </a>
+                            </li>
+                        @endif                        
                     </ul>
                     <span class="small text-silver-dark">Feito com <i style="color:red;" class="fa fa-heart"></i> por <a style="color:#fff;" target="_blank" href="{{env('DESENVOLVEDOR_URL')}}">{{env('DESENVOLVEDOR')}}</a></span>                    
                 </div>
