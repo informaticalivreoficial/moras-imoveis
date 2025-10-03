@@ -128,10 +128,15 @@ class Post extends Model
     {
         return $this->hasOne(CatPost::class, 'id', 'category');
     }
+
+    public function categoryObject()
+    {
+        return $this->hasOne(CatPost::class, 'id', 'category');
+    }
     
     public function userObject()
     {
-        return $this->hasOne(User::class, 'id', 'autor');
+        return $this->hasOne(User::class, 'id', 'category');
     }
     
     public function images()
@@ -142,6 +147,21 @@ class Post extends Model
     public function countimages()
     {
         return $this->hasMany(PostGb::class, 'post', 'id')->count();
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function commentsCount()
+    {
+        return $this->hasMany(Comment::class, 'post', 'id')->count(); // 'post' é a FK em comments
+    }
+
+    public function approvedComments()
+    {
+        return $this->hasMany(Comment::class)->where('approved', true);
     }
 
     /**
