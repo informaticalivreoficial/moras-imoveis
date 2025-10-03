@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\CatPost;
 use App\Models\Config;
 use App\Models\Post;
 use App\Models\Property;
@@ -217,6 +218,32 @@ class Webcontroller extends Controller
         return view("web.{$this->config->template}.blog.index",[
             'head' => $head,
             'posts' => $posts,
+        ]);
+    }
+
+    public function artigo(Request $request)
+    {
+        $post = Post::where('slug', $request->slug)->postson()->first();
+
+        $postsTags = Post::where('type', '=', 'artigo')->postson()->limit(3)->get();
+        $categorias = CatPost::orderBy('title', 'ASC')->where('type', 'artigo')->get();
+        $postsMais = Post::orderBy('views', 'DESC')->limit(3)->postson()->get();
+        
+        $post->views = $post->views + 1;
+        $post->save();
+
+        $head = $this->seo->render('Blog - ' . $post->title ?? env('APP_NAME'),
+            $post->title,
+            route('web.blog.artigo', ['slug' => $post->slug]),
+            $post->cover() ?? $this->config->getmetaimg()
+        );
+
+        return view("web.{$this->config->template}.blog.article", [
+            'head' => $head,
+            'post' => $post,
+            'postsMais' => $postsMais,
+            'categorias' => $categorias,
+            'postsTags' => $postsTags,
         ]);
     }
 }

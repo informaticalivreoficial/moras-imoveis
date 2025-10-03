@@ -7,7 +7,7 @@
             </span>
         @else
             <a href="{{ $paginator->previousPageUrl() }}" rel="prev"
-               class="px-3 py-1 text-md font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition">
+               class="px-3 py-1 text-md font-medium text-white bg-teal-600 rounded-md hover:bg-teal-700 transition">
                 {!! __('pagination.previous') !!}
             </a>
         @endif
@@ -23,11 +23,11 @@
             @if (is_array($element))
                 @foreach ($element as $page => $url)
                     @if ($page == $paginator->currentPage())
-                        <span class="px-3 py-1 text-md font-semibold text-white bg-indigo-600 rounded-md">
+                        <span class="px-3 py-1 text-md font-semibold text-white bg-teal-600 rounded-md">
                             {{ $page }}
                         </span>
                     @else
-                        <a href="{{ $url }}" class="px-3 py-1 text-md font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-indigo-600 hover:text-white transition">
+                        <a href="{{ $url }}" class="px-3 py-1 text-md font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-teal-600 hover:text-white transition">
                             {{ $page }}
                         </a>
                     @endif
@@ -38,7 +38,7 @@
         {{-- Botão Próximo --}}
         @if ($paginator->hasMorePages())
             <a href="{{ $paginator->nextPageUrl() }}" rel="next"
-               class="px-3 py-1 text-md font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition">
+               class="px-3 py-1 text-md font-medium text-white bg-teal-600 rounded-md hover:bg-teal-700 transition">
                 {!! __('pagination.next') !!}
             </a>
         @else

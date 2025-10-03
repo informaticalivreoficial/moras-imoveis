@@ -171,120 +171,104 @@
     @yield('content')
 
     <!-- Footer start -->
-    <footer class="main-footer clearfix">
-        <div class="container">
-            <!-- Footer info-->
-            <div class="footer-info">
-                <div class="row">
-                    <!-- About us -->
-                    <div class="col-lg-5 col-md-3 col-sm-6 col-xs-12">
-                        <div class="footer-item">
-                            <div class="main-title-2">
-                                <h1>Atendimento</h1>
+<!-- Footer start -->
+<footer class="bg-gray-900 text-gray-100 py-24">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8">
+            <!-- Atendimento: ocupa mais espaço -->
+            <div class="lg:col-span-5">
+                <h2 class="text-md font-bold mb-5 text-gray-100">Atendimento</h2>
+                <p class="mb-5 text-md text-gray-200">{{ $configuracoes->information }}</p>
+                <ul class="space-y-4 text-md text-gray-200">
+                    @if ($configuracoes->display_address)
+                        <li class="flex items-start gap-2">
+                            <i class="fa fa-map-marker mt-1"></i>
+                            <span>
+                                @if ($configuracoes->street) {{ $configuracoes->street }} @endif
+                                @if ($configuracoes->number) , {{ $configuracoes->number }} @endif
+                                @if ($configuracoes->neighborhood) , {{ $configuracoes->neighborhood }} @endif
+                                @if ($configuracoes->city) - {{ $configuracoes->city }} @endif
+                                @if ($configuracoes->state) / {{ $configuracoes->state }} @endif
+                            </span>
+                        </li>
+                    @endif
+                    @if ($configuracoes->email)
+                        <li class="flex items-center gap-2">
+                            <i class="fa fa-envelope"></i>
+                            <a href="mailto:{{$configuracoes->email}}" class="text-gray-200 hover:text-teal-400">{{ $configuracoes->email }}</a>
+                        </li>
+                    @endif
+                    @if ($configuracoes->additional_email)
+                        <li class="flex items-center gap-2">
+                            <i class="fa fa-envelope"></i>
+                            <a href="mailto:{{$configuracoes->additional_email}}" class="text-gray-200 hover:text-teal-400">{{ $configuracoes->additional_email }}</a>
+                        </li>
+                    @endif
+                    @if ($configuracoes->phone)
+                        <li class="flex items-center gap-2">
+                            <i class="fa fa-phone"></i>
+                            <a href="tel:{{$configuracoes->phone}}" class="text-gray-200 hover:text-teal-400">{{ $configuracoes->phone }}</a>
+                        </li>
+                    @endif
+                    @if ($configuracoes->cell_phone)
+                        <li class="flex items-center gap-2">
+                            <i class="fa fa-phone"></i>
+                            <a href="tel:{{$configuracoes->cell_phone}}" class="text-gray-200 hover:text-teal-400">{{ $configuracoes->cell_phone }}</a>
+                        </li>
+                    @endif
+                    @if ($configuracoes->whatsapp)
+                        <li class="flex items-center gap-2">
+                            <i class="fa fa-whatsapp"></i>
+                            <a target="_blank" href="{{ \App\Helpers\WhatsApp::getNumZap($configuracoes->whatsapp, 'Atendimento '.$configuracoes->app_name) }}" class="text-gray-200 hover:text-teal-400">{{ $configuracoes->whatsapp }}</a>
+                        </li>
+                    @endif
+                </ul>
+            </div>
+
+            <!-- Links -->
+            <div class="lg:col-span-3">
+                <h2 class="text-md font-bold mb-5 text-gray-100">Links</h2>
+                <ul class="space-y-2 text-md text-gray-200">
+                    <li><a href="{{ route('web.home') }}" class="text-gray-200 hover:text-teal-400">Início</a></li>
+                    <li><a href="{{ route('web.blog.index') }}" class="text-gray-200 hover:text-teal-400">Blog</a></li>
+                    <li><a href="/imoveis/index" class="text-gray-200 hover:text-teal-400">Imóveis</a></li>
+                    <li><a target="_blank" href="/pagina/simulador" class="text-gray-200 hover:text-teal-400">Financiamento</a></li>
+                    <li><a href="/imoveis/busca-por-referencia" class="text-gray-200 hover:text-teal-400">Busca</a></li>
+                    <li><a href="/imoveis/cadastrar" class="text-gray-200 hover:text-teal-400">Cadastrar Imóvel</a></li>
+                    <li><a href="/pagina/atendimento" class="text-gray-200 hover:text-teal-400">Atendimento</a></li>
+                </ul>
+            </div>
+
+            <!-- Blog -->
+            <div class="lg:col-span-4">
+                <h2 class="text-md font-bold mb-5 text-gray-100">Blog</h2>
+                <div class="space-y-8">
+                    @if($postsfooter && $postsfooter->count())
+                        @foreach($postsfooter as $blog)
+                            @php
+                                $tipo = $blog->type == 'noticia' ? 'noticia' : 'artigo';
+                            @endphp
+                            <div class="flex items-start gap-4 mb-8">
+                                <div class="flex-shrink-0">
+                                    <img src="{{ $blog->cover() }}" alt="{{ $blog->title }}" class="w-24 h-24 object-cover rounded">
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="text-md font-semibold text-teal-400 hover:text-gray-400 transition">
+                                        <a href="{{ route('web.blog.'.$tipo,['slug' => $blog->slug]) }}">
+                                            {{ $blog->title }}
+                                        </a>
+                                    </h3>
+                                    <p class="text-sm text-gray-300 mt-1">{{ $blog->created_at->format('d M, Y') }}</p>
+                                </div>
                             </div>
-                            {{$configuracoes->information}}
-                            <ul class="personal-info"><br />                                 
-                                @if ($configuracoes->display_address)
-                                    <li>
-                                        <i class="fa fa-map-marker"></i>
-                                        @if ($configuracoes->street)
-                                            {{$configuracoes->street}}                                            
-                                        @endif
-                                        @if ($configuracoes->number)
-                                            , {{$configuracoes->number}}                                            
-                                        @endif
-                                        @if ($configuracoes->neighborhood)
-                                            , {{$configuracoes->neighborhood}}                                            
-                                        @endif
-                                        @if ($configuracoes->city)
-                                            - {{$configuracoes->city}}                                            
-                                        @endif
-                                        @if ($configuracoes->state)
-                                            / {{$configuracoes->state}}
-                                        @endif
-                                    </li>
-                                @endif  
-                                @if ($configuracoes->email)
-                                    <li>
-                                        <i class="fa fa-envelope"></i>
-                                        Telefone: <a href="mailto::{{$configuracoes->email}}">{{$configuracoes->email}}</a>
-                                    </li>                                    
-                                @endif 
-                                @if ($configuracoes->additional_email)
-                                    <li>
-                                        <i class="fa fa-envelope"></i>
-                                        Telefone: <a href="mailto::{{$configuracoes->additional_email}}">{{$configuracoes->additional_email}}</a>
-                                    </li>                                    
-                                @endif 
-                                @if ($configuracoes->phone)
-                                    <li>
-                                        <i class="fa fa-phone"></i>
-                                        Telefone: <a href="tel:{{$configuracoes->phone}}">{{$configuracoes->phone}}</a>
-                                    </li>                                    
-                                @endif                                
-                                @if ($configuracoes->cell_phone)
-                                    <li>
-                                        <i class="fa fa-phone"></i>
-                                        Telefone: <a href="tel:{{$configuracoes->cell_phone}}">{{$configuracoes->cell_phone}}</a>
-                                    </li>                                    
-                                @endif  
-                                @if ($configuracoes->whatsapp)
-                                    <li>
-                                        <i class="fa fa-whatsapp"></i>
-                                        WhatsApp: <a target="_blank" href="{{\App\Helpers\WhatsApp::getNumZap($configuracoes->whatsapp ,'Atendimento '.$configuracoes->app_name)}}">{{$configuracoes->whatsapp}}</a>
-                                    </li>                                    
-                                @endif                 
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- Links -->
-                    <div class="col-lg-3 col-md-2 col-sm-6 col-xs-12">
-                        <div class="footer-item">
-                            <div class="main-title-2">
-                                <h1>Links</h1>
-                            </div>
-                            <ul class="links">
-                                <li><a href="{{route('web.home')}}">Início </a></li>
-                                <li><a href="{{route('web.blog.index')}}">Blog</a></li>
-                                <li><a href="/imoveis/index">Imóveis</a></li>
-                                <li><a target="_blank" href="/pagina/simulador">Financiamento</a></li>
-                                <li><a href="/imoveis/busca-por-referencia">Busca</a></li>
-                                <li><a href="/imoveis/cadastrar">Cadastrar Imóvel</a></li>
-                                <li><a href="/pagina/atendimento">Atendimento</a></li>                            
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- Recent cars -->
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                        <div class="footer-item popular-posts">
-                            <div class="main-title-2">
-                                <h1>Blog</h1>
-                            </div>                            
-                            @if($postsfooter && $postsfooter->count())
-                                @foreach($postsfooter as $blog)
-                                    @php
-                                        $tipo = $blog->type == 'noticia' ? 'noticia' : 'artigo';
-                                    @endphp
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img width="90" class="media-object" src="{{$blog->cover()}}" alt="{{$blog->title}}">                                    
-                                        </div>
-                                        <div class="media-body">
-                                            <h3 class="media-heading">
-                                                <a href="{{route('web.blog.'.$tipo.'',['slug' => $blog->slug])}}">{{$blog->title}}</a>
-                                            </h3>
-                                            <p>{{ $blog->created_at->format('d M, Y') }}</p>                                    
-                                        </div>
-                                    </div>
-                                @endforeach
-                            @endif                            
-                        </div>
-                    </div>                    
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>
-    </footer>
-    <!-- Footer end -->
+    </div>
+</footer>
+<!-- Footer end -->
 
     <!-- Copy right start -->
     <div class="copy-right">

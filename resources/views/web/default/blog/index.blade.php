@@ -45,7 +45,7 @@
 
                             <h4 class="text-md font-semibold text-gray-800 mb-2 line-clamp-2">
                                 <a href="{{ route('web.blog.'.$tipo,['slug' => $art->slug]) }}" 
-                                   class="hover:text-indigo-600 transition-colors">
+                                   class="hover:text-teal-600 transition-colors">
                                     {{ $art->title }}
                                 </a>
                             </h4>
@@ -55,7 +55,7 @@
                             </p>
 
                             <a href="{{ route('web.blog.'.$tipo,['slug' => $art->slug]) }}" 
-                               class="mt-auto inline-block text-indigo-600 hover:text-indigo-800 text-md font-medium">
+                               class="mt-auto inline-block text-teal-600 hover:text-teal-800 text-md font-medium">
                                 Leia +
                             </a>
                         </div>
