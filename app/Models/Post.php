@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Cropper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
@@ -34,7 +35,7 @@ class Post extends Model
     ];
 
     protected $casts = [
-        'publish_at' => 'datetime',
+        //'publish_at' => 'datetime',
         'status' => 'boolean',
         'coments' => 'boolean',
     ];
@@ -166,8 +167,8 @@ class Post extends Model
             return url(asset('theme/images/image.jpg'));
         }
 
-        //return Storage::url(Cropper::thumb($cover['path'], 720, 480));
-        return Storage::url($cover['path']);
+        return Storage::url(Cropper::thumb($cover['path'], 720, 480));
+        //return Storage::url($cover['path']);
     }
 
     public function nocover()
@@ -181,7 +182,7 @@ class Post extends Model
         }
 
         if(empty($cover['path']) || !Storage::disk()->exists($cover['path'])) {
-            return url(asset('backend/assets/images/image.jpg'));
+            return url(asset('theme/images/image.jpg'));
         }
 
         return Storage::url($cover['path']);
@@ -202,13 +203,13 @@ class Post extends Model
         $this->attributes['publish_at'] = (!empty($value) ? $this->convertStringToDate($value) : null);
     }
     
-    // public function getPublishAtAttribute($value)
-    // {
-    //     if (empty($value)) {
-    //         return null;
-    //     }
-    //     return date('d/m/Y', strtotime($value));
-    // }
+    public function getPublishAtAttribute($value)
+    {
+        if (empty($value)) {
+            return null;
+        }
+        return date('d/m/Y', strtotime($value));
+    }
     
     private function convertStringToDate(?string $param)
     {

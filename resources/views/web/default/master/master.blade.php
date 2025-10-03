@@ -168,42 +168,189 @@
 
     @yield('content')
 
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery-2.2.0.min.js'))}}"></script>
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.form.js'))}}"></script>
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/bootstrap.min.js'))}}"></script>
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/bootstrap-submenu.js'))}}"></script>
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/rangeslider.js'))}}"></script>
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.mb.YTPlayer.js'))}}"></script>
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/wow.min.js'))}}"></script>
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/bootstrap-select.min.js'))}}"></script>
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.easing.1.3.js'))}}"></script>
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.scrollUp.js'))}}"></script>
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.mCustomScrollbar.concat.min.js'))}}"></script>
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/leaflet.js'))}}"></script>
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/leaflet-providers.js'))}}"></script>
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/leaflet.markercluster.js'))}}"></script>
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/dropzone.js'))}}"></script>
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.filterizr.js'))}}"></script>
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/maps.js'))}}"></script>
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/app.js'))}}"></script>
+    <!-- Footer start -->
+    <footer class="main-footer clearfix">
+        <div class="container">
+            <!-- Footer info-->
+            <div class="footer-info">
+                <div class="row">
+                    <!-- About us -->
+                    <div class="col-lg-5 col-md-3 col-sm-6 col-xs-12">
+                        <div class="footer-item">
+                            <div class="main-title-2">
+                                <h1>Atendimento</h1>
+                            </div>
+                            {{$configuracoes->information}}
+                            <ul class="personal-info"><br />                                 
+                                @if ($configuracoes->display_address)
+                                    <li>
+                                        <i class="fa fa-map-marker"></i>
+                                        @if ($configuracoes->street)
+                                            {{$configuracoes->street}}                                            
+                                        @endif
+                                        @if ($configuracoes->number)
+                                            , {{$configuracoes->number}}                                            
+                                        @endif
+                                        @if ($configuracoes->neighborhood)
+                                            , {{$configuracoes->neighborhood}}                                            
+                                        @endif
+                                        @if ($configuracoes->city)
+                                            - {{$configuracoes->city}}                                            
+                                        @endif
+                                        @if ($configuracoes->state)
+                                            / {{$configuracoes->state}}
+                                        @endif
+                                    </li>
+                                @endif  
+                                @if ($configuracoes->email)
+                                    <li>
+                                        <i class="fa fa-envelope"></i>
+                                        Telefone: <a href="mailto::{{$configuracoes->email}}">{{$configuracoes->email}}</a>
+                                    </li>                                    
+                                @endif 
+                                @if ($configuracoes->additional_email)
+                                    <li>
+                                        <i class="fa fa-envelope"></i>
+                                        Telefone: <a href="mailto::{{$configuracoes->additional_email}}">{{$configuracoes->additional_email}}</a>
+                                    </li>                                    
+                                @endif 
+                                @if ($configuracoes->phone)
+                                    <li>
+                                        <i class="fa fa-phone"></i>
+                                        Telefone: <a href="tel:{{$configuracoes->phone}}">{{$configuracoes->phone}}</a>
+                                    </li>                                    
+                                @endif                                
+                                @if ($configuracoes->cell_phone)
+                                    <li>
+                                        <i class="fa fa-phone"></i>
+                                        Telefone: <a href="tel:{{$configuracoes->cell_phone}}">{{$configuracoes->cell_phone}}</a>
+                                    </li>                                    
+                                @endif  
+                                @if ($configuracoes->whatsapp)
+                                    <li>
+                                        <i class="fa fa-whatsapp"></i>
+                                        WhatsApp: <a target="_blank" href="{{\App\Helpers\WhatsApp::getNumZap($configuracoes->whatsapp ,'Atendimento '.$configuracoes->app_name)}}">{{$configuracoes->whatsapp}}</a>
+                                    </li>                                    
+                                @endif                 
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Links -->
+                    <div class="col-lg-3 col-md-2 col-sm-6 col-xs-12">
+                        <div class="footer-item">
+                            <div class="main-title-2">
+                                <h1>Links</h1>
+                            </div>
+                            <ul class="links">
+                                <li><a href="{{route('web.home')}}">Início </a></li>
+                                <li><a href="/blog/artigos">Blog</a></li>
+                                <li><a href="/imoveis/index">Imóveis</a></li>
+                                <li><a target="_blank" href="/pagina/simulador">Financiamento</a></li>
+                                <li><a href="/imoveis/busca-por-referencia">Busca</a></li>
+                                <li><a href="/imoveis/cadastrar">Cadastrar Imóvel</a></li>
+                                <li><a href="/pagina/atendimento">Atendimento</a></li>                            
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Recent cars -->
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <div class="footer-item popular-posts">
+                            <div class="main-title-2">
+                                <h1>Blog</h1>
+                            </div>                            
+                            @if($artigos && $artigos->count())
+                                @foreach($artigos as $blog)
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img width="90" class="media-object" src="{{$blog->cover()}}" alt="{{$blog->title}}">                                    
+                                        </div>
+                                        <div class="media-body">
+                                            <h3 class="media-heading">
+                                                <a href="'.BASE.'/blog/artigo/'.$blog['url'].'">{{$blog->title}}</a>
+                                            </h3>
+                                            <p>{{ $blog->created_at->format('d M, Y') }}</p>                                    
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif                            
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer end -->
+
+    <!-- Copy right start -->
+    <div class="copy-right">
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-8 col-sm-12">
+                    &copy;  {{$configuracoes->init_date}} {{$configuracoes->app_name}} - Todos os direitos reservados.
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <ul class="social-list clearfix">
+                        <?php
+                            // if(FACEBOOK):
+                            // echo '<li><a target="_blank" href="'.FACEBOOK.'" class="facebook"><i class="fa fa-facebook"></i></a></li>';
+                            // endif;
+                            // if(TWITTER):
+                            //     echo '<li><a target="_blank" href="'.TWITTER.'" class="twitter"><i class="fa fa-twitter"></i></a></li>';
+                            // endif;
+                            // if(LINKEDIN):
+                            //     echo '<li><a target="_blank" href="'.LINKEDIN.'" class="linkedin"><i class="fa fa-linkedin"></i></a></li>';
+                            // endif;
+                            // if(GOOGLE):
+                            //     echo '<li><a target="_blank" href="'.GOOGLE.'" class="google"><i class="fa fa-google-plus"></i></a></li>';
+                            // endif;
+                            // if(INSTAGRAN):
+                            //     echo '<li><a target="_blank" href="'.INSTAGRAN.'" class="instagram"><i class="fa fa-instagram"></i></a></li>';
+                            // endif;
+                        ?>
+                    </ul>
+                    <span class="small text-silver-dark">Feito com <i style="color:red;" class="fa fa-heart"></i> por <a style="color:#fff;" target="_blank" href="{{env('DESENVOLVEDOR_URL')}}">{{env('DESENVOLVEDOR')}}</a></span>                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Copy end right-->   
+
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery-2.2.0.min.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.form.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/bootstrap.min.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/bootstrap-submenu.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/rangeslider.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.mb.YTPlayer.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/wow.min.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/bootstrap-select.min.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.easing.1.3.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.scrollUp.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.mCustomScrollbar.concat.min.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/leaflet.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/leaflet-providers.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/leaflet.markercluster.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/dropzone.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.filterizr.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/maps.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/app.js'))}}"></script>
 
 
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jsSocials/jssocials.min.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jsSocials/jssocials.min.js'))}}"></script>
 
-        <!-- Máscara de Inputs -->
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.maskedinput.min.js'))}}"></script>
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.maskMoney.min.js'))}}"></script>
+    <!-- Máscara de Inputs -->
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.maskedinput.min.js'))}}"></script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.maskMoney.min.js'))}}"></script>
 
-        <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/shadowbox/shadowbox.js'))}}"></script>
-                
-        <!-- FUNÇÕES -->
-        <script type="text/javascript">
-            Shadowbox.init();
-        </script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/shadowbox/shadowbox.js'))}}"></script>
+            
+    <!-- FUNÇÕES -->
+    <script type="text/javascript">
+        Shadowbox.init();
+    </script>
 
-        @hasSection('js')
-            @yield('js')
-        @endif
+    @hasSection('js')
+        @yield('js')
+    @endif
 
         <script type="text/javascript">
             (function ($) {

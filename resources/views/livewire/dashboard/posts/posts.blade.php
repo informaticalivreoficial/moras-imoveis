@@ -60,7 +60,7 @@
                                         src="{{ url($post->cover()) }}" 
                                         alt="{{ $post->title }}" 
                                         class="w-16 mx-auto cursor-pointer rounded-lg hover:scale-105 transition-transform"
-                                        @click="showModal = true; imageUrl = '{{ addslashes(url($post->cover())) }}'">
+                                        @click="showModal = true; imageUrl = '{{ addslashes(url($post->nocover())) }}'">
                                 </td>
                                 <td class="px-4 py-2">{{ $post->title }}</td>
                                 <td class="px-4 py-2 text-center">

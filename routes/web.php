@@ -27,7 +27,8 @@ use App\Http\Controllers\Web\{
     FeedController,
     FilterController,
     SendEmailController,
-    Webcontroller
+    Webcontroller,
+    WebController as WebWebController
 };
 use App\Livewire\Dashboard\Posts\CatPostForm;
 use App\Livewire\Dashboard\Posts\CatPosts;
@@ -71,8 +72,8 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
 //     Route::get('/sendNewsletter', [SendEmailController::class, 'sendNewsletter'])->name('sendNewsletter');
 //     Route::get('/sendReserva', [SendEmailController::class, 'sendReserva'])->name('sendReserva');
 
-//     //****************************** Blog ***********************************************/
-//     Route::get('/blog/artigo/{slug}', [SiteController::class, 'artigo'])->name('blog.artigo');
+     //****************************** Blog ***********************************************/
+     Route::get('/blog/artigo/{slug}', [WebWebController::class, 'artigo'])->name('blog.artigo');
 //     Route::get('/blog/categoria/{slug}', [SiteController::class, 'categoria'])->name('blog.categoria');
 //     Route::get('/blog/artigos', [SiteController::class, 'artigos'])->name('blog.artigos');    
 //     Route::match(['get', 'post'],'/blog/pesquisar', [WebController::class, 'searchBlog'])->name('blog.searchBlog');

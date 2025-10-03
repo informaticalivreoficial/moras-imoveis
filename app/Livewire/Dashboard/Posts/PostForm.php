@@ -39,7 +39,7 @@ class PostForm extends Component
     public $content = '';
     public $cat_pai;
     public $status = 1;
-    public $publish_at;
+    public ?string $publish_at = null;
     public $thumb_caption = '';
     public array $tags = [];
 
@@ -48,11 +48,21 @@ class PostForm extends Component
         return [
             'autor' => 'required|exists:users,id',
             'type' => 'required|string',
-            'category' => 'required|exists:cat_post,id',
+            //'category' => 'required|exists:cat_post,id',
+            'category' => [
+                'required',
+                'exists:cat_post,id',
+                function ($attribute, $value, $fail) {
+                    $cat = CatPost::find($value);
+                    if ($cat && empty($cat->id_pai)) {
+                        $fail('Por favor, selecione uma subcategoria.');
+                    }
+                }
+            ],
             'title' => 'required|min:3|string|max:191',
             'content' => 'required|string',
             'status' => 'required|boolean',
-            'publish_at' => 'nullable|date',
+            'publish_at' => 'nullable|date_format:d/m/Y',
             'thumb_caption' => 'nullable|string|max:255',
             'comments' => 'required|boolean',
             'tags' => 'nullable|array',
@@ -78,6 +88,7 @@ class PostForm extends Component
 
     public function mount(Post $post)
     {
+        //dd($this->post);
         // ✅ Carregar autores disponíveis
         $this->autores = User::where(function ($q) {
                 $q->where('admin', 1)
@@ -103,7 +114,7 @@ class PostForm extends Component
             $this->type = $post->type;
             $this->category = $post->category; // ✅ Corrigido
             $this->status = $post->status ?? 1;
-            $this->publish_at = $post->publish_at ? $post->publish_at->format('d/m/Y') : now()->format('d/m/Y');
+            $this->publish_at = $post->publish_at ? $post->publish_at : now()->format('d/m/Y');
             //$this->publish_at = $post->publish_at?->format('d/m/Y H:i');
             $this->thumb_caption = $post->thumb_caption ?? '';
             $this->comments = $post->comments ?? 0;
@@ -118,7 +129,7 @@ class PostForm extends Component
         } else {
             // Modo criação
             $this->post = new Post();
-            $this->publish_at = $post->publish_at ? $post->publish_at->format('d/m/Y') : now()->format('d/m/Y');
+            $this->publish_at = $post->publish_at ? $post->publish_at : now()->format('d/m/Y');
         }
     }
 
@@ -145,9 +156,10 @@ class PostForm extends Component
 
     public function save(string $mode = 'draft')
     {
+       
         $validated = $this->validate();
         $validated['status'] = $mode === 'published' ? 1 : 0;
-        
+               
         try {
             // Preparar dados
             $data = [
@@ -162,8 +174,6 @@ class PostForm extends Component
                 'comments' => $validated['comments'],
                 'tags' => !empty($validated['tags']) ? implode(',', $validated['tags']) : null,
             ];
-
-            
 
             // Salvar ou atualizar
             if ($this->post->exists) {
@@ -210,7 +220,7 @@ class PostForm extends Component
             //return redirect()->route('posts.index');
 
         } catch (\Exception $e) {
-            //dd($e->getMessage());
+            
             $this->dispatch('swal', [
                 'icon' => 'error',
                 'title' => 'Erro ao salvar',

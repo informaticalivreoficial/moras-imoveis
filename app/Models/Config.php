@@ -44,7 +44,7 @@ class Config extends Model
         'additional_email',
          
         //Address      
-        'zipcode', 'street', 'number', 'complement', 'neighborhood', 'state', 'city',
+        'display_address', 'zipcode', 'street', 'number', 'complement', 'neighborhood', 'state', 'city',
 
         //Social
         'facebook', 'twitter', 'instagram', 'youtube', 'linkedin',
@@ -178,6 +178,11 @@ class Config extends Model
     //         substr($value, 2, 5) . '-' .
     //         substr($value, 7, 4) ;
     // }
+
+    public function setDisplayAddressAttribute($value)
+    {
+        $this->attributes['display_address'] = ($value == true || $value == '1' ? 1 : 0);
+    }
 
     
     private function convertStringToDate(?string $param)

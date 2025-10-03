@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Config;
+use App\Models\Post;
 use App\Models\Property;
 use App\Models\Slide;
 use App\Support\Seo;
@@ -53,12 +54,12 @@ class Webcontroller extends Controller
             return $imoveis;
         };
         
-        // $artigos = Post::orderBy('created_at', 'DESC')
-        //                     ->where('tipo', 'artigo')
-        //                     ->where('tenant_id', $this->tenant->id)
-        //                     ->postson()
-        //                     ->limit(6)
-        //                     ->get();
+        $artigos = Post::orderBy('created_at', 'DESC')
+                            ->where('type', 'artigo')
+                            ->orWhere('type', 'noticia')
+                            ->postson()
+                            ->limit(3)
+                            ->get();
 
         $experienceCobertura = Property::where('experience', 'Cobertura')->inRandomOrder()->available()->get();
         $experienceCondominioFechado = Property::where('experience', 'Condomínio Fechado')->inRandomOrder()->available()->get();
@@ -76,7 +77,7 @@ class Webcontroller extends Controller
         return view('web.'.$this->config->template.'.home',[
             'propertiesHighlights' => $propertiesHighlights,
             'propertiesViews' => $propertiesViews,
-            //'artigos' => $artigos,
+            'artigos' => $artigos,
             'head' => $head,
             'slides' => $slides,
             'experienceCobertura' => $experienceCobertura,
