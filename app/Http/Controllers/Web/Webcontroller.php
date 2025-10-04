@@ -225,9 +225,9 @@ class Webcontroller extends Controller
     {
         $post = Post::where('slug', $request->slug)->postson()->first();
 
-        $postsTags = Post::where('type', '=', 'artigo')->postson()->limit(3)->get();
+        $postsTags = Post::where('type', '!=', 'pagina')->postson()->limit(3)->get();
         $categorias = CatPost::orderBy('title', 'ASC')->where('type', 'artigo')->get();
-        $postsMais = Post::orderBy('views', 'DESC')->limit(3)->postson()->get();
+        $postsMais = Post::orderBy('views', 'DESC')->where('type', '!=', 'pagina')->limit(3)->postson()->get();
         
         $post->views = $post->views + 1;
         $post->save();
@@ -244,6 +244,19 @@ class Webcontroller extends Controller
             'postsMais' => $postsMais,
             'categorias' => $categorias,
             'postsTags' => $postsTags,
+        ]);
+    }
+
+    public function politica()
+    {
+        $head = $this->seo->render('Política de Privacidade - ' . $this->config->app_name ?? env('APP_NAME'),
+            'Leia nossa política de privacidade e saiba como protegemos seus dados.',
+            route('web.politica'),
+            $this->config->getmetaimg() ?? url(asset('theme/images/image.jpg'))
+        );
+
+        return view("web.{$this->config->template}.privacy",[
+            'head' => $head,
         ]);
     }
 }

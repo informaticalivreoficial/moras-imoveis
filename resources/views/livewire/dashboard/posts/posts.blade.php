@@ -67,7 +67,7 @@
                                     {{ $post->category()->first() ? $post->category()->first()->title : 'N/D' }}
                                 </td>
                                 <td class="px-4 py-2 text-center">{{ $post->views }}</td>
-                                <td class="px-4 py-2 text-center">{{ is_array($post->images) ? count($post->images) : 0 }}</td>
+                                <td class="px-4 py-2 text-center">{{ $post->countimages() ? $post->countimages() : 0 }}</td>
                                 
                                 <td class="px-4 py-4">
                                     <div class="flex items-center justify-center gap-2">

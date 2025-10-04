@@ -44,7 +44,7 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
 
 //     /** FEED */
 //     Route::get('feed', [FeedController::class, 'feed'])->name('feed');
-//     Route::get('/politica-de-privacidade', [WebController::class, 'politica'])->name('politica');
+    Route::get('/politica-de-privacidade', [WebController::class, 'politica'])->name('politica');
 //     Route::get('/sitemap', [WebController::class, 'sitemap'])->name('sitemap');
 
      /** Página de Compra - Específica de um imóvel */

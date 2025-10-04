@@ -27,22 +27,19 @@
                         <div id="shareIcons"></div>
                         {!!$post->content!!}
                         
-                        @if ($post->images->count())
+                        @if ($post->images()->get()->count())
                             <div class="row clearfix t-s">                            
-                                @foreach($post->images() as $gb)
+                                @foreach($post->images()->get() as $gb)
                                     <div class="col-lg-2 col-md-2 col-sm-3 col-xs-6">
                                         <div class="agent-1">
-                                            <a rel="ShadowBox[galeria]" href="<?= BASE.'/uploads' . DIRECTORY_SEPARATOR . $gb['img'];?>" class="agent-img">
-                                                <?= Check::Image('uploads' . DIRECTORY_SEPARATOR . $gb['img'], $titulo, 600, 460,'img-responsive');?>
+                                            <a rel="ShadowBox[galeria]" href="{{ $gb->url_image }}" class="agent-img">
+                                                <img src="{{ $gb->url_cropped }}" alt="{{ $post->titulo }}" class="img-responsive">
                                             </a>
                                         </div>                                
                                     </div>
                                 @endforeach                          
                             </div>
-                        @endif
-                            
-                        
-                        
+                        @endif                        
                         
                         <div class="row clearfix t-s">
                             <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
@@ -54,10 +51,13 @@
                                                 @php
                                                     $array = explode(',', $tags->tags);
                                                 @endphp
+                                                @php
+                                                    $tipo = $tags->type == 'noticia' ? 'noticia' : 'artigo';
+                                                @endphp
                                                 @foreach($array as $tag)
                                                     @php $tag = trim($tag); @endphp
                                                     <li>
-                                                        <a href="{{ url('blog/artigo/' . $tags->url) }}">{{ $tag }}</a>
+                                                        <a href="{{ route('web.blog.'.$tipo,['slug' => $tags->slug]) }}">{{ $tag }}</a>
                                                     </li>
                                                 @endforeach
                                             @endforeach
@@ -207,8 +207,6 @@
                 @endif
             </div>
             
-            
-            
 
             <div class="col-lg-4 col-md-4 col-xs-12 col-md-pull-8">
                 <div class="sidebar">
@@ -251,25 +249,28 @@
                             @endforeach
                         </div>                       
                     @endif                    
-                    {{--
-                    @if($readTags1->getResult()):
-                        echo '<div class="sidebar-widget tags-box">';
-                        echo '<div class="main-title-2"><h1>Tags</h1></div>';                        
-                            echo '<ul class="tags">';                            
-                            foreach($readTags1->getResult() as $tags2):
-                            $tag1 = $tags2['tags'];                        
-                            
-                            $array = explode(",", $tags2['tags']);                            
-                            foreach($array as $tag1){
-                            $tag1 = trim($tag1);                                                       
-                            echo '<li><a href="'.BASE.'/blog/artigo/'.$tags2['url'].'">'.$tag1.'</a></li>';
-                            }
-                                                    
-                            endforeach;
-                            echo '</ul>';
-                        echo '</div>';  
-                    @endif;
-                   --}}
+                    
+                    @if($postsTags->count())
+                        <div class="sidebar-widget tags-box">
+                        <div class="main-title-2"><h1>Tags</h1></div>                        
+                            <ul class="tags">                            
+                                @foreach($postsTags as $tags2)
+                                    @php
+                                        $array = explode(',', $tags2->tags);
+                                    @endphp
+                                    @php
+                                        $tipo = $tags2->type == 'noticia' ? 'noticia' : 'artigo';
+                                    @endphp
+                                    @foreach($array as $tag)
+                                        @php $tag = trim($tag); @endphp
+                                        <li>
+                                            <a href="{{ route('web.blog.'.$tipo,['slug' => $tags2->slug]) }}">{{ $tag }}</a>
+                                        </li>
+                                    @endforeach                      
+                                @endforeach
+                            </ul>
+                        </div>  
+                    @endif                   
                     
                     <div class="social-media sidebar-widget clearfix">
                         <div class="main-title-2">
@@ -316,11 +317,15 @@
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{url(asset('frontend/'.$configuracoes->template.'/js/jsSocials/jssocials.css'))}}" />
     <link rel="stylesheet" type="text/css" href="{{url(asset('frontend/'.$configuracoes->template.'/js/jsSocials/jssocials-theme-flat.css'))}}" />
+    <link rel="stylesheet" type="text/css" href="{{url(asset('frontend/'.$configuracoes->template.'/js/shadowbox/shadowbox.css'))}}"/>
 @endsection
 
 @section('js')
     <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jsSocials/jssocials.min.js'))}}"></script>
-    <script>
+    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/shadowbox/shadowbox.js'))}}"></script>
+   <script>
+        Shadowbox.init();
+        
         $('.shareIcons').jsSocials({
             //url: "http://www.google.com",
             showLabel: false,

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use App\Support\Cropper;
 
 class PostGb extends Model
 {
@@ -24,7 +25,7 @@ class PostGb extends Model
 
     public function getUrlCroppedAttribute()
     {
-        return Storage::url($this->path);
+        return Storage::url(Cropper::thumb($this->path, 720, 480));
     }
 
     public function getUrlImageAttribute()

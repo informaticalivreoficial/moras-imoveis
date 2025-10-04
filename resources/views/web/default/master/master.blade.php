@@ -41,9 +41,7 @@
         <link rel="stylesheet" type="text/css" href="{{url(asset('frontend/'.$configuracoes->template.'/css/style.css'))}}"/>
         <link rel="stylesheet" type="text/css" href="{{url(asset('frontend/'.$configuracoes->template.'/css/renato.css'))}}"/>
         <link rel="stylesheet" type="text/css" href="{{url(asset('frontend/'.$configuracoes->template.'/css/skins/green-light.css'))}}"/>
-
         
-        <link rel="stylesheet" type="text/css" href="{{url(asset('frontend/'.$configuracoes->template.'/js/shadowbox/shadowbox.css'))}}"/>
         <!-- Google fonts -->
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800%7CPlayfair+Display:400,700%7CRoboto:100,300,400,400i,500,700">  
         
@@ -234,6 +232,9 @@
                     <li><a target="_blank" href="/pagina/simulador" class="text-gray-200 hover:text-teal-400">Financiamento</a></li>
                     <li><a href="/imoveis/busca-por-referencia" class="text-gray-200 hover:text-teal-400">Busca</a></li>
                     <li><a href="/imoveis/cadastrar" class="text-gray-200 hover:text-teal-400">Cadastrar Imóvel</a></li>
+                    <li>
+                        <a href="{{route('web.politica')}}" class="text-gray-200 hover:text-teal-400">Política de Privacidade</a>
+                    </li>
                     <li><a href="/pagina/atendimento" class="text-gray-200 hover:text-teal-400">Atendimento</a></li>
                 </ul>
             </div>
@@ -339,13 +340,6 @@
     <!-- Máscara de Inputs -->
     <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.maskedinput.min.js'))}}"></script>
     <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.maskMoney.min.js'))}}"></script>
-
-    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/shadowbox/shadowbox.js'))}}"></script>
-            
-    <!-- FUNÇÕES -->
-    <script type="text/javascript">
-        Shadowbox.init();
-    </script>
 
     @hasSection('js')
         @yield('js')
