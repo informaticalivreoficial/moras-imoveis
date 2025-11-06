@@ -1,4 +1,4 @@
-@extends("web.$configuracoes->template.master.master")
+ 
 
 @section('content')
     <div class="sub-banner overview-bgi" style="background: rgba(0, 0, 0, 0.04) url({{$configuracoes->getheadersite()}}) top left repeat;">

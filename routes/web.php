@@ -66,7 +66,7 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
 //     Route::match(['post', 'get'], '/pesquisa', [SiteController::class, 'pesquisaImoveis'])->name('pesquisa');
 
 //     //CLIENTE
-//     //Route::get('/atendimento', [SendEmailController::class, 'contact'])->name('contact');
+     Route::get('/atendimento', [WebController::class, 'contact'])->name('contact');
 //     Route::post('/sendEmail', [SendEmailController::class, 'sendEmail'])->name('sendEmail');
 //     Route::get('/sendNewsletter', [SendEmailController::class, 'sendNewsletter'])->name('sendNewsletter');
 //     Route::get('/sendReserva', [SendEmailController::class, 'sendReserva'])->name('sendReserva');

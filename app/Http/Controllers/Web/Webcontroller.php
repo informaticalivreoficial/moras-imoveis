@@ -160,46 +160,7 @@ class Webcontroller extends Controller
         
     }
 
-    public function rentProperty($slug)
-    {
-        $property = Property::where('slug', $slug)
-                            ->available()
-                            ->location()
-                            ->first();
-        $properties = Property::where('id', '!=', $property->id)
-                            ->available()
-                            ->location()
-                            ->limit(4)
-                            ->get();
-
-        if($property){
-            $property->views = $property->views + 1;
-            $property->save();
-
-            $head = $this->seo->render($property->title ?? 'Sistema Imobiliário',
-                $property->headline ?? $property->title,
-                route('web.rentProperty', ['slug' => $property->slug]),
-                $property->nocover() ?? $this->tenant->getMetaImg()
-            );
-
-            return view('web.properties.property', [
-                'head' => $head,
-                'property' => $property,
-                'properties' => $properties
-            ]);
-        }else{
-            $head = $this->seo->render($this->tenant->name ?? 'Super Imóveis Sistema Imobiliário',
-                'Imóvel não encontrado!',
-                route('web.home') ?? 'https://superimoveis.info',
-                $this->tenant->getMetaImg() ?? 'https://superimoveis.info/media/metaimg.jpg'
-            );
-            return view('web.properties.property', [
-                'head' => $head,
-                'property' => false,
-            ]);
-        }
-        
-    }
+    
 
     public function blog()
     {
@@ -225,9 +186,9 @@ class Webcontroller extends Controller
     {
         $post = Post::where('slug', $request->slug)->postson()->first();
 
-        $postsTags = Post::where('type', '!=', 'pagina')->postson()->limit(3)->get();
+        $postsTags = Post::where('type', 'artigo')->postson()->limit(3)->get();
         $categorias = CatPost::orderBy('title', 'ASC')->where('type', 'artigo')->get();
-        $postsMais = Post::orderBy('views', 'DESC')->where('type', '!=', 'pagina')->limit(3)->postson()->get();
+        $postsMais = Post::orderBy('views', 'DESC')->where('type', 'artigo')->limit(3)->postson()->get();
         
         $post->views = $post->views + 1;
         $post->save();
@@ -235,6 +196,32 @@ class Webcontroller extends Controller
         $head = $this->seo->render('Blog - ' . $post->title ?? env('APP_NAME'),
             $post->title,
             route('web.blog.artigo', ['slug' => $post->slug]),
+            $post->cover() ?? $this->config->getmetaimg()
+        );
+
+        return view("web.{$this->config->template}.blog.article", [
+            'head' => $head,
+            'post' => $post,
+            'postsMais' => $postsMais,
+            'categorias' => $categorias,
+            'postsTags' => $postsTags,
+        ]);
+    }
+
+    public function noticia(Request $request)
+    {
+        $post = Post::where('slug', $request->slug)->postson()->first();
+
+        $postsTags = Post::where('type', 'noticia')->postson()->limit(3)->get();
+        $categorias = CatPost::orderBy('title', 'ASC')->where('type', 'noticia')->get();
+        $postsMais = Post::orderBy('views', 'DESC')->where('type', 'noticia')->limit(3)->postson()->get();
+        
+        $post->views = $post->views + 1;
+        $post->save();
+
+        $head = $this->seo->render('Blog - ' . $post->title ?? env('APP_NAME'),
+            $post->title,
+            route('web.blog.noticia', ['slug' => $post->slug]),
             $post->cover() ?? $this->config->getmetaimg()
         );
 
@@ -257,6 +244,19 @@ class Webcontroller extends Controller
 
         return view("web.{$this->config->template}.privacy",[
             'head' => $head,
+        ]);
+    }
+
+    public function contact()
+    {
+        $head = $this->seo->render('Atendimento - ' . $this->config->app_name ?? env('APP_NAME'),
+            'Entre em contato conosco, teremos prazer em atendê-lo!',
+            route('web.contact'),
+            $this->config->getmetaimg() ?? url(asset('theme/images/image.jpg'))
+        );
+
+        return view("web.{$this->config->template}.contact", [
+            'head' => $head
         ]);
     }
 }
