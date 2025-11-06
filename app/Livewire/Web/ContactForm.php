@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Web;
 
+use App\Mail\Atendimento;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 
 class ContactForm extends Component
@@ -33,9 +35,8 @@ class ContactForm extends Component
         }
 
         $validated = $this->validate();
-
-        // Aqui você pode salvar no banco ou enviar por e-mail
-        // Exemplo: Contact::create($validated);
+        
+        Mail::send(new Atendimento($validated));
         
         $this->reset(['nome', 'email', 'mensagem']);
         $this->success = true;

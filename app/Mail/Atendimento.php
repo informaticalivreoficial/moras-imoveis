@@ -5,6 +5,7 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -29,9 +30,13 @@ class Atendimento extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: $this->data['assunto'],
-            replyTo: $this->data['reply_email'],
-            bcc: 'suporte@informaticalivre.com.br' 
+            subject: '✅ Contato via site',  
+            from: new Address(env('MAIL_FROM_ADDRESS'), env('APP_NAME')), // Remetente
+            to: [new Address(env('MAIL_FROM_ADDRESS'), env('APP_NAME'))], // Destinatário                
+            replyTo: [
+                new Address($this->data['email'], $this->data['nome']),
+            ],
+            //bcc: env('MAIL_FROM_ADDRESS'), // Cópia oculta (opcional)
         );
     }
 
@@ -43,10 +48,8 @@ class Atendimento extends Mailable
         return new Content(
             markdown: 'emails.atendimento',
             with:[
-                'nome' => $this->data['reply_name'],
-                'email' => $this->data['reply_email'],
-                'telefone' => $this->data['telefone'],
-                'assunto' => $this->data['assunto'],
+                'nome' => $this->data['nome'],
+                'email' => $this->data['email'],
                 'mensagem' => $this->data['mensagem']
             ]
         );
