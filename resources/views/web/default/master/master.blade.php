@@ -230,7 +230,7 @@
                     <li><a href="{{ route('web.blog.index') }}" class="text-gray-200 hover:text-teal-400">Blog</a></li>
                     <li><a href="/imoveis/index" class="text-gray-200 hover:text-teal-400">Imóveis</a></li>
                     <li><a target="_blank" href="/pagina/simulador" class="text-gray-200 hover:text-teal-400">Financiamento</a></li>
-                    <li><a href="/imoveis/busca-por-referencia" class="text-gray-200 hover:text-teal-400">Busca</a></li>
+                    <li><a href="{{route('web.pesquisar-imoveis')}}" class="text-gray-200 hover:text-teal-400">Buscar Imóvel</a></li>
                     <li><a href="/imoveis/cadastrar" class="text-gray-200 hover:text-teal-400">Cadastrar Imóvel</a></li>
                     <li>
                         <a href="{{route('web.politica')}}" class="text-gray-200 hover:text-teal-400">Política de Privacidade</a>

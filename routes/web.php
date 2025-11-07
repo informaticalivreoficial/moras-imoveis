@@ -62,7 +62,7 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
 //     Route::get('/experiencias/{slug}', [FilterController::class, 'experienceCategory'])->name('experienceCategory');
 
 //     /** Pesquisa */
-//     Route::get('/pesquisar-imoveis', [SiteController::class, 'pesquisaImoveis'])->name('pesquisar-imoveis');
+     Route::get('pesquisar-imoveis', [WebController::class, 'pesquisaImoveis'])->name('pesquisar-imoveis');
 //     Route::match(['post', 'get'], '/pesquisa', [SiteController::class, 'pesquisaImoveis'])->name('pesquisa');
 
 //     //CLIENTE

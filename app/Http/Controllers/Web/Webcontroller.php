@@ -72,7 +72,7 @@ class Webcontroller extends Controller
         $head = $this->seo->render($this->config->app_name ?? env('APP_NAME'),
             $this->config->information ?? env('APP_NAME'),
             route('web.home'),
-            $this->config->getmetaimg() ?? 'https://informatica-livre.s3.us-east-2.amazonaws.com/infolivre/configuracoes/metaimg-informatica-livre.png'
+            $this->config->getmetaimg() ?? url(asset('theme/images/image.jpg'))
         );
 
         return view('web.'.$this->config->template.'.home',[
@@ -107,7 +107,7 @@ class Webcontroller extends Controller
         $head = $this->seo->render('Imóveis para ' . $type ?? env('APP_NAME'),
             'Confira os imóveis para '.$type.' temos ótimas oportunidades de negócio.',
             route('web.propertyList', $type),
-            $this->config->getMetaImg() ?? 'https://informatica-livre.s3.us-east-2.amazonaws.com/infolivre/configuracoes/metaimg-informatica-livre.png'
+            $this->config->getMetaImg() ?? url(asset('theme/images/image.jpg'))
         );
 
         return view('web.'.$this->config->template.'.properties.properties',[
@@ -149,7 +149,7 @@ class Webcontroller extends Controller
             $head = $this->seo->render($this->config->app_name ?? env('APP_NAME'),
                 'Imóvel não encontrado!',
                 route('web.home') ?? 'https://superimoveis.info',
-                $this->config->getMetaImg() ?? 'https://superimoveis.info/media/metaimg.jpg'
+                $this->config->getMetaImg() ?? url(asset('theme/images/image.jpg'))
             );
             return view('web.properties.property', [
                 'head' => $head,
@@ -182,9 +182,29 @@ class Webcontroller extends Controller
                 'head' => $head,
                 'property' => $property,
                 'propertiesrelated' => $propertiesrelated,
-                //'type' => 'locacao',
             ]);
         }
+    }
+
+    public function pesquisaImoveis(Request $request)
+    {
+        // $properties = Property::orderBy('created_at', 'DESC')
+        //                     ->available()
+        //                     ->search($request->all())
+        //                     ->paginate(15)
+        //                     ->appends($request->except('page'));
+
+        $head = $this->seo->render('Pesquisa de Imóveis - ' . $this->config->app_name ?? env('APP_NAME'),
+            'Resultados da sua pesquisa de imóveis.',
+            route('web.pesquisar-imoveis'),
+            $this->config->getMetaImg() ?? url(asset('theme/images/image.jpg'))
+        );
+
+        return view('web.'.$this->config->template.'.properties.search-property',[
+            'head' => $head,
+            // 'properties' => $properties,
+            // 'type' => 'pesquisa',
+        ]);
     }
 
     public function blog()
