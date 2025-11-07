@@ -160,7 +160,32 @@ class Webcontroller extends Controller
         
     }
 
-    
+    public function property($slug)
+    {
+        $property = Property::where('slug', request()->slug)->available()->first();
+        $propertiesrelated = Property::where('id', '!=', $property->id)
+                            ->available()
+                            ->limit(4)
+                            ->get();
+
+        if(!empty($property)){
+            $property->views = $property->views + 1;
+            $property->save();
+
+            $head = $this->seo->render($property->title ?? env('APP_NAME'),
+                $property->headline ?? $property->title,
+                route('web.property', ['slug' => $property->slug]),
+                $property->cover() ?? $this->config->getMetaImg()
+            );
+
+            return view('web.'.$this->config->template.'.properties.property', [
+                'head' => $head,
+                'property' => $property,
+                'propertiesrelated' => $propertiesrelated,
+                //'type' => 'locacao',
+            ]);
+        }
+    }
 
     public function blog()
     {

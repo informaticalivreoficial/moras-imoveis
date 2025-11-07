@@ -231,7 +231,7 @@
                                         <img style="min-height: 175px !important;" src="{{$propertyview->cover()}}" alt="{{$propertyview->title}}" class="img-responsive"/>
                                         
                                         <div class="property-overlay">
-                                            <a href="{{route('web.property',['$propertyview->slug'])}}" class="overlay-link">
+                                            <a href="{{route('web.property',['slug' => $propertyview->slug])}}" class="overlay-link">
                                                 <i class="fa fa-link"></i>
                                             </a>
                                             @if($propertyview->images()->get()->count())
@@ -247,11 +247,11 @@
                                     <!-- CONTEUDO -->
                                     <div class="content">
                                         <h4 class="title">
-                                            <a href="{{route('web.property',['$propertyview->slug'])}}">{{$propertyview->title}} | {{$propertyview->reference}}</a>
+                                            <a href="{{route('web.property',['slug' => $propertyview->slug])}}">{{$propertyview->title}} | {{$propertyview->reference}}</a>
                                         </h4>
                                         @if ($propertyview->neighborhood)
                                             <h3 class="property-address">
-                                                <a href="{{route('web.property',['$propertyview->slug'])}}">
+                                                <a href="{{route('web.property',['slug' => $propertyview->slug])}}">
                                                     <i class="fa fa-map-marker"></i> {{$propertyview->neighborhood}}, {{$propertyview->city}} / {{$propertyview->state}}
                                                 </a>
                                             </h3>                                        

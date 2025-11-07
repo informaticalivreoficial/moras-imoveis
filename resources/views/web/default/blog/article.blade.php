@@ -323,7 +323,7 @@
 @section('js')
     <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jsSocials/jssocials.min.js'))}}"></script>
     <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/shadowbox/shadowbox.js'))}}"></script>
-   <script>
+    <script>
         Shadowbox.init();
         
         $('.shareIcons').jsSocials({
