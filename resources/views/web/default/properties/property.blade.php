@@ -378,7 +378,7 @@
                                 <div class="main-title-2 p-3">
                                     <h1><span>Consultar este imóvel</span></h1>
                                 </div>
-                                <livewire:web.contact-form /> 
+                                <livewire:web.contact-property reference="{{$property->reference}}" /> 
                             </div>
                         </div>
                     </div>
