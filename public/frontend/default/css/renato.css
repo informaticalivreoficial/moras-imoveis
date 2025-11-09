@@ -3,6 +3,29 @@ textarea.is-invalid {
     border-color: #dc3545 !important;    
 }
 
+/* Correção de Conflito Tailwind/Bootstrap para a classe .collapse */
+.collapse {
+    /* Garante que o Bootstrap possa controlar a visibilidade */
+    visibility: visible !important; 
+    /* O Bootstrap 3 usa height: 0 e overflow: hidden para ocultar */
+    height: 0 !important;
+    overflow: hidden !important;
+    transition: height 0.35s ease !important; /* Mantém a animação */
+}
+
+.collapse.in {
+    /* Quando o menu está aberto */
+    height: auto !important;
+    overflow: visible !important;
+}
+
+/* Garante que o botão de toggle não seja afetado */
+.navbar-toggle.collapsed {
+    /* Opcional: Garante que o botão de toggle funcione */
+    visibility: visible !important;
+}
+
+
 .imgimovel{
     max-width: 1080px;   /* Máximo da largura da imagem */
     width: 100%;

@@ -72,7 +72,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="text-align: right;">
                         <a target="_blank" style="margin-top: 5px;margin-bottom: 5px;" href="//BASE.'/pagina/simulador';?>" class="btn button-sm border-button-theme">financiamento</a>
-                        <a style="margin-top: 5px;margin-bottom: 5px;margin-left: 10px;" href="//BASE.'/imoveis/busca-por-referencia';?>" class="btn button-sm border-button-theme">Busca por referência</a>
+                        <a style="margin-top: 5px;margin-bottom: 5px;margin-left: 10px;" href="{{route('web.pesquisar-imoveis')}}" class="btn button-sm border-button-theme">Buscar Imóveis</a>
                                                
                         <ul class="top-social-media pull-right" style="margin-left: 10px;">
                             @if ($configuracoes->facebook)
@@ -149,9 +149,13 @@
                             </li>
                             @endforeach
                         @endif
-                        <li><a href="https://imobiliariaubatuba.com/pagina/atendimento">Atendimento</a></li>                        
+                        @if (!empty($lancamentoMenu) && $lancamentoMenu->count() > 0)
+                            <li><a href="{{route('web.highliths')}}" title="Lançamentos">Lançamentos</a></li>
+                        @endif 
+                        <li><a href="{{route('web.contact')}}">Atendimento</a></li>                        
                     </ul>
                     
+                    {{--
                     <ul class="nav navbar-nav navbar-right rightside-navbar">
                         <li>
                             <a href="" class="button">
@@ -159,6 +163,7 @@
                             </a>
                         </li>
                     </ul>
+                    --}}
                 </div>
             </nav>
         </div>
@@ -231,11 +236,13 @@
                     <li><a href="/imoveis/index" class="text-gray-200 hover:text-teal-400">Imóveis</a></li>
                     <li><a target="_blank" href="/pagina/simulador" class="text-gray-200 hover:text-teal-400">Financiamento</a></li>
                     <li><a href="{{route('web.pesquisar-imoveis')}}" class="text-gray-200 hover:text-teal-400">Buscar Imóvel</a></li>
-                    <li><a href="/imoveis/cadastrar" class="text-gray-200 hover:text-teal-400">Cadastrar Imóvel</a></li>
-                    <li>
-                        <a href="{{route('web.politica')}}" class="text-gray-200 hover:text-teal-400">Política de Privacidade</a>
-                    </li>
-                    <li><a href="/pagina/atendimento" class="text-gray-200 hover:text-teal-400">Atendimento</a></li>
+                    @if (!empty($lancamentoMenu) && $lancamentoMenu->count() > 0)
+                        <li><a class="text-gray-200 hover:text-teal-400" href="{{route('web.highliths')}}" title="Lançamentos">Lançamentos</a></li>
+                    @endif
+                    @if ($configuracoes->privacy_policy)
+                        <li><a href="{{route('web.privacy')}}" class="text-gray-200 hover:text-teal-400">Política de Privacidade</a></li>                        
+                    @endif
+                    <li><a href="{{route('web.contact')}}" class="text-gray-200 hover:text-teal-400">Atendimento</a></li>
                 </ul>
             </div>
 
@@ -530,27 +537,6 @@
             //        
             //        return false;
             //    });
-
-              
-             
-             
-              
-                
-               
-             
-                
-                
-                
-                $('#shareIcons').jsSocials({
-                    //url: "http://www.google.com",
-                    showLabel: false,
-                    showCount: false,
-                    shareIn: "popup",
-                    shares: ["email", "twitter", "facebook", "whatsapp"]
-                });
-                
-                
-                
                 
                 
             })(jQuery);   

@@ -207,6 +207,29 @@ class Webcontroller extends Controller
         ]);
     }
 
+    public function PropertyHighliths()
+    {
+        $properties = Property::orderBy('created_at', 'DESC')
+                                ->available()
+                                ->where('highlight', 1)
+                                ->paginate(15);
+
+        $head = $this->seo->render('Lançamentos - ' . $this->config->app_name ?? env('APP_NAME'),
+            'Confira nossos lançamentos imobiliários.',
+            route('web.highliths'),
+            $this->config->getMetaImg() ?? url(asset('theme/images/image.jpg'))
+        );
+
+        if($properties->isEmpty()) {
+            return redirect()->route('web.pesquisar-imoveis');
+        }
+
+        return view('web.'.$this->config->template.'.properties.property-highliths',[
+            'head' => $head,
+            'properties' => $properties,
+        ]);
+    }
+
     public function blog()
     {
         $posts = Post::orderBy('created_at', 'DESC')
@@ -279,13 +302,17 @@ class Webcontroller extends Controller
         ]);
     }
 
-    public function politica()
+    public function privacy()
     {
         $head = $this->seo->render('Política de Privacidade - ' . $this->config->app_name ?? env('APP_NAME'),
             'Leia nossa política de privacidade e saiba como protegemos seus dados.',
-            route('web.politica'),
+            route('web.privacy'),
             $this->config->getmetaimg() ?? url(asset('theme/images/image.jpg'))
         );
+
+        if(empty($this->config->privacy_policy)){
+            return redirect()->route('web.home');
+        }
 
         return view("web.{$this->config->template}.privacy",[
             'head' => $head,

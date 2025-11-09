@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Web;
 
+use App\Models\Property;
 use Livewire\Component;
 
 class PropertyFilter extends Component
@@ -13,6 +14,7 @@ class PropertyFilter extends Component
     public $dormitorios = '';
 
     public $valoresOptions = [];
+    public $bairros = [];
 
     public function mount()
     {
@@ -26,18 +28,37 @@ class PropertyFilter extends Component
         $this->emitFilter();
     }
 
+    public function updatedCidade($value)
+    {
+        // Filtra bairros da cidade selecionada
+        $this->bairros = Property::where('city', $value)
+            ->select('neighborhood')
+            ->distinct()
+            ->orderBy('neighborhood')
+            ->pluck('neighborhood')
+            ->toArray();
+
+        $this->bairro = ''; // limpa bairro anterior
+        $this->emitFilter();
+    }
+
     public function render()
     {
-        // Exemplo: popula as cidades e bairros
-        $cidades = \App\Models\Property::select('city')->distinct()->pluck('city');
-        $bairros = \App\Models\Property::select('neighborhood')->distinct()->pluck('neighborhood');
+        $cidades = Property::select('city')
+            ->distinct()
+            ->orderBy('city')
+            ->pluck('city')
+            ->toArray();
 
-        return view('livewire.web.property-filter', compact('cidades', 'bairros'));
+        return view('livewire.web.property-filter', [
+            'cidades' => $cidades,
+            'bairros' => $this->bairros
+        ]);
     }
 
     public function updated($field)
     {
-        if ($field !== 'operation') {
+        if (!in_array($field, ['operation', 'cidade'])) {
             $this->emitFilter();
         }
     }

@@ -20,16 +20,13 @@
                         <input type="email" wire:model="email" class="input-text @error('email') is-invalid @enderror" placeholder="Seu E-mail"/>
                         @error('email') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                     </div>
-                </div> 
-                @if ($context !== 'consulta')
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 clearfix">
-                        <div class="form-group message">
-                            <textarea class="input-text @error('mensagem') is-invalid @enderror" wire:model="mensagem" placeholder="Mensagem"></textarea>
-                            @error('mensagem') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
-                        </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 clearfix">
+                    <div class="form-group message">
+                        <textarea class="input-text @error('mensagem') is-invalid @enderror" wire:model="mensagem" placeholder="Mensagem"></textarea>
+                        @error('mensagem') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                     </div>
-                @endif
-                
+                </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div class="form-group send-btn mb-0">
                         <button 

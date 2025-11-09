@@ -60,7 +60,7 @@
 @endif
 
 @if ($propertiesHighlights && $propertiesHighlights->count() > 0)
-    <div class="properties-section-body content-area">
+    <div class="properties-section-body content-area pt-2">
         <div class="container">
             <div class="main-title">
                 <h1>Destaque</h1>
@@ -176,7 +176,7 @@
 
 @if ($propertiesViews && $propertiesViews->count() > 0)
 <!-- IMOVEIS MAIS VISUALIZADOS INICIO -->
-<div class="mb-70 recently-properties chevron-icon">
+<div class="pb-4 mt-6 recently-properties chevron-icon">
     <div class="container">
         <!-- MAIN TITULO -->
         <div class="main-title">

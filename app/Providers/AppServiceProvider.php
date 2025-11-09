@@ -45,6 +45,11 @@ class AppServiceProvider extends ServiceProvider
                             ->get();
         View()->share('postsfooter', $postsfooter);
 
+        $lancamentos = \App\Models\Property::where('highlight', 1)
+                        ->available()
+                        ->get();
+        View()->share('lancamentoMenu', $lancamentos);
+
         Paginator::useBootstrap();
         
     }

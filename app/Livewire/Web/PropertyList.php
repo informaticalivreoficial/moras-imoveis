@@ -40,10 +40,9 @@ class PropertyList extends Component
             } elseif (($this->filters['operation'] ?? '') === 'location') {
                 $query->where('rental_value', '<=', $this->filters['valores']);
             } else {
-                // Se não escolheu operação, aplica em ambos
-                $query->where(function ($q) use ($filters) {
-                    $q->where('sale_value', '<=', $filters['valores'])
-                      ->orWhere('rental_value', '<=', $filters['valores']);
+                $query->where(function ($q) {
+                    $q->where('sale_value', '<=', $this->filters['valores'])
+                      ->orWhere('rental_value', '<=', $this->filters['valores']);
                 });
             }
         }
@@ -51,6 +50,7 @@ class PropertyList extends Component
             $query->where('dormitories', '>=', $this->filters['dormitorios']);
         }
 
+        // 🔄 Ordenação mais recente primeiro
         return $query->latest()->get();
     }
 

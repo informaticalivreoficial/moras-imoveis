@@ -39,12 +39,13 @@ use App\Livewire\Dashboard\Slides\SlideForm;
 use App\Livewire\Dashboard\Slides\Slides;
 
 Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
-    /** Página Inicial */
+    //Institucional
     Route::get('/', [WebController::class, 'home'])->name('home');
+    Route::get('/politica-de-privacidade', [WebController::class, 'privacy'])->name('privacy');
 
 //     /** FEED */
 //     Route::get('feed', [FeedController::class, 'feed'])->name('feed');
-    Route::get('/politica-de-privacidade', [WebController::class, 'politica'])->name('politica');
+    
 //     Route::get('/sitemap', [WebController::class, 'sitemap'])->name('sitemap');
 
      /** Página de Compra - Específica de um imóvel */
@@ -52,8 +53,7 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
 
      /** Página de Locaçãp - Específica de um imóvel */
      //Route::get('imoveis/quero-alugar/{slug}', [WebController::class, 'rentProperty'])->name('rentProperty');
-     Route::get('imoveis/{slug}', [WebController::class, 'Property'])->name('property');
-     Route::get('imoveis', [WebController::class, 'Properties'])->name('properties');
+     
 
 //     /** Lista todos os imóveis */
 //     Route::get('/imoveis/{type}', [WebController::class, 'propertyList'])->name('propertyList');
@@ -61,42 +61,29 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
 //     /** Página de Experiências - Específica de uma categoria */
 //     Route::get('/experiencias/{slug}', [FilterController::class, 'experienceCategory'])->name('experienceCategory');
 
-//     /** Pesquisa */
+     //Properties
      Route::get('pesquisar-imoveis', [WebController::class, 'pesquisaImoveis'])->name('pesquisar-imoveis');
-//     Route::match(['post', 'get'], '/pesquisa', [SiteController::class, 'pesquisaImoveis'])->name('pesquisa');
+     Route::get('imoveis/{slug}', [WebController::class, 'Property'])->name('property');
+     Route::get('imoveis', [WebController::class, 'Properties'])->name('properties');
 
-//     //CLIENTE
+     //Client
      Route::get('/atendimento', [WebController::class, 'contact'])->name('contact');
-//     Route::post('/sendEmail', [SendEmailController::class, 'sendEmail'])->name('sendEmail');
-//     Route::get('/sendNewsletter', [SendEmailController::class, 'sendNewsletter'])->name('sendNewsletter');
-//     Route::get('/sendReserva', [SendEmailController::class, 'sendReserva'])->name('sendReserva');
+     Route::get('/simulador-de-credito-imobiliario', [WebController::class, 'creditSimulator'])->name('simulator');
+     Route::get('/lancamentos', [WebController::class, 'PropertyHighliths'])->name('highliths');
 
-     //****************************** Blog ***********************************************/
+     //Blog
      Route::get('/blog/artigo/{slug}', [WebController::class, 'artigo'])->name('blog.artigo');
      Route::get('/blog/noticia/{slug}', [WebController::class, 'noticia'])->name('blog.noticia');
      Route::get('/blog/categoria/{slug}', [WebController::class, 'categoria'])->name('blog.categoria');
      Route::get('/blog', [WebController::class, 'blog'])->name('blog.index');    
 //     Route::match(['get', 'post'],'/blog/pesquisar', [WebController::class, 'searchBlog'])->name('blog.searchBlog');
 
-//     //****************************** Notícias ***********************************************/
-//     Route::get('/noticia/{slug}', [SiteController::class, 'noticia'])->name('noticia');
-//     Route::get('/noticias/categoria/{slug}', [SiteController::class, 'categoria'])->name('noticia.categoria');
-//     Route::get('/noticias', [SiteController::class, 'noticias'])->name('noticias'); 
+
 
 //     //****************************** Páginas ***********************************************/
 //     Route::get('/pagina/{slug}', [SiteController::class, 'pagina'])->name('pagina');
 
-//     //FILTROS
-//     Route::post('main-filter/search', [FilterController::class, 'search'])->name('main-filter.search');
-//     Route::post('main-filter/categoria', [FilterController::class, 'categoria'])->name('main-filter.categoria');
-//     Route::post('main-filter/tipo', [FilterController::class, 'tipo'])->name('main-filter.tipo');
-//     Route::post('main-filter/bairro', [FilterController::class, 'bairro'])->name('main-filter.bairro');
-//     Route::post('main-filter/dormitorios', [FilterController::class, 'dormitorios'])->name('main-filter.dormitorios');
-//     Route::post('main-filter/suites', [FilterController::class, 'suites'])->name('main-filter.suites');
-//     Route::post('main-filter/banheiros', [FilterController::class, 'banheiros'])->name('main-filter.banheiros');
-//     Route::post('main-filter/garagem', [FilterController::class, 'garagem'])->name('main-filter.garagem');
-//     Route::post('main-filter/price-base', [FilterController::class, 'priceBase'])->name('main-filter.priceBase');
-//     Route::post('main-filter/price-limit', [FilterController::class, 'priceLimit'])->name('main-filter.priceLimit');
+
 });
 
 Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'admin'], function () {

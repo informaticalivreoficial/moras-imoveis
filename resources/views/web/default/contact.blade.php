@@ -5,7 +5,7 @@
         <div class="overlay">
             <div class="container">
                 <div class="breadcrumb-area">
-                    <h1>Atendimento</h1>
+                    <h1 style="font-size: 36px;">Atendimento</h1>
                     <ul class="breadcrumbs">
                         <li><a href="{{route('web.home')}}">Início</a></li>
                         <li class="active">Atendimento</li>
@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12">
                     <div class="contact-form">
-                        <livewire:web.contact-form />  
+                        <livewire:web.contact-form  />  
                     </div>
                 </div>
                 <div class="col-lg-4 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-6 col-xs-12">
