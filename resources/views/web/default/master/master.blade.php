@@ -71,7 +71,7 @@
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="text-align: right;">
-                        <a target="_blank" style="margin-top: 5px;margin-bottom: 5px;" href="//BASE.'/pagina/simulador';?>" class="btn button-sm border-button-theme">financiamento</a>
+                        <a target="_blank" style="margin-top: 5px;margin-bottom: 5px;" href="{{route('web.simulator')}}" class="btn button-sm border-button-theme">financiamento</a>
                         <a style="margin-top: 5px;margin-bottom: 5px;margin-left: 10px;" href="{{route('web.pesquisar-imoveis')}}" class="btn button-sm border-button-theme">Buscar Imóveis</a>
                                                
                         <ul class="top-social-media pull-right" style="margin-left: 10px;">
@@ -234,7 +234,7 @@
                     <li><a href="{{ route('web.home') }}" class="text-gray-200 hover:text-teal-400">Início</a></li>
                     <li><a href="{{ route('web.blog.index') }}" class="text-gray-200 hover:text-teal-400">Blog</a></li>
                     <li><a href="/imoveis/index" class="text-gray-200 hover:text-teal-400">Imóveis</a></li>
-                    <li><a target="_blank" href="/pagina/simulador" class="text-gray-200 hover:text-teal-400">Financiamento</a></li>
+                    <li><a target="_blank" href="{{route('web.simulator')}}" class="text-gray-200 hover:text-teal-400">Financiamento</a></li>
                     <li><a href="{{route('web.pesquisar-imoveis')}}" class="text-gray-200 hover:text-teal-400">Buscar Imóvel</a></li>
                     @if (!empty($lancamentoMenu) && $lancamentoMenu->count() > 0)
                         <li><a class="text-gray-200 hover:text-teal-400" href="{{route('web.highliths')}}" title="Lançamentos">Lançamentos</a></li>
@@ -354,191 +354,31 @@
 
         <script type="text/javascript">
             (function ($) {
-                var basesite = "/template//"; 
-                var base = "/"; 
-                var ajaxbase = basesite + 'ajax/ajax-central.php';
-                
-                //$('.loading-filtro').css("display", "none");
-                
-                // FILTRO DE BUSCA DE IMOVEIS -> CIDADES
-                $('.loadcidadeFiltro').change(function() {
-                var id_cidade = $('#cidade option:selected').val(); 
-                var bairro = $('.j_loadbairros'); 
-                //Loading
-                //$('.loading-filtro').css("display", "block");
-                bairro.val('Carregando bairros...');
-                bairro.fadeOut(500);
-                $('.selectBairro').load(basesite + '/ajax/ajax-bairros.php?cidade=' + id_cidade);
-                //$('.resultado').load(basesite + 'ajax/filtro-imoveis.php?cidade=' + id_cidade);
-                //$('.loading-filtro').css("display", "none");
-                });
 
-                $('.loadtipo').change(function(){        
-                    var tipo = $('#tipo option:selected').val();
-                    if(tipo == 1){
-                        $('.loadvalores').fadeOut(500);
-                        $('.selectValores').load(basesite + 'ajax/ajax-tipos.php?tipo=' + tipo);
-                    }else{
-                        $('.loadvalores').fadeOut(500);
-                        $('.selectValores').load(basesite + 'ajax/ajax-tipos.php?tipo=' + tipo);
+                // WOW animation library initialization
+                var wow = new WOW(
+                    {
+                        animateClass: 'animated',
+                        offset: 100,
+                        mobile: false
                     }
+                );
+                wow.init();
+
+                // Multilevel menuus
+                $('[data-submenu]').submenupicker();
+
+                $('.portfolio-item').magnificPopup({
+                    delegate: 'a',
+                    type: 'image',
+                    gallery:{enabled:true}
                 });
 
-                // Seletor, Evento/efeitos, CallBack, Ação
-                // $('.j_searchimoveis').submit(function (){
-                //     var form = $(this);
-                //     var data = $(this).serialize();
-                //
-                //     $.ajax({
-                //         url: ajaxbase,
-                //         data: data,
-                //         type: 'POST',
-                //         datatype: 'json',
-                //
-                //         beforeSend: function(){
-                //             form.find('#b_nome').html('Carregando...');
-                //             form.find('.alert').fadeOut(500, function(){
-                //                 $(this).remove();
-                //             });
-                //         },
-                //         success: function(){
-                //
-                //         },
-                //         complete: function(){
-                //             form.find('#b_nome').html('Pesquisar');
-                //         }
-                //     });
-                //     return false;
-                // });
-
-                $('.rcomprar').css("display", "block");
-                
-                // SIMULADOR INICIO
-                $('.financiamento').css("display", "none");
-                $('.consorcio').css("display", "none");
-                
-                $('.loadtipo_s').change(function() {
-                    if($(this).val() == 0){            
-                        $('.financiamento').css("display", "block");
-                        $('.consorcio').css("display", "none");
-                        $('.opcaoconsorcio').prop('disabled', 'disabled');
-                        $('.opcaofinanciamento').removeAttr('disabled');
-                    }else{            
-                        $('.consorcio').css("display", "block");
-                        $('.financiamento').css("display", "none");
-                        $('.opcaoconsorcio').removeAttr('disabled');
-                        $('.opcaofinanciamento').prop('disabled', 'disabled');
-                    }
-                });   
-                
-                $('.j_submitsimulador').submit(function (){
-                    var form = $(this);
-                    var data = $(this).serialize();
-                    
-                    $.ajax({
-                        url: ajaxbase,
-                        data: data,
-                        type: 'POST',
-                        dataType: 'json',
-                        
-                        beforeSend: function(){
-                            form.find('.button-md').html("Carregando...");
-                            form.find('.alert').fadeOut(500, function(){
-                                $(this).remove();
-                            });
-                        },
-                        success: function(resposta){
-                            $('html, body').animate({scrollTop:$('.alertas').offset().top-135}, 'slow'); 
-                        if(resposta.error){                    
-                                form.find('.alertas').html('<div class="alert alert-danger">'+ resposta.error +'</div>');
-                                form.find('.alert-danger').fadeIn();                    
-                            }else{
-                                form.find('.alertas').html('<div class="alert alert-success">'+ resposta.sucess +'</div>');
-                                form.find('.alert-sucess').fadeIn();                    
-                                form.find('input[class!="noclear"]').val('');
-                                form.find('.form_hide').fadeOut(500);
-                            }
-                        },
-                        complete: function(resposta){
-                            form.find('.button-md').html("Enviar Agora");                               
-                        }
-                    });
-                    return false;
+                // Background video playing script
+                $(document).ready(function () {
+                    $(".player").mb_YTPlayer();
                 });
-                // SIMULADOR FIM 
-                
-                // MASCARAS
-                $("#valor").mask("999.999.999,99",{placeholder:" "});
-                $("#nascimento").mask("99/99/9999");
-                $("#whatsapp").mask("(99) 99999-9999",{placeholder:" "});
-                $("#cep").mask("99.999-999");
-                $("#rg").mask("99.999.999 - 9");
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                    
-                // Seletor, Evento/efeitos, CallBack, Ação
-                //$('.j_formcadastro').submit(function (){
 
-                // var data = new FormData(this);
-
-                // var form = $(this);
-                    //var data = $(this).serialize();
-                    
-            //        var Acbanco = new Array();
-            // 
-            //        $("input[name='acbanco[]']").each(function(){
-            //           Codigos.push($(this).val());
-            //        });
-                    
-            //        $.ajax({
-            //            url: ajaxbase,
-            //            data: data,
-            //            type: 'POST',
-            //            mimeType: "multipart/form-data",
-            //            dataType: 'json',
-            //            contentType: false,
-            //            cache: false,
-            //            processData:false,
-            //            
-            //            beforeSend: function(){
-            //                form.find('.b_cadastro').html("Carregando...");                
-            //                form.find('.alert').fadeOut(500, function(){
-            //                    $(this).remove();
-            //                });
-            //            },
-            //            success: function(resposta){
-            //                $('html, body').animate({scrollTop:$('.alertas').offset().top-135}, 'slow');
-            //                if(resposta.error){
-            //                    form.find('.alertas').html('<div class="alert alert-danger">'+ resposta.error +'</div>');
-            //                    form.find('.alert-danger').fadeIn(); 
-            //                    console.log(resposta);
-            //                }else{
-            //                    form.find('.alertas').html('<div class="alert alert-success">'+ resposta.sucess +'</div>');
-            //                    form.find('.alert-success').fadeIn();                    
-            //                    //form.find('input[class!="noclear"]').val('');
-            //                    //form.find('textarea[class!="noclear"]').val('');
-            //                    //form.find('.form_hide').fadeOut(500);
-            //                    console.log(resposta);
-            //                }
-            //            },
-            //            complete: function(resposta){
-            //                form.find('.b_cadastro').html("Cadastrar");                                
-            //            }
-            //            
-            //        });
-            //        
-            //        return false;
-            //    });
-                
-                
             })(jQuery);   
                 
             </script>

@@ -331,4 +331,17 @@ class Webcontroller extends Controller
             'head' => $head
         ]);
     }
+
+    public function creditSimulator()
+    {
+        $head = $this->seo->render('Simulador de Crédito Imobiliário - ' . $this->config->app_name ?? env('APP_NAME'),
+            'Simule seu crédito imobiliário conosco!',
+            route('web.simulator'),
+            $this->config->getmetaimg() ?? url(asset('theme/images/image.jpg'))
+        );
+
+        return view("web.{$this->config->template}.properties.simulator", [
+            'head' => $head
+        ]);
+    }
 }

@@ -24,15 +24,7 @@ $(function () {
         });
     });
 
-    // WOW animation library initialization
-    var wow = new WOW(
-        {
-            animateClass: 'animated',
-            offset: 100,
-            mobile: false
-        }
-    );
-    wow.init();
+    
 
     // Banner slider
     (function ($) {
@@ -183,13 +175,9 @@ $(function () {
         });
     }());
 
-    // Background video playing script
-    $(document).ready(function () {
-        $(".player").mb_YTPlayer();
-    });
+    
 
-    // Multilevel menuus
-    $('[data-submenu]').submenupicker();
+    
 
     // Expending/Collapsing advance search content
     $('.show-more-options').click(function () {
@@ -221,11 +209,7 @@ $(function () {
         });
     });
 
-    $('.portfolio-item').magnificPopup({
-        delegate: 'a',
-        type: 'image',
-        gallery:{enabled:true}
-    });
+    
 
 
     // Modal activation
