@@ -3,6 +3,7 @@
 namespace App\Livewire\Web;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Livewire\Attributes\On;
 
@@ -86,13 +87,13 @@ class PropertySimulator extends Component
 
     public function submit()
     {        
-        $this->validate();
+        $validated = $this->validate();
         
         $data = $this->only([
-            'nome', 'tempo', 'tipo_financiamento', 'valor', 'valor_entrada', 
-            'renda', 'natureza', 'tipoimovel', 'email', 'telefone', 
-            'oqueprecisa', 'valorcarta', 'prazocarta', 'estado', 'cidade'
-        ]);        
+            'natureza', 'tipoimovel', 'oqueprecisa' 
+        ]); 
+
+        Mail::send(new \App\Mail\Simulado(array_merge($data, $validated)));
 
         $this->reset();        
         $this->success = true;

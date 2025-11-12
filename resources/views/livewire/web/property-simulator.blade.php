@@ -342,10 +342,14 @@
 
             {{-- Botão --}}
             <div class="text-center pt-4">
-                <button type="submit"
-                    class="px-8 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition-colors">
-                    Enviar Simulação
-                </button>
+                <button 
+                    type="submit" 
+                    class="px-8 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition-colors"
+                    wire:loading.attr="disabled"
+                >
+                <span wire:loading.remove>Enviar Simulação</span>
+                <span wire:loading class="flex items-center">Enviando...</span>
+                </button>               
             </div>
         </form>
 
