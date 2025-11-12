@@ -2,40 +2,64 @@
 
 namespace App\Livewire\Web;
 
+use Illuminate\Support\Facades\Http;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class PropertySimulator extends Component
 {
     public $nome;
-    public $nasc;
     public $tempo;
     public $tipo_financiamento;
     public $valor;
     public $valor_entrada;
+    public $renda;
     public $natureza = 'Indiferente';
     public $tipoimovel = 'Residencial';
-    public $uf;
-    public $cidade;
     public $bairro;
     public $email;
-    public $celular;
-    public $renda;
+    public $telefone;    
     public $oqueprecisa = 'Pré aprovar meu crédito';
     public $valorcarta;
     public $prazocarta;
 
+    public $estado = '';
+    public $cidade = ''; 
+    public $estados = [];
+
+    public $success = false;
+
     public function rules()
     {
-        return [
+        $rules = [
             'nome' => 'required|string|min:3',
-            'nasc' => 'required|string',
             'tempo' => 'required|string',
             'tipo_financiamento' => 'required|string',
             'email' => 'required|email',
-            'celular' => 'required|string',
-            'uf' => 'required|string',
+            'telefone' => 'required|string',
+            'estado' => 'required|string',
             'cidade' => 'required|string',
-            'bairro' => 'required|string',
+        ];
+        
+        if ($this->tipo_financiamento === 'Consórcio') {
+            $rules['valorcarta'] = 'required';
+            $rules['prazocarta'] = 'required|string';
+        }
+
+        if ($this->tipo_financiamento === 'Financiamento') {
+            $rules['valor'] = 'required';
+            $rules['valor_entrada'] = 'required';
+            $rules['renda'] = 'required';
+        }
+
+        return $rules;
+    }
+
+    public function messages()
+    {
+        return [
+            'valorcarta.required' => 'Informe o valor da carta de crédito.',
+            'prazocarta.required' => 'Informe o prazo da carta de crédito.',
         ];
     }
 
@@ -44,9 +68,6 @@ class PropertySimulator extends Component
         return view('livewire.web.property-simulator');
     }
 
-    public $estados = [];
-    public $cidades = [];
-
     public function mount()
     {
         $this->loadEstados();
@@ -54,27 +75,26 @@ class PropertySimulator extends Component
 
     public function loadEstados()
     {
-        $json = file_get_contents('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
-        $this->estados = collect(json_decode($json))->sortBy('nome')->pluck('nome', 'sigla')->toArray();
-    }
-
-    public function updatedEstado($sigla)
-    {
-        $json = file_get_contents("https://servicodados.ibge.gov.br/api/v1/localidades/estados/{$sigla}/municipios");
-        $this->cidades = collect(json_decode($json))->pluck('nome')->toArray();
-        $this->cidade = '';
+        try {
+            $response = Http::get('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome');
+            $this->estados = $response->json() ?? [];
+        } catch (\Throwable $e) {
+            $this->estados = [];
+            logger()->error('Erro ao carregar estados IBGE: ' . $e->getMessage());
+        }
     }
 
     public function submit()
-    {
+    {        
         $this->validate();
-        dd($this->validate());
-        // Mail::send('emails.simulador', ['data' => $this->all()], function ($message) {
-        //     $message->to(config('mail.from.address'))
-        //             ->subject('Novo Simulador de Financiamento');
-        // });
+        
+        $data = $this->only([
+            'nome', 'tempo', 'tipo_financiamento', 'valor', 'valor_entrada', 
+            'renda', 'natureza', 'tipoimovel', 'email', 'telefone', 
+            'oqueprecisa', 'valorcarta', 'prazocarta', 'estado', 'cidade'
+        ]);        
 
-        $this->reset();
-        session()->flash('success', 'Formulário enviado com sucesso! Em breve entraremos em contato.');
+        $this->reset();        
+        $this->success = true;
     }
 }

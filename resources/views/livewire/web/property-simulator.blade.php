@@ -1,14 +1,14 @@
 <div>
-    <div x-data="{ tipo: @entangle('tipo_financiamento') }" class="max-w-6xl mx-auto px-6 py-10">
+    <div 
+        x-data="{ 
+                    tipo: @entangle('tipo_financiamento'),
+                    success: @entangle('success')
+                }" 
+        class="max-w-6xl mx-auto px-6 py-10"
+    >
         <h1 class="text-2xl font-semibold text-teal-600 mb-6 text-center">Simulador de Financiamento</h1>
 
-        @if (session()->has('success'))
-            <div class="bg-green-100 text-green-800 p-3 rounded-lg mb-6 text-center">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        <form wire:submit.prevent="submit" class="space-y-6 bg-white p-6 rounded-xl shadow-md">
+        <form wire:submit.prevent="submit" class="space-y-6 bg-white p-6 rounded-xl shadow-md" x-show="!success" x-transition.opacity.duration.500ms>
             {{-- Dados do Cliente --}}
             <div class="grid md:grid-cols-3 gap-4">
                 <div>
@@ -39,8 +39,8 @@
                     <select wire:model="estado"
                         class="w-full h-12 border border-gray-200 rounded-lg mt-1 px-3 bg-white focus:ring-2 focus:ring-teal-400 focus:border-teal-500 transition-all duration-150">
                         <option value="">Selecione</option>
-                        @foreach ($estados as $sigla => $nome)
-                            <option value="{{ $sigla }}">{{ $nome }}</option>
+                        @foreach ($estados as $uf)
+                            <option value="{{ $uf['sigla'] }}">{{ $uf['nome'] }}</option>
                         @endforeach
                     </select>
                     @error('estado') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
@@ -48,13 +48,9 @@
 
                 <div>
                     <label class="text-sm text-gray-600">Cidade</label>
-                    <select wire:model="cidade"
-                        class="w-full h-12 border border-gray-200 rounded-lg mt-1 px-3 bg-white focus:ring-2 focus:ring-teal-400 focus:border-teal-500 transition-all duration-150">
-                        <option value="">Selecione</option>
-                        @foreach ($cidades as $nome)
-                            <option value="{{ $nome }}">{{ $nome }}</option>
-                        @endforeach
-                    </select>
+                    <input type="text" wire:model="cidade"
+                    class="w-full h-12 border border-gray-200 rounded-lg mt-1 px-3 focus:ring-2 focus:ring-teal-400 focus:border-teal-500 transition-all duration-150"
+                    placeholder="Digite sua cidade">
                     @error('cidade') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
             </div>
@@ -76,22 +72,64 @@
 
                 <div>
                     <label class="text-sm text-gray-600">Escolha um tipo de Financiamento</label>
-                    <select x-model="tipo" wire:model="tipo_financiamento"
+                    <select 
+                    x-model="tipo" 
+                    wire:model="tipo_financiamento"
+                    x-on:change="
+                            if ($el.value !== 'Consórcio') {
+                                $wire.set('valorcarta', '');
+                                $wire.set('prazocarta', '');
+                            }
+                        "
                         class="w-full h-12 border border-gray-200 rounded-lg mt-1 px-3 bg-white focus:ring-2 focus:ring-teal-400 focus:border-teal-500 transition-all duration-150">
                         <option value="">Selecione</option>
                         <option value="Financiamento">Financiamento Imobiliário</option>
                         <option value="Consórcio">Consórcio Imobiliário</option>
                     </select>
+                    @error('tipo_financiamento') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
             </div>
 
             {{-- Dados do Consórcio --}}
             <div class="grid md:grid-cols-2 gap-4" x-show="tipo === 'Consórcio'" x-transition>
-                <div>
+                <div 
+                    x-data="{
+                        valorFormatado: '',
+                        formatar(valor) {
+                            let num = valor.replace(/[^\d]/g, '');
+                            if (num === '') {
+                                this.valorFormatado = '';
+                                $wire.valorcarta = null;
+                                return;
+                            }
+                            this.valorFormatado = (num / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                            $wire.valorcarta = num / 100;
+                        }
+                    }"
+                    x-init="
+                        if ($wire.valorcarta) {
+                            valorFormatado = ($wire.valorcarta).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                        }
+                        // Observa mudanças no tipo de financiamento e limpa o campo se necessário
+                        $watch('$wire.tipo_financiamento', value => {
+                            if (value !== 'Consórcio') {
+                                valorFormatado = '';
+                                $wire.valorcarta = null;
+                            }
+                        });
+                    "
+                >
                     <label class="text-sm text-gray-600">Valor da Carta de Crédito</label>
-                    <input type="text" wire:model="valorcarta" x-mask:dynamic="$money($input)" placeholder="R$ 0,00"
-                        class="w-full h-12 border border-gray-200 rounded-lg mt-1 px-3 focus:ring-2 focus:ring-teal-400 focus:border-teal-500 transition-all duration-150" />
-                    @error('valorcarta') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    <input 
+                        type="text"
+                        x-model="valorFormatado"
+                        x-on:input="formatar($el.value)"
+                        class="w-full h-12 border border-gray-200 rounded-lg mt-1 px-3 bg-white focus:ring-2 focus:ring-teal-400 focus:border-teal-500 transition-all duration-150"
+                        placeholder="Ex: R$ 350.000,00"
+                    >
+                    @error('valorcarta') 
+                        <span class="text-red-500 text-sm">{{ $message }}</span> 
+                    @enderror
                 </div>
 
                 <div>
@@ -106,31 +144,131 @@
                         <option value="120">120</option>
                         <option value="180">180</option>
                     </select>
+                    @error('prazocarta') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
             </div>
 
             {{-- Dados do Financiamento --}}
             <div class="grid md:grid-cols-3 gap-4 pb-2" x-show="tipo === 'Financiamento'" x-transition>
-                <div>
-                    <label class="text-sm text-gray-600">Valor do Imóvel</label>
-                    <input type="text" wire:model="valor_imovel" x-mask:dynamic="$money($input)" placeholder="R$ 0,00"
-                        class="w-full h-12 border border-gray-200 rounded-lg mt-1 px-3 focus:ring-2 focus:ring-teal-400 focus:border-teal-500 transition-all duration-150" />
-                    @error('valor_imovel') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                <div 
+                    x-data="{
+                        valorFormatado: '',
+                        formatar(valor) {
+                            let num = valor.replace(/[^\d]/g, '');
+                            if (num === '') {
+                                this.valorFormatado = '';
+                                $wire.valor = null;
+                                return;
+                            }
+                            this.valorFormatado = (num / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                            $wire.valor = num / 100;
+                        }
+                    }"
+                    x-init="
+                        if ($wire.valor) {
+                            valorFormatado = ($wire.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                        }
+                        // Observa mudanças no tipo de financiamento e limpa o campo se necessário
+                        $watch('$wire.tipo_financiamento', value => {
+                            if (value !== 'Consórcio') {
+                                valorFormatado = '';
+                                $wire.valor = null;
+                            }
+                        });
+                    "
+                >
+                    <label class="text-sm text-gray-600">Valor do imóvel</label>
+                    <input 
+                        type="text"
+                        x-model="valorFormatado"
+                        x-on:input="formatar($el.value)"
+                        class="w-full h-12 border border-gray-200 rounded-lg mt-1 px-3 bg-white focus:ring-2 focus:ring-teal-400 focus:border-teal-500 transition-all duration-150"
+                        placeholder="Ex: R$ 350.000,00"
+                    >
+                    @error('valor') 
+                        <span class="text-red-500 text-sm">{{ $message }}</span> 
+                    @enderror
                 </div>
 
-                <div>
-                    <label class="text-sm text-gray-600">Valor de Entrada</label>
-                    <input type="text" wire:model="valor_entrada" x-mask:dynamic="$money($input)" placeholder="R$ 0,00"
-                        class="w-full h-12 border border-gray-200 rounded-lg mt-1 px-3 focus:ring-2 focus:ring-teal-400 focus:border-teal-500 transition-all duration-150" />
-                    @error('valor_entrada') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                </div>
-
-                <div>
+                <div 
+                    x-data="{
+                        valorFormatado: '',
+                        formatar(valor) {
+                            let num = valor.replace(/[^\d]/g, '');
+                            if (num === '') {
+                                this.valorFormatado = '';
+                                $wire.valor_entrada = null;
+                                return;
+                            }
+                            this.valorFormatado = (num / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                            $wire.valor_entrada = num / 100;
+                        }
+                    }"
+                    x-init="
+                        if ($wire.valor_entrada) {
+                            valorFormatado = ($wire.valor_entrada).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                        }
+                        // Observa mudanças no tipo de financiamento e limpa o campo se necessário
+                        $watch('$wire.tipo_financiamento', value => {
+                            if (value !== 'Consórcio') {
+                                valorFormatado = '';
+                                $wire.valor_entrada = null;
+                            }
+                        });
+                    "
+                >
+                    <label class="text-sm text-gray-600">Valor de entrada</label>
+                    <input 
+                        type="text"
+                        x-model="valorFormatado"
+                        x-on:input="formatar($el.value)"
+                        class="w-full h-12 border border-gray-200 rounded-lg mt-1 px-3 bg-white focus:ring-2 focus:ring-teal-400 focus:border-teal-500 transition-all duration-150"
+                        placeholder="Ex: R$ 350.000,00"
+                    >
+                    @error('valor_entrada') 
+                        <span class="text-red-500 text-sm">{{ $message }}</span> 
+                    @enderror
+                </div> 
+                
+                <div 
+                    x-data="{
+                        valorFormatado: '',
+                        formatar(valor) {
+                            let num = valor.replace(/[^\d]/g, '');
+                            if (num === '') {
+                                this.valorFormatado = '';
+                                $wire.renda = null;
+                                return;
+                            }
+                            this.valorFormatado = (num / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                            $wire.renda = num / 100;
+                        }
+                    }"
+                    x-init="
+                        if ($wire.renda) {
+                            valorFormatado = ($wire.renda).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                        }
+                        // Observa mudanças no tipo de financiamento e limpa o campo se necessário
+                        $watch('$wire.tipo_financiamento', value => {
+                            if (value !== 'Consórcio') {
+                                valorFormatado = '';
+                                $wire.renda = null;
+                            }
+                        });
+                    "
+                >
                     <label class="text-sm text-gray-600">Renda Mensal</label>
-                    <input type="text" wire:model="renda" x-mask:dynamic="$money($input)" placeholder="R$ 0,00"
-                        class="w-full h-12 border border-gray-200 rounded-lg mt-1 px-3 focus:ring-2 focus:ring-teal-400 focus:border-teal-500 transition-all duration-150" />
-                    @error('renda') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                </div>
+                    <input 
+                        type="text"
+                        x-model="valorFormatado"
+                        x-on:input="formatar($el.value)"
+                        class="w-full h-12 border border-gray-200 rounded-lg mt-1 px-3 bg-white focus:ring-2 focus:ring-teal-400 focus:border-teal-500 transition-all duration-150"
+                        placeholder="Ex: R$ 350.000,00"
+                    >
+                    @error('renda') 
+                        <span class="text-red-500 text-sm">{{ $message }}</span> 
+                    @enderror
+                </div>                
             </div>
 
             <div class="grid md:grid-cols-2 gap-6 pt-6 border-t border-gray-200" x-show="tipo === 'Financiamento'" x-transition>
@@ -210,42 +348,9 @@
                 </button>
             </div>
         </form>
+
+        <div x-show="success" x-transition.opacity.duration.500ms class="bg-green-100 text-green-800 p-3 rounded-lg mb-6 text-center">
+            ✅ Sua simulação foi enviada a um especialista de plantão com sucesso! Em breve entraremos em contato.
+        </div>
     </div>
 </div>
-
-@push('scripts')
-    <script src="https://unpkg.com/imask"></script>
-    <script>
-    function simuladorForm() {
-        return {
-            tipo: '',
-            cidades: [],
-            init() {
-                // Máscaras
-                IMask(document.getElementById('valorImovel'), { mask: 'R$ num', blocks: { num: { mask: Number, thousandsSeparator: '.' } }});
-                IMask(document.getElementById('valorEntrada'), { mask: 'R$ num', blocks: { num: { mask: Number, thousandsSeparator: '.' } }});
-                IMask(document.getElementById('valorCarta'), { mask: 'R$ num', blocks: { num: { mask: Number, thousandsSeparator: '.' } }});
-                IMask(document.getElementById('renda'), { mask: 'R$ num', blocks: { num: { mask: Number, thousandsSeparator: '.' } }});
-                IMask(document.getElementById('celular'), { mask: '(00) 00000-0000' });
-
-                // Carregar estados via IBGE
-                fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome')
-                    .then(r => r.json())
-                    .then(estados => {
-                        const ufSelect = document.querySelector('[wire\\:model="uf"]');
-                        estados.forEach(uf => {
-                            ufSelect.insertAdjacentHTML('beforeend', `<option value="${uf.sigla}">${uf.nome}</option>`);
-                        });
-                    });
-            },
-            loadCities(e) {
-                const uf = e.target.value;
-                if (!uf) return;
-                fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`)
-                    .then(r => r.json())
-                    .then(data => this.cidades = data.map(c => c.nome));
-            }
-        }
-    }
-    </script>
-@endpush
