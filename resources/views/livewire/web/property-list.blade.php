@@ -48,13 +48,14 @@
                                             <a href="{{route('web.property',['slug' => $property->slug])}}" class="overlay-link">
                                                 <i class="fa fa-link"></i>
                                             </a>  
-                                            @if($property->images()->get()->count())
-                                                <a href="{{$property->cover()}}" class="overlay-link"><i class="fa fa-expand"></i></a>
-                                                <div class="property-magnify-gallery"> 
-                                                    @foreach($property->images()->get() as $image)                                  
-                                                        <a href="{{ $image->url_image }}" class="hidden"></a> 
-                                                    @endforeach
-                                                </div>
+                                            @if($property->images->count())
+                                                <button 
+                                                    type="button" 
+                                                    class="overlay-link open-gallery-btn"
+                                                    data-images='@json($property->images->pluck("url_image"))'
+                                                >
+                                                    <i class="fa fa-expand"></i>
+                                                </button>
                                             @endif 
                                         </div>
                                     </div>
@@ -101,17 +102,66 @@
                         @empty
                             <p class="text-gray-500 col-span-full text-center mt-8">Nenhum imóvel encontrado!</p>
                         @endforelse 
-                        
-                        
-                    </div>   
-                    @if ($properties->hasMorePages())
-                        <div class="col-12 mt-8 p-4 text-center">
-                            <button wire:click="loadMore"
-                                class="px-6 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded-lg font-medium">
-                                Carregar mais imóveis
-                            </button>
+                        <div 
+                            x-data="galleryRoot()" 
+                            x-init="init()" 
+                            x-cloak
+                        >
+                            <!-- Modal Lightbox -->
+                            <template x-if="open">
+                                <div 
+                                    x-show="open" 
+                                    x-transition.opacity 
+                                    class="fixed inset-0 bg-black/90 flex items-center justify-center z-[1000] touch-none"
+                                    @wheel="onWheel($event)"
+                                    @touchstart="onTouchStart($event)"
+                                    @touchmove="onTouchMove($event)"
+                                    @touchend="onTouchEnd($event)"
+                                >
+                                    <!-- Navegação -->
+                                    <button 
+                                        @click="prev()" 
+                                        class="absolute left-4 md:left-8 text-white text-4xl font-bold select-none z-50"
+                                    >&#10094;</button>
+
+                                    <!-- Imagem -->
+                                    <div class="relative">
+                                        <img 
+                                            :src="currentImage()" 
+                                            :style="imageStyle()" 
+                                            @click="toggleZoom()" 
+                                            alt="Imagem" 
+                                            class="max-h-[80vh] max-w-[90vw] rounded-lg shadow-lg transition-transform duration-300 cursor-zoom-in"
+                                        >
+                                    </div>
+
+                                    <button 
+                                        @click="next()" 
+                                        class="absolute right-4 md:right-8 text-white text-4xl font-bold select-none z-50"
+                                    >&#10095;</button>
+
+                                    <!-- Fechar -->
+                                    <button 
+                                        @click="close()" 
+                                        class="absolute top-4 right-6 text-white text-4xl font-bold z-50 select-none"
+                                    >&times;</button>
+
+                                    <!-- Indicador -->
+                                    <div class="absolute bottom-4 text-gray-300 text-sm select-none">
+                                        <span x-text="current + 1"></span> / <span x-text="images.length"></span>
+                                    </div>
+                                </div>
+                            </template>
                         </div>
-                    @endif         
+                        @if ($properties->hasMorePages())
+                            <div class="col-12 mt-8 p-4 text-center">
+                                <button wire:click="loadMore"
+                                    class="px-6 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded-lg font-medium">
+                                    Carregar mais imóveis
+                                </button>
+                            </div>
+                        @endif
+                    </div>  
                 </div>
             </div>
         </div>

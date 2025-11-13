@@ -357,6 +357,8 @@
     <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.maskedinput.min.js'))}}"></script>
     <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.maskMoney.min.js'))}}"></script>
 
+    
+    
     @hasSection('js')
         @yield('js')
     @endif

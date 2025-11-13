@@ -28,7 +28,7 @@ class Webcontroller extends Controller
         $propertiesHighlights = Property::orderBy('created_at', 'DESC')
                                 ->available()
                                 ->where('highlight', 1)
-                                ->limit(18)
+                                ->limit(3)
                                 ->get();                            
         $propertiesViews = Property::orderBy('created_at', 'DESC')
                                 ->available()
