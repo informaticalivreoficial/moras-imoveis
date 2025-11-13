@@ -379,11 +379,7 @@
                 // Multilevel menuus
                 $('[data-submenu]').submenupicker();
 
-                $('.portfolio-item').magnificPopup({
-                    delegate: 'a',
-                    type: 'image',
-                    gallery:{enabled:true}
-                });
+                
 
                 // Background video playing script
                 $(document).ready(function () {

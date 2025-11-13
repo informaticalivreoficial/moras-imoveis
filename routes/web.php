@@ -72,7 +72,7 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
      //Blog
      Route::get('/blog/artigo/{slug}', [WebController::class, 'artigo'])->name('blog.artigo');
      Route::get('/blog/noticia/{slug}', [WebController::class, 'noticia'])->name('blog.noticia');
-     Route::get('/blog/categoria/{slug}', [WebController::class, 'categoria'])->name('blog.categoria');
+     Route::get('/blog/categoria/{slug}', [WebController::class, 'blogCategory'])->name('blog.category');
      Route::get('/blog', [WebController::class, 'blog'])->name('blog.index');    
 //     Route::match(['get', 'post'],'/blog/pesquisar', [WebController::class, 'searchBlog'])->name('blog.searchBlog');
 

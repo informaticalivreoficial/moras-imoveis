@@ -218,7 +218,7 @@
                             <ul class="list-unstyled list-cat">
                                 @foreach($categorias as $categoria)
                                     <li>
-                                        <a href="{{route('web.blog.categoria',[ 'slug' => $categoria->slug ])}}">{{$categoria->title}} </a> 
+                                        <a href="{{route('web.blog.category',[ 'slug' => $categoria->slug ])}}">{{$categoria->title}} </a> 
                                         <span>({{$categoria->countposts()}})  </span>
                                     </li>                   
                                 @endforeach

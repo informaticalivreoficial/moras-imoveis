@@ -8,7 +8,7 @@
             <h1>Blog</h1>
             <ul class="breadcrumbs">
                 <li><a href="{{route('web.home')}}">Início</a></li>
-                <li class="active">Blog</li>
+                <li class="active"><a href="{{route('web.blog.index')}}">Blog</a></li>
             </ul>
         </div>
     </div>

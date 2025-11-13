@@ -171,11 +171,13 @@ class Webcontroller extends Controller
 
     public function blog()
     {
-        $posts = Post::orderBy('created_at', 'DESC')
-                            ->where('type', 'artigo')
-                            ->orWhere('type', 'noticia')
-                            ->postson()
-                            ->paginate(3);
+        $posts = Post::where(function ($query) {
+                    $query->where('type', 'artigo')
+                          ->orWhere('type', 'noticia');
+                })
+                ->postson()
+                ->orderBy('created_at', 'DESC')
+                ->paginate(21);
 
         $head = $this->seo->render('Blog - ' . $this->config->app_name ?? env('APP_NAME'),
             'Confira nossos artigos e notícias sobre o mercado imobiliário.',
@@ -186,6 +188,28 @@ class Webcontroller extends Controller
         return view("web.{$this->config->template}.blog.index",[
             'head' => $head,
             'posts' => $posts,
+        ]);
+    }
+
+    public function blogCategory($slug)
+    {
+        $category = CatPost::where('slug', $slug)->first();
+
+        $posts = Post::where('category', $category->id)
+                ->postson()
+                ->orderBy('created_at', 'DESC')
+                ->paginate(21);
+
+        $head = $this->seo->render('Blog - ' . $category->title ?? env('APP_NAME'),
+            'Confira nossos artigos e notícias sobre o mercado imobiliário na categoria '.$category->title.'.',
+            route('web.blog.category', ['slug' => $category->slug]),
+            $this->config->getmetaimg() ?? url(asset('theme/images/image.jpg'))
+        );
+
+        return view("web.{$this->config->template}.blog.index",[
+            'head' => $head,
+            'posts' => $posts,
+            'category' => $category,
         ]);
     }
 
