@@ -90,79 +90,36 @@ class Webcontroller extends Controller
         ]);
     }
 
+    public function Properties()
+    {
+        $head = $this->seo->render('Últimos imóveis cadastrados - ' . $this->config->app_name ?? env('APP_NAME'),
+            'Confira nossos imóveis disponíveis para venda e locação.',
+            route('web.properties'),
+            $this->config->getMetaImg() ?? url(asset('theme/images/image.jpg'))
+        );
+
+        return view('web.'.$this->config->template.'.properties.properties',[
+            'head' => $head
+        ]);        
+    }
+
     public function propertyList($type)
     {
-        if($type == 'venda'){
-            $properties = Property::orderBy('created_at', 'DESC')
-                                ->available()
-                                ->sale()
-                                ->paginate(15);
-        }else{
-            $properties = Property::orderBy('created_at', 'DESC')
-                                ->available()
-                                ->location()
-                                ->paginate(15);
-        }        
-
-        $head = $this->seo->render('Imóveis para ' . $type ?? env('APP_NAME'),
+        $head = $this->seo->render('Imóveis para ' . $type . $this->config->app_name ?? env('APP_NAME'),
             'Confira os imóveis para '.$type.' temos ótimas oportunidades de negócio.',
-            route('web.propertyList', $type),
+            route('web.propertylist', $type),
             $this->config->getMetaImg() ?? url(asset('theme/images/image.jpg'))
         );
 
         return view('web.'.$this->config->template.'.properties.properties',[
             'head' => $head,
-            'properties' => $properties,
             'type' => $type
         ]);
     }
 
-    public function buyProperty($slug)
-    {
-        $property = Property::where('slug', $slug)
-                            ->available()
-                            ->sale()
-                            ->first();
-        $properties = Property::where('id', '!=', $property->id)
-                            ->available()
-                            ->location()
-                            ->limit(4)
-                            ->get();
-
-        if(!empty($property)){
-            $property->views = $property->views + 1;
-            $property->save();
-
-            $head = $this->seo->render($property->title ?? env('APP_NAME'),
-                $property->headline ?? $property->title,
-                route('web.buyProperty', ['slug' => $property->slug]),
-                $property->cover() ?? $this->config->getMetaImg()
-            );
-
-            return view('web.'.$this->config->template.'.properties.property', [
-                'head' => $head,
-                'property' => $property,
-                'properties' => $properties,
-                'type' => 'venda',
-            ]);
-        }else{
-            $head = $this->seo->render($this->config->app_name ?? env('APP_NAME'),
-                'Imóvel não encontrado!',
-                route('web.home') ?? 'https://superimoveis.info',
-                $this->config->getMetaImg() ?? url(asset('theme/images/image.jpg'))
-            );
-            return view('web.properties.property', [
-                'head' => $head,
-                'property' => false,
-                'type' => 'venda',
-            ]);
-        }
-        
-    }
-
     public function property($slug)
     {
-        $property = Property::where('slug', request()->slug)->available()->first();
+        $property = Property::where('slug', $slug)->available()->first();
         $propertiesrelated = Property::where('id', '!=', $property->id)
                             ->available()
                             ->limit(4)
@@ -188,12 +145,6 @@ class Webcontroller extends Controller
 
     public function pesquisaImoveis(Request $request)
     {
-        // $properties = Property::orderBy('created_at', 'DESC')
-        //                     ->available()
-        //                     ->search($request->all())
-        //                     ->paginate(15)
-        //                     ->appends($request->except('page'));
-
         $head = $this->seo->render('Pesquisa de Imóveis - ' . $this->config->app_name ?? env('APP_NAME'),
             'Resultados da sua pesquisa de imóveis.',
             route('web.pesquisar-imoveis'),
@@ -201,32 +152,20 @@ class Webcontroller extends Controller
         );
 
         return view('web.'.$this->config->template.'.properties.search-property',[
-            'head' => $head,
-            // 'properties' => $properties,
-            // 'type' => 'pesquisa',
+            'head' => $head
         ]);
     }
 
     public function PropertyHighliths()
     {
-        $properties = Property::orderBy('created_at', 'DESC')
-                                ->available()
-                                ->where('highlight', 1)
-                                ->paginate(15);
-
         $head = $this->seo->render('Lançamentos - ' . $this->config->app_name ?? env('APP_NAME'),
             'Confira nossos lançamentos imobiliários.',
             route('web.highliths'),
             $this->config->getMetaImg() ?? url(asset('theme/images/image.jpg'))
         );
 
-        if($properties->isEmpty()) {
-            return redirect()->route('web.pesquisar-imoveis');
-        }
-
         return view('web.'.$this->config->template.'.properties.property-highliths',[
-            'head' => $head,
-            'properties' => $properties,
+            'head' => $head
         ]);
     }
 

@@ -100,8 +100,18 @@
                             </div>
                         @empty
                             <p class="text-gray-500 col-span-full text-center mt-8">Nenhum imóvel encontrado!</p>
-                        @endforelse                    
-                    </div>            
+                        @endforelse 
+                        
+                        
+                    </div>   
+                    @if ($properties->hasMorePages())
+                        <div class="col-12 mt-8 p-4 text-center">
+                            <button wire:click="loadMore"
+                                class="px-6 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded-lg font-medium">
+                                Carregar mais imóveis
+                            </button>
+                        </div>
+                    @endif         
                 </div>
             </div>
         </div>

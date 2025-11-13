@@ -55,15 +55,13 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
      //Route::get('imoveis/quero-alugar/{slug}', [WebController::class, 'rentProperty'])->name('rentProperty');
      
 
-//     /** Lista todos os imóveis */
-//     Route::get('/imoveis/{type}', [WebController::class, 'propertyList'])->name('propertyList');
-
 //     /** Página de Experiências - Específica de uma categoria */
 //     Route::get('/experiencias/{slug}', [FilterController::class, 'experienceCategory'])->name('experienceCategory');
 
      //Properties
      Route::get('pesquisar-imoveis', [WebController::class, 'pesquisaImoveis'])->name('pesquisar-imoveis');
      Route::get('imoveis/{slug}', [WebController::class, 'Property'])->name('property');
+     Route::get('imoveis/categoria/{type}', [WebController::class, 'propertyList'])->name('propertylist');
      Route::get('imoveis', [WebController::class, 'Properties'])->name('properties');
 
      //Client

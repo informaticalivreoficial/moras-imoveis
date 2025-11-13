@@ -127,6 +127,15 @@
                 <!-- MENU -->
                 <div class="navbar-collapse collapse" role="navigation" aria-expanded="true" id="app-navigation">
                     <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a title="Imóveis" class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Imóveis
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-submenu" href="{{route('web.propertylist', ['type' => 'venda'])}}" title="Comprar">Comprar</a></li>
+                                <li><a class="dropdown-submenu" href="{{route('web.propertylist', ['type' => 'locacao'])}}" title="Alugar">Alugar</a></li>
+                            </ul>
+                        </li> 
                         @if (!empty($Links) && $Links->count())                            
                             @foreach($Links as $menuItem)  
 
@@ -233,7 +242,7 @@
                 <ul class="space-y-2 text-md text-gray-200">
                     <li><a href="{{ route('web.home') }}" class="text-gray-200 hover:text-teal-400">Início</a></li>
                     <li><a href="{{ route('web.blog.index') }}" class="text-gray-200 hover:text-teal-400">Blog</a></li>
-                    <li><a href="/imoveis/index" class="text-gray-200 hover:text-teal-400">Imóveis</a></li>
+                    <li><a href="{{route('web.properties')}}" class="text-gray-200 hover:text-teal-400">Imóveis</a></li>
                     <li><a target="_blank" href="{{route('web.simulator')}}" class="text-gray-200 hover:text-teal-400">Financiamento</a></li>
                     <li><a href="{{route('web.pesquisar-imoveis')}}" class="text-gray-200 hover:text-teal-400">Buscar Imóvel</a></li>
                     @if (!empty($lancamentoMenu) && $lancamentoMenu->count() > 0)
