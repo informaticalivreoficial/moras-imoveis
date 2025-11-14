@@ -1,9 +1,6 @@
 @extends("web.$configuracoes->template.master.master")
 
 @section('content')
-
-
-<!-- Blog body start -->
 <div class="blog-body content-area">
     <div class="container">
         <div class="row">

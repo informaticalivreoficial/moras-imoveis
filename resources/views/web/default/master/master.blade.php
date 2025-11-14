@@ -126,7 +126,28 @@
                 </div>
                 <!-- MENU -->
                 <div class="navbar-collapse collapse" role="navigation" aria-expanded="true" id="app-navigation">
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav">                         
+                        @if (!empty($Links) && $Links->count())                            
+                            @foreach($Links as $menuItem) 
+                                <li {{($menuItem->children && $menuItem->parent ? 'class=dropdown' : '')}}>
+                                    <a 
+                                        {{($menuItem->target == 1 ? 'target=_blank' : 'target=_self')}} 
+                                        target="_self" 
+                                        href="{{($menuItem->type == 'pagina' ? route('web.page', [ 'slug' => ($menuItem->post != null ? $menuItem->PostObject->slug : '#') ]) : $menuItem->url)}}">
+                                        {{ $menuItem->title }}{!!($menuItem->children && $menuItem->parent ? "<span class=\"caret\"></span>" : '')!!}
+                                    </a>
+                                    @if( $menuItem->children && $menuItem->parent)
+                                        <ul class="dropdown-menu">
+                                            @foreach($menuItem->children as $subMenuItem)
+                                            <li class="dropdown-submenu">
+                                                <a {{($subMenuItem->target == 1 ? 'target=_blank' : 'target=_self')}} href="{{($subMenuItem->tipo == 'Página' ? route('web.page', [ 'slug' => ($subMenuItem->post != null ? $subMenuItem->PostObject->slug : '#') ]) : $subMenuItem->url)}}">{{ $subMenuItem->title }}</a>
+                                            </li>                                        
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </li>
+                            @endforeach
+                        @endif
                         <li class="dropdown">
                             <a title="Imóveis" class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Imóveis
@@ -135,29 +156,7 @@
                                 <li><a class="dropdown-submenu" href="{{route('web.propertylist', ['type' => 'venda'])}}" title="Comprar">Comprar</a></li>
                                 <li><a class="dropdown-submenu" href="{{route('web.propertylist', ['type' => 'locacao'])}}" title="Alugar">Alugar</a></li>
                             </ul>
-                        </li> 
-                        @if (!empty($Links) && $Links->count())                            
-                            @foreach($Links as $menuItem)  
-
-                            <li {{($menuItem->children && $menuItem->parent ? 'class=dropdown' : '')}}>
-                                <a 
-                                    {{($menuItem->target == 1 ? 'target=_blank' : 'target=_self')}} 
-                                    target="_self" 
-                                    href="{{($menuItem->type == 'Página' ? route('web.pagina', [ 'slug' => ($menuItem->post != null ? $menuItem->PostObject->slug : '#') ]) : $menuItem->url)}}">
-                                    {{ $menuItem->title }}{!!($menuItem->children && $menuItem->parent ? "<span class=\"caret\"></span>" : '')!!}
-                                </a>
-                                @if( $menuItem->children && $menuItem->parent)
-                                    <ul class="dropdown-menu">
-                                        @foreach($menuItem->children as $subMenuItem)
-                                        <li class="dropdown-submenu">
-                                            <a {{($subMenuItem->target == 1 ? 'target=_blank' : 'target=_self')}} href="{{($subMenuItem->tipo == 'Página' ? route('web.pagina', [ 'slug' => ($subMenuItem->post != null ? $subMenuItem->PostObject->slug : '#') ]) : $subMenuItem->url)}}">{{ $subMenuItem->titulo }}</a>
-                                        </li>                                        
-                                        @endforeach
-                                    </ul>
-                                @endif
-                            </li>
-                            @endforeach
-                        @endif
+                        </li>
                         @if (!empty($lancamentoMenu) && $lancamentoMenu->count() > 0)
                             <li><a href="{{route('web.highliths')}}" title="Lançamentos">Lançamentos</a></li>
                         @endif 

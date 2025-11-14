@@ -43,17 +43,18 @@ class Webcontroller extends Controller
         $totalViews = DB::table('properties')->where('status', 1)->sum('views');
 
         // Função auxiliar para calcular estrelas
-        $calculateStars = function($imoveis) use ($totalViews) {
-            foreach ($imoveis as $imovel) {
-                if ($imovel->views > 0 && $totalViews > 0) {
-                    $percent = ($imovel->views / $totalViews) * 100;
-                    $imovel->stars = ceil($percent / 20); // 0 a 5 estrelas
-                } else {
-                    $imovel->stars = 0;
-                }
-            }
-            return $imoveis;
-        };
+        // $calculateStars = function($imoveis) use ($totalViews) {
+        //     foreach ($imoveis as $imovel) {
+        //         if ($imovel->views > 0 && $totalViews > 0) {
+        //             $percent = ($imovel->views / $totalViews) * 100;
+        //             $imovel->stars = ceil($percent / 20); // 0 a 5 estrelas
+        //         } else {
+        //             $imovel->stars = 0;
+        //         }
+        //     }
+        //     return $imoveis;
+        // };
+        // $propertiesViews = $calculateStars($propertiesViews);
         
         $artigos = Post::orderBy('created_at', 'DESC')
                             ->where('type', 'artigo')
@@ -262,6 +263,26 @@ class Webcontroller extends Controller
             'postsMais' => $postsMais,
             'categorias' => $categorias,
             'postsTags' => $postsTags,
+        ]);
+    }
+
+    public function page($slug)
+    {
+        $page = Post::where('slug', $slug)->postson()->first();
+
+        if(empty($page)){
+            return redirect()->route('web.home');
+        }
+
+        $head = $this->seo->render($page->title . ' - ' . $this->config->app_name ?? env('APP_NAME'),
+            $page->headline ?? $page->title,
+            route('web.page', ['slug' => $page->slug]),
+            $page->cover() ?? $this->config->getmetaimg()
+        );
+
+        return view("web.{$this->config->template}.page",[
+            'head' => $head,
+            'page' => $page,
         ]);
     }
 

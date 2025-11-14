@@ -10,8 +10,6 @@ class Dashboard extends Component
 {
     public function render()
     {
-        
-
         $propertyCount = Property::count();
         $propertyYearCount = Property::whereYear('created_at', now()->year)->count();
 

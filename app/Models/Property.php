@@ -158,6 +158,24 @@ class Property extends Model
         return Storage::url($cover['path']);        
     }
 
+    public function getStarsAttribute()
+    {
+        // Busca o maior e menor número de views entre os imóveis ativos
+        $maxViews = self::where('status', 1)->max('views');
+        $minViews = self::where('status', 1)->min('views');
+
+        // Garante que não vai dividir por zero
+        $range = max(1, $maxViews - $minViews);
+
+        // Normaliza entre 0 e 1
+        $score = ($this->views - $minViews) / $range;
+
+        // Converte para estrelas (1 a 5)
+        $stars = ceil($score * 5);
+
+        return max(1, min(5, $stars)); // garante mínimo 1 e máximo 5
+    }
+
     public function getLocationPeriod(): ?string
     {
         if (empty($this->location_period)) {
@@ -178,19 +196,19 @@ class Property extends Model
         return $periods[$this->location_period] ?? 'Diária';
     }
 
-    public function getStarsAttribute(): int
-    {
-        $totalViews = self::where('status', 1)->sum('views');
+    // public function getStarsAttribute(): int
+    // {
+    //     $totalViews = self::where('status', 1)->sum('views');
 
-        if ($this->views <= 0 || $totalViews <= 0) {
-            return 0;
-        }
+    //     if ($this->views <= 0 || $totalViews <= 0) {
+    //         return 0;
+    //     }
 
-        $percent = ($this->views / $totalViews) * 100;
+    //     $percent = ($this->views / $totalViews) * 100;
 
-        // transforma em número de estrelas (0 a 5)
-        return ceil($percent / 20);
-    }
+    //     // transforma em número de estrelas (0 a 5)
+    //     return ceil($percent / 20);
+    // }
 
     public function setDisplayAddressAttribute($value)
     {

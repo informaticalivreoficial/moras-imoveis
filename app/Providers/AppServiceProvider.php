@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         Blade::aliasComponent('admin.components.message', 'message');
 
-        //Links
+        //Menu
         $Links = \App\Models\Menu::whereNull('id_pai')->orderby('created_at', 'DESC')
                         ->available()
                         ->get();        

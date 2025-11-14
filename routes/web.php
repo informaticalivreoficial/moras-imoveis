@@ -25,8 +25,6 @@ use App\Http\Controllers\Admin\{
 };
 use App\Http\Controllers\Web\{
     FeedController,
-    FilterController,
-    SendEmailController,
     Webcontroller
 };
 use App\Livewire\Dashboard\Posts\CatPostForm;
@@ -48,13 +46,6 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
     
 //     Route::get('/sitemap', [WebController::class, 'sitemap'])->name('sitemap');
 
-     /** Página de Compra - Específica de um imóvel */
-     //Route::match(['get', 'post'],'/imoveis/quero-comprar/{slug}', [WebController::class, 'buyProperty'])->name('buyProperty');
-
-     /** Página de Locaçãp - Específica de um imóvel */
-     //Route::get('imoveis/quero-alugar/{slug}', [WebController::class, 'rentProperty'])->name('rentProperty');
-     
-
 //     /** Página de Experiências - Específica de uma categoria */
 //     Route::get('/experiencias/{slug}', [FilterController::class, 'experienceCategory'])->name('experienceCategory');
 
@@ -73,15 +64,10 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
      Route::get('/blog/artigo/{slug}', [WebController::class, 'artigo'])->name('blog.artigo');
      Route::get('/blog/noticia/{slug}', [WebController::class, 'noticia'])->name('blog.noticia');
      Route::get('/blog/categoria/{slug}', [WebController::class, 'blogCategory'])->name('blog.category');
-     Route::get('/blog', [WebController::class, 'blog'])->name('blog.index');    
-//     Route::match(['get', 'post'],'/blog/pesquisar', [WebController::class, 'searchBlog'])->name('blog.searchBlog');
+     Route::get('/blog', [WebController::class, 'blog'])->name('blog.index');
 
-
-
-//     //****************************** Páginas ***********************************************/
-//     Route::get('/pagina/{slug}', [SiteController::class, 'pagina'])->name('pagina');
-
-
+     //Page
+     Route::get('/pagina/{slug}', [WebController::class, 'page'])->name('page');
 });
 
 Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'admin'], function () {
