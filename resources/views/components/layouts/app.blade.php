@@ -39,6 +39,18 @@
     <link rel="stylesheet" href="{{ asset('theme/dist/css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('theme/dist/css/action-buttons.css') }}">
     
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/basiclightbox@5/dist/basicLightbox.min.css">
+
+    <style>
+        .basicLightbox {
+            z-index: 9999 !important;
+        }
+
+        .basicLightbox__placeholder {
+            z-index: 9999 !important;
+        }
+    </style>
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -114,7 +126,9 @@
     {{-- Toastr --}}
     <script src="{{ asset('theme/plugins/toastr/toastr.min.js') }}"></script>
 
-    @stack('script') 
+    <script src="https://cdn.jsdelivr.net/npm/basiclightbox@5/dist/basicLightbox.min.js"></script>
+
+    @stack('scripts') 
     
 </body>
 </html>

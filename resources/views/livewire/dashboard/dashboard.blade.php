@@ -1,4 +1,10 @@
-<div>   
+<div 
+    x-data="{
+        openLightbox(src) {
+            basicLightbox.create(`<img src='${src}' style='max-width:90vw; max-height:90vh;'>`).show()
+        }
+    }"
+>   
     @section('title', $title) 
     <div class="content-header">
         <div class="container-fluid">
@@ -48,13 +54,94 @@
                     </div>
                 </div>
             </div>
+            <livewire:dashboard.reports.dashboard-stats />  
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header border-transparent">
+                            <h3 class="card-title">Imóveis mais visitados</h3>
+
+                            <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            </div>
+                        </div>
+                        
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table m-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Imagem</th>
+                                            <th>Título</th>
+                                            <th>Status</th>
+                                            <th>Referência</th>
+                                            <th>Visitas</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($topproperties as $property)
+                                            <tr>
+                                                <td>
+                                                    <img src="{{ $property->cover() }}"
+                                                        width="60"
+                                                        style="cursor:pointer; border-radius:4px"
+                                                        @click="openLightbox('{{ $property->cover() }}')"
+                                                        >
+                                                </td>
+                                                <td>{{ $property->title }}</td>
+                                                <td>
+                                                    @php
+                                                        $badge = [
+                                                            1 => 'success',
+                                                            0 => 'warning'
+                                                        ][$property->status] ?? 'secondary';
+                                                        $status = [
+                                                            1 => 'Ativo',
+                                                            0 => 'Inativo'
+                                                        ][$property->status] ?? '';
+                                                    @endphp
+
+                                                    <span class="badge badge-{{ $badge }}">
+                                                        {{ $status }}
+                                                    </span>
+                                                </td>
+
+                                                <td>{{ $property->reference }}</td>
+                                                <td>{{ $property->views }}</td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="5" class="text-center py-3">
+                                                    Nenhum imóvel encontrado.
+                                                </td>
+                                            </tr>
+                                        @endforelse                                    
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card-footer clearfix">
+                            <a href="{{route('properties.create')}}" class="btn btn-sm btn-info float-left">Cadastrar Novo</a>
+                            <a href="{{route('properties.index')}}" class="btn btn-sm btn-secondary float-right">Ver Todos</a>
+                        </div>
+                    </div>    
+                </div>                     
+            </div>  
+            <div class="row">
+                <livewire:dashboard.github-updates />
+            </div>        
         </div>
     </div>
     
 </div>
 
-@if(session()->has('toastr'))
-    @push('script')
+@push('scripts')  
+    @if(session()->has('toastr'))
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 toastr["{{ session('toastr.type') }}"](
@@ -67,5 +154,5 @@
                 };
             });
         </script>
-    @endpush
-@endif
+    @endif
+@endpush

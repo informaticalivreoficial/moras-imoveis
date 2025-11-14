@@ -387,6 +387,15 @@
 
             })(jQuery);   
                 
-            </script>
+        </script>
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-N73T2G5HFS"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-N73T2G5HFS');
+        </script>
     </body>
 </html>
