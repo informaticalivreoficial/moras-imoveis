@@ -53,6 +53,7 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
      Route::get('pesquisar-imoveis', [WebController::class, 'pesquisaImoveis'])->name('pesquisar-imoveis');
      Route::get('imoveis/{slug}', [WebController::class, 'Property'])->name('property');
      Route::get('imoveis/categoria/{type}', [WebController::class, 'propertyList'])->name('propertylist');
+     Route::get('imoveis/bairro/{neighborhood}', [WebController::class, 'propertyNeighborhood'])->name('properties.neighborhood');
      Route::get('imoveis', [WebController::class, 'Properties'])->name('properties');
 
      //Client

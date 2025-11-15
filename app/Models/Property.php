@@ -138,7 +138,7 @@ class Property extends Model
             return url(asset('theme/images/image.jpg'));
         }
         
-        return Storage::url(Cropper::thumb($cover['path'], 385, 180));        
+        return Storage::url(Cropper::thumb($cover['path'], 360, 240));        
     }
 
     public function nocover()

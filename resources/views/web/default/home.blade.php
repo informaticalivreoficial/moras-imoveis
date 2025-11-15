@@ -303,6 +303,96 @@
 
 <div class="clearfix"></div>
 
+@php
+    $br  = $bairros[0] ?? null;
+    $br1 = $bairros[1] ?? null;
+    $br2 = $bairros[2] ?? null;
+    $br3 = $bairros[3] ?? null;
+@endphp
+
+<div class="categories">
+    <div class="container">
+        <div class="main-title">
+            <h1>Locais Populares</h1>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row wow">
+            <div class="col-lg-7 col-md-7 col-sm-12">
+                <div class="row">
+                    @if ($br)
+                        <div class="col-sm-6 col-pad wow fadeInLeft delay-04s">
+                            <div class="category">
+                                <div class="category_bg_box" style="background-image: url('{{ $br->img }}');">
+                                    <div class="category-overlay">
+                                        <div class="category-content">
+                                            <div class="category-subtitle">{{ $br->total }} Imóveis</div>
+                                            <h3 class="category-title">
+                                                <a href="{{route('web.properties.neighborhood', [ 'neighborhood' => $br->neighborhood ])}}">{{ $br->neighborhood }}</a>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    
+                    @if ($br1)
+                        <div class="col-sm-6 col-pad wow fadeInLeft delay-04s">
+                            <div class="category">
+                                <div class="category_bg_box" style="background-image: url('{{ $br1->img }}');">
+                                    <div class="category-overlay">
+                                        <div class="category-content">
+                                            <div class="category-subtitle">{{ $br1->total }} Imóveis</div>
+                                            <h3 class="category-title">
+                                                <a href="{{route('web.properties.neighborhood', [ 'neighborhood' => $br1->neighborhood ])}}">{{ $br1->neighborhood }}</a>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if ($br2)
+                        <div class="col-sm-12 col-pad wow fadeInUp delay-04s">
+                            <div class="category">
+                                <div class="category_bg_box" style="background-image: url('{{ $br2->img }}');">
+                                    <div class="category-overlay">
+                                        <div class="category-content">
+                                            <div class="category-subtitle">{{ $br2->total }} Imóveis</div>
+                                            <h3 class="category-title">
+                                                <a href="{{route('web.properties.neighborhood', [ 'neighborhood' => $br2->neighborhood ])}}">{{ $br2->neighborhood }}</a>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif                              
+                </div>
+            </div>
+            @if ($br3)
+                <div class="col-lg-5 col-md-5 col-sm-12 col-pad wow fadeInRight delay-04s">
+                    <div class="category">
+                        <div class="category_bg_box category_long_bg" style="background-image: url('{{ $br3->img }}');">
+                            <div class="category-overlay">
+                                <div class="category-content">
+                                    <div class="category-subtitle">{{ $br3->total }} Imóveis</div>
+                                    <h3 class="category-title">
+                                        <a href="{{route('web.properties.neighborhood', [ 'neighborhood' => $br3->neighborhood ])}}">{{ $br3->neighborhood }}</a>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>             
+                </div>
+            @endif
+        </div>
+    </div>
+</div>  
+
+<div class="clearfix"></div>
+
 @if ($artigos && $artigos->count() > 0)
     <div class="blog content-area">
         <div class="container">

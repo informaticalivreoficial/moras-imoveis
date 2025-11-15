@@ -1,4 +1,19 @@
 <div>
+    @if (!empty($title))
+        <div class="sub-banner overview-bgi" style="background: rgba(0, 0, 0, 0.04) url({{$configuracoes->getheadersite()}}) top left repeat;">
+            <div class="overlay">
+                <div class="container">
+                    <div class="breadcrumb-area">
+                        <h1 style="font-size: 36px;">{{$title}}</h1>
+                        <ul class="breadcrumbs">
+                            <li><a href="{{route('web.home')}}">Início</a></li>
+                            <li class="active">{{$title}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
     <div class="properties-details-page content-area">
         <div class="content-area featured-properties">
             <div class="container">

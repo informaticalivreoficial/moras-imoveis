@@ -19,15 +19,23 @@ class PropertyList extends Component
     public $all = null;
     public $title = null;
     public $type = null;
+    public $neighborhood = null;
 
     protected $listeners = ['filterUpdated' => 'applyFilters'];
 
-    public function mount($highlighted = false, $all = null, $title = null, $type = null, $filters = [])
+    public function mount(
+        $highlighted = false, 
+        $all = null, 
+        $title = null, 
+        $type = null, 
+        $neighborhood = null, 
+        $filters = [])
     {
         $this->highlighted = $highlighted;
         $this->all = $all;
         $this->title = $title;
         $this->type = $type;
+        $this->neighborhood = $neighborhood;
         $this->filters = $filters;
     }
 
@@ -61,6 +69,10 @@ class PropertyList extends Component
             $query->where('sale', true);
         } elseif ($this->type === 'locacao') {
             $query->where('location', true);
+        }
+
+        if (!empty($this->neighborhood)) {
+            $query->where('neighborhood', $this->neighborhood);
         }
 
         if (!empty($this->filters['operation'])) {

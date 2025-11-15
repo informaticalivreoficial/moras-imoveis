@@ -1,23 +1,11 @@
 @extends("web.$configuracoes->template.master.master")
 
-@section('content')
-    <div class="sub-banner overview-bgi" style="background: rgba(0, 0, 0, 0.04) url({{$configuracoes->getheadersite()}}) top left repeat;">
-        <div class="overlay">
-            <div class="container">
-                <div class="breadcrumb-area">
-                    <h1 style="font-size: 36px;">Últimos imóveis cadastrados</h1>
-                    <ul class="breadcrumbs">
-                        <li><a href="{{route('web.home')}}">Início</a></li>
-                        <li class="active">Últimos imóveis cadastrados</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+@section('content')    
     <livewire:web.property-list 
         :all="true" 
-        title="Últimos imóveis cadastrados" 
+        title="{{$title ?? 'Últimos imóveis cadastrados'}}" 
         type="{{$type ?? null}}"
+        :neighborhood="$neighborhood ?? null"        
     />
 @endsection
 

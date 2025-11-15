@@ -38,23 +38,6 @@ class Webcontroller extends Controller
                             ->available()
                             ->whereDate('expired_at', '>=', Carbon::today())
                             ->get(); 
-
-        // Total de visualizações para cálculo de estrelas
-        $totalViews = DB::table('properties')->where('status', 1)->sum('views');
-
-        // Função auxiliar para calcular estrelas
-        // $calculateStars = function($imoveis) use ($totalViews) {
-        //     foreach ($imoveis as $imovel) {
-        //         if ($imovel->views > 0 && $totalViews > 0) {
-        //             $percent = ($imovel->views / $totalViews) * 100;
-        //             $imovel->stars = ceil($percent / 20); // 0 a 5 estrelas
-        //         } else {
-        //             $imovel->stars = 0;
-        //         }
-        //     }
-        //     return $imoveis;
-        // };
-        // $propertiesViews = $calculateStars($propertiesViews);
         
         $artigos = Post::orderBy('created_at', 'DESC')
                             ->where('type', 'artigo')
@@ -62,13 +45,32 @@ class Webcontroller extends Controller
                             ->postson()
                             ->limit(3)
                             ->get();
+        
+        // Buscar os 4 bairros com maior número de imóveis
+        $bairros = Property::select('neighborhood')
+            ->selectRaw('COUNT(*) as total')
+            ->groupBy('neighborhood')
+            ->orderByDesc('total')
+            ->available()
+            ->limit(4)
+            ->get();
 
-        $experienceCobertura = Property::where('experience', 'Cobertura')->inRandomOrder()->available()->get();
-        $experienceCondominioFechado = Property::where('experience', 'Condomínio Fechado')->inRandomOrder()->available()->get();
-        $experienceDeFrenteParaMar = Property::where('experience', 'De Frente para o Mar')->inRandomOrder()->available()->get();
-        $experienceAltoPadrao = Property::where('experience', 'Alto Padrão')->inRandomOrder()->available()->get();
-        $experienceLojasSalas = Property::where('experience', 'Lojas e Salas')->inRandomOrder()->available()->get();
-        $experienceCompacto = Property::where('experience', 'Compacto')->inRandomOrder()->available()->get();
+        // Buscar uma imagem de um imóvel para cada bairro
+        $bairros->transform(function ($b) {
+
+            // pegar um imóvel aleatório do bairro
+            $property = Property::where('neighborhood', $b->neighborhood)
+                ->available()
+                ->inRandomOrder()
+                ->first();
+
+            // imagem aleatória do imóvel ou fallback
+            $b->img = $property
+                ? $property->nocover()
+                : asset('theme/images/image.jpg');
+
+            return $b;
+        });
         
         $head = $this->seo->render($this->config->app_name ?? env('APP_NAME'),
             $this->config->information ?? env('APP_NAME'),
@@ -81,13 +83,8 @@ class Webcontroller extends Controller
             'propertiesViews' => $propertiesViews,
             'artigos' => $artigos,
             'head' => $head,
-            'slides' => $slides,
-            'experienceCobertura' => $experienceCobertura,
-            'experienceCondominioFechado' => $experienceCondominioFechado,
-            'experienceAltoPadrao' => $experienceAltoPadrao,
-            'experienceLojasSalas' => $experienceLojasSalas,
-            'experienceCompacto' => $experienceCompacto,
-            'experienceDeFrenteParaMar' => $experienceDeFrenteParaMar,
+            'slides' => $slides,    
+            'bairros' => $bairros,        
         ]);
     }
 
@@ -100,8 +97,24 @@ class Webcontroller extends Controller
         );
 
         return view('web.'.$this->config->template.'.properties.properties',[
-            'head' => $head
+            'head' => $head,
+            'title' => 'Últimos imóveis cadastrados',
         ]);        
+    }
+
+    public function propertyNeighborhood($neighborhood)
+    {
+        $head = $this->seo->render('Imóveis no bairro de ' . ucwords(str_replace('-', ' ', $neighborhood)) . ' - ' . $this->config->app_name ?? env('APP_NAME'),
+            'Confira os imóveis disponíveis para venda e locação no bairro de ' . ucwords(str_replace('-', ' ', $neighborhood)) . '.',
+            route('web.properties.neighborhood', ['neighborhood' => $neighborhood]),
+            $this->config->getMetaImg() ?? url(asset('theme/images/image.jpg'))
+        );
+
+        return view('web.'.$this->config->template.'.properties.properties',[
+            'head' => $head,
+            'neighborhood' => $neighborhood,
+            'title' => 'Imóveis no bairro de ' . ucwords(str_replace('-', ' ', $neighborhood)),
+        ]);
     }
 
     public function propertyList($type)
@@ -114,7 +127,8 @@ class Webcontroller extends Controller
 
         return view('web.'.$this->config->template.'.properties.properties',[
             'head' => $head,
-            'type' => $type
+            'type' => $type,
+            'title' => ($type === 'venda' ? 'Imóveis para Venda' : 'Imóveis para Locação'),
         ]);
     }
 
