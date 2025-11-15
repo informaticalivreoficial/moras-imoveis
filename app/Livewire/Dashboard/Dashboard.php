@@ -9,6 +9,7 @@ use Livewire\Component;
 class Dashboard extends Component
 {
     public $topproperties = [];
+    public $topposts = [];
 
     public function render()
     {
@@ -21,6 +22,9 @@ class Dashboard extends Component
         $this->topproperties = Property::orderBy('views', 'desc')
             ->take(6)
             ->get();
+        $this->topposts = Post::orderBy('views', 'desc')
+            ->take(5)
+            ->get();
         
         $title = 'Painel de Controle';
         return view('livewire.dashboard.dashboard',[            
@@ -30,6 +34,7 @@ class Dashboard extends Component
             'postsYearCount' => $postsYearCount,
             'title' => $title,
             'topproperties' => $this->topproperties,
+            'topposts' => $this->topposts,
         ]);
     }
 }

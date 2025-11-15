@@ -12,7 +12,7 @@ class PropertyList extends Component
     use WithPagination;
 
     public $filters = [];
-    public $perPage = 15;
+    public $perPage = 18;
 
     // ✅ parâmetros reutilizáveis
     public $highlighted = false;
@@ -39,7 +39,7 @@ class PropertyList extends Component
 
     public function loadMore()
     {
-        $this->perPage += 9;
+        $this->perPage += 18;
     }
 
     public function getFilteredProperties()

@@ -15,7 +15,7 @@ class Properties extends Component
     use WithPagination;
 
     // Quantidade de itens por página
-    public int $perPage = 12;
+    public int $perPage = 24;
 
     protected $paginationTheme = 'bootstrap';
 

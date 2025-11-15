@@ -180,7 +180,7 @@
                                     <input type="text" class="form-control" x-model="display">
                                 </div>
                             </div>
-                            <div class="col-12 col-md-3 col-lg-2"> 
+                            <div class="col-12 col-md-3 col-lg-2" x-show="!(sale && !location)"> 
                                 <div class="form-group"
                                     x-data="maskMoeda(@entangle('rental_value'))"
                                     x-init="init()"         
@@ -207,7 +207,7 @@
                                     <input type="text" class="form-control" x-model="display">
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6 col-lg-4"> 
+                            <div class="col-12 col-md-6 col-lg-4" x-show="!(sale && !location)"> 
                                 <div class="form-group">
                                     <label class="labelforms text-muted"><b>Período da Locação</b></label>
                                     <select class="form-control" wire:model="location_period">

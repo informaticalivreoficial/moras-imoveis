@@ -22,7 +22,7 @@ class GithubUpdates extends Component
         $response = Http::get("https://api.github.com/repos/{$repoUser}/{$repoName}/commits");
         
         if ($response->successful()) {
-            $this->commits = array_slice($response->json(), 0, 4); // últimos 5 commits
+            $this->commits = array_slice($response->json(), 0, 5); // últimos 5 commits
         }
     }
 

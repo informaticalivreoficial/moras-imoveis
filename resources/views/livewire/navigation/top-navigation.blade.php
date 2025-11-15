@@ -12,32 +12,8 @@
         <li class="nav-item dropdown">
             <a class="nav-link" href="{{route('web.home')}}" title="Ver Site" target="_blank"><i class="fas fa-desktop"></i></a>
         </li>
-        <!-- Navbar Search -->
-        <li class="nav-item">
-            <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                <i class="fas fa-search"></i>
-            </a>
 
-            <div class="navbar-search-block">
-                <form class="form-inline">
-                    <div class="input-group input-group-sm">
-                        <input class="form-control form-control-navbar" type="search" placeholder="Search"
-                            aria-label="Search">
-                        <div class="input-group-append">
-                            <button class="btn btn-navbar" type="submit">
-                                <i class="fas fa-search"></i>
-                            </button>
-
-                            <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </li>
-
-        <!-- Messages Dropdown Menu -->
+        {{--
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-comments"></i>
@@ -109,7 +85,7 @@
                 <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
             </div>
         </li>
-
+        --}}
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
@@ -155,11 +131,11 @@
 
             <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
                 <a href="#" class="dropdown-item">
-                    <i class="fas fa-user mr-2"></i> Profile
+                    <i class="fas fa-user mr-2"></i> Perfil
                 </a>
 
-                <a wire:click="logoutUser" class="dropdown-item" style="cursor: pointer;">
-                    <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                <a class="dropdown-item" style="cursor: pointer;">
+                    <i class="fas fa-file-invoice mr-2"></i> Financeiro
                 </a>
             </div>
         </li>
@@ -169,13 +145,7 @@
                 <i class="fas fa-expand-arrows-alt"></i>
             </a>
         </li>
-
-        <li class="nav-item">
-            <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#"
-                role="button">
-                <i class="fas fa-th-large"></i>
-            </a>
-        </li>
+        
         @auth
             <livewire:auth.button-logout />
         @endauth
