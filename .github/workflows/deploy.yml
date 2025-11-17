@@ -23,6 +23,10 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p ${{ secrets.SSH_PORT }} << 'ENDSSH'
           
           git config --global --add safe.directory /www/wwwroot/imobiliariaubatuba.com
+
+          export PATH=/usr/local/bin:$PATH
+          export PATH=/www/server/php/81/bin:$PATH
+          
           cd /www/wwwroot/imobiliariaubatuba.com
 
           echo "🚀 Pull do GitHub"
