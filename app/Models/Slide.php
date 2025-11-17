@@ -47,10 +47,16 @@ class Slide extends Model
     */
     public function getimagem()
     {
-        if(empty($this->image) || !Storage::disk()->exists($this->image)) {
-            return url(asset('theme/images/image.jpg'));
-        } 
-        return Storage::url(Cropper::thumb($this->image, 2200, 1200));
+        if (empty($this->image) || !Storage::disk()->exists($this->image)) {
+            return asset('theme/images/image.jpg');
+        }
+
+        //return \App\Support\ImageService::makeThumb($this->image, 2200, 1200);
+
+        // if(empty($this->image) || !Storage::disk()->exists($this->image)) {
+        //     return url(asset('theme/images/image.jpg'));
+        // } 
+        return Storage::url($this->image);
     }
 
     public function setExpiredAtAttribute($value)

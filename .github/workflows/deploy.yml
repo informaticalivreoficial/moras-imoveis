@@ -1,0 +1,50 @@
+name: Deploy Laravel to aaPanel
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    name: Deploy to Server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install SSH Key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p ${{ secrets.SSH_PORT }} << 'ENDSSH'
+          
+          cd /www/wwwroot/imobiliariaubatuba.com
+
+          echo "🚀 Pull do GitHub"
+          git pull origin main
+
+          echo "📦 Instalando dependências PHP..."
+          composer install --no-interaction --prefer-dist --optimize-autoloader
+
+          echo "🛠 Rodando migrations"
+          php artisan migrate --force
+
+          echo "📦 Instalando dependências Node"
+          npm install
+          npm run build
+
+          echo "🔧 Permissões"
+          chmod -R 775 storage bootstrap/cache
+          chown -R www:www storage bootstrap/cache
+
+          echo "🧹 Limpando caches"
+          php artisan optimize:clear
+          php artisan optimize
+
+          echo "🚀 Deploy finalizado!"
+          
+          ENDSSH

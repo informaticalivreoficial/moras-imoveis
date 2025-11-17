@@ -171,41 +171,70 @@ class Post extends Model
     {
         return Str::words($this->content, '20', ' ...');
     }
-        
+
     public function cover()
     {
         $images = $this->images();
-        $cover = $images->where('cover', 1)->first(['path']);
+        $cover = $images->where('cover', 1)->first(['path']) ??
+                $images->first(['path']);
 
-        if(!$cover) {
-            $images = $this->images();
-            $cover = $images->first(['path']);
+        if (!$cover || empty($cover->path)) {
+            return asset('theme/images/image.jpg');
         }
 
-        if(empty($cover['path']) || !Storage::disk()->exists($cover['path'])) {
-            return url(asset('theme/images/image.jpg'));
-        }
-
-        return Storage::url(Cropper::thumb($cover['path'], 720, 480));
-        //return Storage::url($cover['path']);
-    }
+        return Storage::url($cover->path);
+        //return \App\Support\ImageService::makeThumb($cover->path, 720, 480);
+    }  
 
     public function nocover()
     {
         $images = $this->images();
-        $cover = $images->where('cover', 1)->first(['path']);
 
-        if(!$cover) {
-            $images = $this->images();
-            $cover = $images->first(['path']);
+        // Pega capa, se não existir usa a primeira imagem
+        $cover = $images->where('cover', 1)->first(['path'])
+            ?? $images->first(['path']);
+
+        if (empty($cover['path']) || !Storage::disk()->exists($cover['path'])) {
+            return asset('theme/images/image.jpg');
         }
-
-        if(empty($cover['path']) || !Storage::disk()->exists($cover['path'])) {
-            return url(asset('theme/images/image.jpg'));
-        }
-
-        return Storage::url($cover['path']);
+        
+        return Storage::disk()->url($cover['path']);
     }
+        
+    // public function cover()
+    // {
+    //     $images = $this->images();
+    //     $cover = $images->where('cover', 1)->first(['path']);
+
+    //     if(!$cover) {
+    //         $images = $this->images();
+    //         $cover = $images->first(['path']);
+    //     }
+
+    //     if(empty($cover['path']) || !Storage::disk()->exists($cover['path'])) {
+    //         return url(asset('theme/images/image.jpg'));
+    //     }
+
+    //     return Storage::url(Cropper::thumb($cover['path'], 720, 480));
+    //     //return Storage::url($cover['path']);
+    // }
+
+    // public function nocover()
+    // {
+    //     $images = $this->images();
+    //     $cover = $images->where('cover', 1)->first(['path']);
+
+    //     if(!$cover) {
+    //         $images = $this->images();
+    //         $cover = $images->first(['path']);
+    //     }
+
+    //     if(empty($cover['path']) || !Storage::disk()->exists($cover['path'])) {
+    //         return url(asset('theme/images/image.jpg'));
+    //     }
+
+    //     return Storage::url($cover['path']);
+    // }
     
     public function setStatusAttribute($value)
     {

@@ -21,7 +21,7 @@
                     <div class="filtr-container">
                         @forelse($properties as $property)
                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                                <div class="property" style="min-height: 440px !important;">                                
+                                <div class="property" style="min-height: 460px !important;">                                
                                     <div class="property-img">
                                         <div class="property-tag button alt featured">
                                             Referência: {{$property->reference}}
@@ -58,7 +58,7 @@
                                                 @endif
                                             @endif
                                         </div>
-                                        <img style="min-height: 240px !important;" src="{{$property->cover()}}" alt="{{$property->title}}" class="img-responsive"/>
+                                        <img src="{{$property->cover()}}" alt="{{$property->title}}" class="img-responsive"/>
                                         <div class="property-overlay">
                                             <a href="{{route('web.property',['slug' => $property->slug])}}" class="overlay-link">
                                                 <i class="fa fa-link"></i>
@@ -74,7 +74,7 @@
                                             @endif 
                                         </div>
                                     </div>
-                                    <div class="property-content">
+                                    <div class="property-content" style="padding-bottom: 0px !important;">
                                         <h1 class="title">
                                             <a href="{{route('web.property',['slug' => $property->slug])}}">{{$property->title}}</a>
                                         </h1>

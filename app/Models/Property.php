@@ -127,36 +127,48 @@ class Property extends Model
     public function cover()
     {
         $images = $this->images();
-        $cover = $images->where('cover', 1)->first(['path']);
+        $cover = $images->where('cover', 1)->first(['path']) ??
+                $images->first(['path']);
 
-        if(!$cover) {
-            $images = $this->images();
-            $cover = $images->first(['path']);
+        if (!$cover || empty($cover->path)) {
+            return asset('theme/images/image.jpg');
         }
-        
-        if(empty($cover['path']) || !Storage::disk()->exists($cover['path'])) {
-            return url(asset('theme/images/image.jpg'));
-        }
-        
-        return Storage::url(Cropper::thumb($cover['path'], 360, 240));        
-    }
+
+        //return \App\Support\ImageService::makeThumb($cover->path, 360, 240);
+        return Storage::url($cover['path']);
+    }  
 
     public function nocover()
     {
         $images = $this->images();
-        $cover = $images->where('cover', 1)->first(['path']);
 
-        if(!$cover) {
-            $images = $this->images();
-            $cover = $images->first(['path']);
+        // Pega capa, se não existir usa a primeira imagem
+        $cover = $images->where('cover', 1)->first(['path'])
+            ?? $images->first(['path']);
+
+        if (empty($cover['path']) || !Storage::disk()->exists($cover['path'])) {
+            return asset('theme/images/image.jpg');
         }
         
-        if(empty($cover['path']) || !Storage::disk()->exists($cover['path'])) {
-            return url(asset('theme/images/image.jpg'));
-        }
-        
-        return Storage::url($cover['path']);        
+        return Storage::url($cover['path']);
     }
+
+    // public function nocover()
+    // {
+    //     $images = $this->images();
+    //     $cover = $images->where('cover', 1)->first(['path']);
+
+    //     if(!$cover) {
+    //         $images = $this->images();
+    //         $cover = $images->first(['path']);
+    //     }
+        
+    //     if(empty($cover['path']) || !Storage::disk()->exists($cover['path'])) {
+    //         return url(asset('theme/images/image.jpg'));
+    //     }
+        
+    //     return Storage::url($cover['path']);        
+    // }
 
     public function getStarsAttribute()
     {

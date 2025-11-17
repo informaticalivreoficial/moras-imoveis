@@ -88,7 +88,6 @@ class PostForm extends Component
 
     public function mount(Post $post)
     {
-        //dd($this->post);
         // ✅ Carregar autores disponíveis
         $this->autores = User::where(function ($q) {
                 $q->where('admin', 1)

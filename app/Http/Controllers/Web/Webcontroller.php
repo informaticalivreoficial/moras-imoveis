@@ -11,7 +11,6 @@ use App\Models\Slide;
 use App\Support\Seo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class Webcontroller extends Controller
 {
@@ -179,8 +178,10 @@ class Webcontroller extends Controller
             $this->config->getMetaImg() ?? url(asset('theme/images/image.jpg'))
         );
 
-        return view('web.'.$this->config->template.'.properties.property-highliths',[
-            'head' => $head
+        return view('web.'.$this->config->template.'.properties.properties',[
+            'head' => $head,
+            'title' => 'Lançamentos',
+            'highlighted' => true,
         ]);
     }
 

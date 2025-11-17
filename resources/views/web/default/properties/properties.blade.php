@@ -3,8 +3,9 @@
 @section('content')    
     <livewire:web.property-list 
         :all="true" 
-        title="{{$title ?? 'Últimos imóveis cadastrados'}}" 
-        type="{{$type ?? null}}"
+        :highlighted="$highlighted ?? null"
+        :title="$title ?? 'Últimos imóveis cadastrados'" 
+        :type="$type ?? null"
         :neighborhood="$neighborhood ?? null"        
     />
 @endsection

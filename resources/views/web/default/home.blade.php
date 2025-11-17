@@ -11,13 +11,13 @@
             <div class="carousel-inner" role="listbox">
                 @foreach ($slides as $key => $slide)
                     <div class="item banner-max-height {{ $key == 0 ? 'active' : '' }}">
-                        <img src="{{ $slide->getimagem() }}" alt="{{ $slide->titulo }}">
+                        <img src="{{ $slide->getimagem() }}" alt="{{ $slide->title }}">
                         <div class="carousel-caption banner-slider-inner">
                             <div class="banner-content">                
 
                                 {{-- título opcional --}}
                                 @if ($slide->view_title)
-                                    <h1 data-animation="animated fadeInDown delay-05s">{{ $slide->titulo }}</h1>
+                                    <h1 data-animation="animated fadeInDown delay-05s">{{ $slide->title }}</h1>
                                 @endif 
 
                                 {{-- conteúdo opcional --}}
@@ -28,7 +28,7 @@
                                 {{-- botão/link --}}
                                 <a 
                                     href="{{ $slide->link ?: '#' }}" 
-                                    title="{{ $slide->titulo }}" 
+                                    title="{{ $slide->title }}" 
                                     class="btn button-md button-theme" 
                                     @if ($slide->target == 1) target="_blank" @endif
                                     data-animation="animated fadeInUp delay-15s"
@@ -400,15 +400,15 @@
             <div class="row">   
                 @foreach($artigos as $blog)
                     <div class="col-lg-4 col-md-4 col-sm-6 wow fadeInLeft delay-04s">
-                        <div class="thumbnail blog-box-2 clearfix" style="min-height: 470px;">
+                        <div class="thumbnail blog-box-2 clearfix" style="min-height: 440px;">
                             <div class="blog-photo">
-                                <img src="{{$blog->cover()}}" alt="{{$blog->title}}" class="img-responsive">                
+                                <img style="max-height: 160px !important;" src="{{$blog->cover()}}" alt="{{$blog->title}}" class="img-responsive">                
                             </div>
-                            <div class="caption detail">
+                            <div class="caption detail" style="padding-bottom: 0px !important;">
                                 @php
                                     $tipo = $blog->type == 'noticia' ? 'noticia' : 'artigo';
                                 @endphp
-                                <h4><a href="{{route('web.blog.'.$tipo.'',['slug' => $blog->slug])}}">{{$blog->title}}</a></h4>
+                                <h4 style="font-size: 16px !important;"><a href="{{route('web.blog.'.$tipo.'',['slug' => $blog->slug])}}">{{$blog->title}}</a></h4>
                                 {!!$blog->content_web!!}
                                 <div class="clearfix"></div>
                                 <a href="{{route('web.blog.'.$tipo.'',['slug' => $blog->slug])}}" class="read-more">Leia +</a>
