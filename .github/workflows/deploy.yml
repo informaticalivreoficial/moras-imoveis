@@ -6,10 +6,12 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to Server
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Install SSH Key
         uses: webfactory/ssh-agent@v0.5.3
         with:
@@ -17,20 +19,24 @@ jobs:
 
       - name: Deploy to server
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p ${{ secrets.SSH_PORT }} << 'ENDSSH'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p ${{ secrets.SSH_PORT }} << EOF
 
           PROJECT_DIR="/www/wwwroot/imobiliariaubatuba.com"
           REPO="git@github.com:${{ github.repository }}.git"
 
+          echo "📁 Criando diretório se não existir..."
+          mkdir -p \$PROJECT_DIR
+
           cd \$PROJECT_DIR
 
           echo "📁 Verificando se existe repositório Git..."
+
           if [ ! -d ".git" ]; then
-              echo "📥 Repositório não encontrado. Clonando o projeto..."
-              git clone \$REPO .
+              echo "📥 Repositório não encontrado. Clonando..."
+              git clone \$REPO . || exit 1
           else
-              echo "⬇️ Repositório encontrado. Atualizando..."
-              git pull origin main
+              echo "🔄 Atualizando repositório existente..."
+              git pull origin main || exit 1
           fi
 
           echo "📦 Instalando dependências PHP..."
@@ -40,14 +46,13 @@ jobs:
           npm install
           npm run build
 
-          echo "🔧 Ajustando permissões..."
+          echo "🔧 Permissões..."
           chmod -R 775 storage bootstrap/cache
           chown -R www:www storage bootstrap/cache
 
-          echo "🧹 Limpando caches Laravel..."
+          echo "🧹 Limpando cache Laravel..."
           php artisan optimize:clear
           php artisan optimize
 
           echo "🚀 Deploy finalizado!"
-
-          ENDSSH
+          EOF
