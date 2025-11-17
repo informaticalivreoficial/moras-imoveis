@@ -10,9 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
       - name: Install SSH Key
         uses: webfactory/ssh-agent@v0.5.3
         with:
@@ -21,27 +18,36 @@ jobs:
       - name: Deploy to server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p ${{ secrets.SSH_PORT }} << 'ENDSSH'
-          
-          cd /www/wwwroot/imobiliariaubatuba.com
 
-          echo "🚀 Pull do GitHub"
-          git pull origin main
+          PROJECT_DIR="/www/wwwroot/imobiliariaubatuba.com"
+          REPO="git@github.com:${{ github.repository }}.git"
+
+          cd \$PROJECT_DIR
+
+          echo "📁 Verificando se existe repositório Git..."
+          if [ ! -d ".git" ]; then
+              echo "📥 Repositório não encontrado. Clonando o projeto..."
+              git clone \$REPO .
+          else
+              echo "⬇️ Repositório encontrado. Atualizando..."
+              git pull origin main
+          fi
 
           echo "📦 Instalando dependências PHP..."
-          composer install --no-interaction --prefer-dist --optimize-autoloader          
+          composer install --no-interaction --prefer-dist --optimize-autoloader
 
-          echo "📦 Instalando dependências Node"
+          echo "📦 Instalando dependências Node..."
           npm install
           npm run build
 
-          echo "🔧 Permissões"
+          echo "🔧 Ajustando permissões..."
           chmod -R 775 storage bootstrap/cache
           chown -R www:www storage bootstrap/cache
 
-          echo "🧹 Limpando caches"
+          echo "🧹 Limpando caches Laravel..."
           php artisan optimize:clear
           php artisan optimize
 
           echo "🚀 Deploy finalizado!"
-          
+
           ENDSSH
