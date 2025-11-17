@@ -24,9 +24,10 @@ jobs:
           
           git config --global --add safe.directory /www/wwwroot/imobiliariaubatuba.com
 
-          export PATH=/usr/local/bin:$PATH
+          export PATH=/usr/local/node/bin:/usr/local/bin:$PATH
+          export NODE_PATH=/usr/local/node/lib/node_modules:$NODE_PATH
           export PATH=/www/server/php/81/bin:$PATH
-          
+
           cd /www/wwwroot/imobiliariaubatuba.com
 
           echo "🚀 Pull do GitHub"
