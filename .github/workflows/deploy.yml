@@ -28,10 +28,7 @@ jobs:
           git pull origin main
 
           echo "📦 Instalando dependências PHP..."
-          composer install --no-interaction --prefer-dist --optimize-autoloader
-
-          echo "🛠 Rodando migrations"
-          php artisan migrate --force
+          composer install --no-interaction --prefer-dist --optimize-autoloader          
 
           echo "📦 Instalando dependências Node"
           npm install
