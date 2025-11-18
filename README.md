@@ -16,7 +16,6 @@
 		<img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="GPLv3 License">
 	</a>
 </p>
-
 ### :sparkles: Colaboradores
 <table>
   <tr>
