@@ -14,10 +14,13 @@
     <link rel="stylesheet" href="{{ asset('theme/dist/css/styles.css') }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
 </head>
 
 <body class="login-body bg-cover bg-center bg-fixed" style="background-image: url({{url(asset('theme/images/login-bg.jpg'))}});">
     {{ $slot }}
+
+    @livewireScripts
 </body>
 
 </html>
