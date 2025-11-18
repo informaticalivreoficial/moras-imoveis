@@ -22,14 +22,14 @@ class Seo
 
         $this->optimizer = new Optimizer();
         $this->optimizer->openGraph(
-            env('APP_NAME') ?? 'Informática Livre',
+            env('APP_NAME') ?? 'Imóveis em Ubatuba',
             'pt_BR',
             'article'
         )->publisher(
-            env('CLIENT_SOCIAL_FACEBOOK_PAGE'),
-            env('CLIENT_SOCIAL_FACEBOOK_AUTHOR')
+            env('CLIENT_SOCIAL_FACEBOOK_PAGE', 'default-page') ?: 'default-page',
+            env('CLIENT_SOCIAL_FACEBOOK_AUTHOR', 'default-author') ?: 'default-author'
         )->facebook(
-            env('CLIENT_SOCIAL_FACEBOOK_APP')
+            env('CLIENT_SOCIAL_FACEBOOK_APP', '123456') ?: '123456'
         );
     }
 
