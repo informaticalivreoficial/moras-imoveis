@@ -132,7 +132,7 @@
                         </li>
                     </ul>
                 </li>
-                
+                {{-- Segurança 
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-shield-alt"></i>
@@ -150,7 +150,7 @@
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Permissões</p>
                             </a>
-                        </li>                        
+                        </li>   --}}                     
                     </ul>
                 </li>
             </ul>
