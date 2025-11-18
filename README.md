@@ -5,7 +5,6 @@
 </p>
 
 <br>
-
 <p align="center">
 	<img src="https://img.shields.io/badge/version project-1.0-brightgreen" alt="version project">
     <img src="https://img.shields.io/badge/Php-8.1-informational" alt="stack php">
