@@ -52,7 +52,6 @@
     </style>
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
 </head>
 
 <body class="hold-transition sidebar-mini text-sm">
@@ -131,6 +130,5 @@
 
     @stack('scripts') 
     
-    @livewireScripts
 </body>
 </html>

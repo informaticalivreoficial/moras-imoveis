@@ -46,7 +46,6 @@
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800%7CPlayfair+Display:400,700%7CRoboto:100,300,400,400i,500,700">  
         
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @livewireStyles
         
         @hasSection('css')
             @yield('css')
@@ -398,7 +397,5 @@
 
             gtag('config', 'G-N73T2G5HFS');
         </script>
-
-        @livewireScripts
     </body>
 </html>
