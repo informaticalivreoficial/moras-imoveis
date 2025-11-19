@@ -583,7 +583,7 @@
     <script>
         Shadowbox.init();
         
-        $('.shareIcons').jsSocials({
+        $('#shareIcons').jsSocials({
             //url: "http://www.google.com",
             showLabel: false,
             showCount: false,

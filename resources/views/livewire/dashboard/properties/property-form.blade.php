@@ -645,8 +645,8 @@
                             {{-- Imagens recém-uploadadas via Livewire --}}
                             @foreach ($images as $index => $image)
                                 <div class="relative">
-                                    <img src="{{ $image->temporaryUrl() }}" class="w-32 h-32 object-cover rounded border cursor-pointer"
-                                        @click="showModal = true; imageUrl = '{{ $image->temporaryUrl() }}'">
+                                    <img src="{!! $image->temporaryUrl() !!}" class="w-32 h-32 object-cover rounded border cursor-pointer"
+                                        @click="showModal = true; imageUrl = '{!! $image->temporaryUrl() !!}'">
                                     <button type="button"
                                             wire:click="removeTempImage({{ $index }})"
                                             class="absolute top-1 right-1 w-6 h-6 flex items-center justify-center bg-red-500 text-white rounded-full text-xs hover:bg-red-600">
