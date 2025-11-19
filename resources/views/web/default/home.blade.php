@@ -419,6 +419,17 @@
             </div>
         </div>
     </div>    
+
+    <a onclick="openWhatsApp()"
+    class="fixed bottom-5 left-5 bg-green-500 hover:bg-green-600 text-white 
+            w-16 h-16 rounded-full shadow-xl flex items-center justify-center 
+            z-[99999] transition-all duration-200 cursor-pointer">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="34" height="34" fill="currentColor">
+            <path d="M16.001 2.67c-7.339 0-13.33 5.99-13.33 13.33 0 2.35.61 4.64 1.77 6.67L2 30l7.49-2.39a13.24 13.24 0 0 0 6.51 1.39h.01c7.338 0 13.33-5.99 13.33-13.33 0-3.56-1.39-6.91-3.92-9.44a13.27 13.27 0 0 0-9.4-3.86zm0 24.92a11.55 11.55 0 0 1-5.88-1.61l-.42-.25-4.45 1.42 1.45-4.33-.28-.45a11.49 11.49 0 1 1 9.58 5.22zm6.37-8.62c-.35-.17-2.07-1.02-2.39-1.14-.32-.12-.55-.17-.78.17-.23.35-.89 1.14-1.1 1.37-.2.23-.41.26-.76.09-.35-.17-1.48-.55-2.82-1.76-1.04-.93-1.74-2.08-1.95-2.43-.2-.35-.02-.54.15-.71.15-.15.35-.41.52-.61.17-.2.23-.35.35-.58.12-.23.06-.43 0-.61-.06-.17-.78-1.87-1.07-2.56-.28-.67-.57-.58-.78-.58h-.67c-.23 0-.61.09-.93.43-.32.35-1.22 1.19-1.22 2.9 0 1.7 1.25 3.35 1.42 3.58.17.23 2.46 3.76 6 5.27.84.36 1.49.57 2 .73.84.27 1.61.23 2.22.14.68-.1 2.07-.85 2.36-1.67.29-.82.29-1.52.2-1.67-.09-.15-.32-.23-.67-.41z"/>
+        </svg>
+
+    </a>
 @endif
 
 @endsection
@@ -563,5 +574,26 @@
                 }
             }));
         });
+
+        function openWhatsApp() {
+            let phone = "{{ $configuracoes->whatsapp }}";
+
+            phone = phone.replace(/[\s()+\-\.]/g, "");
+
+            const message = "Olá! Gostaria de mais informações.";
+            const encodedMessage = encodeURIComponent(message);
+
+            const isMobile = /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
+
+            let url = "";
+
+            if (isMobile) {
+                url = `https://api.whatsapp.com/send?phone=${phone}&text=${encodedMessage}`;
+            } else {
+                url = `https://web.whatsapp.com/send?phone=${phone}&text=${encodedMessage}`;
+            }
+
+            window.open(url, "_blank");
+        }
     </script>
 @endsection
