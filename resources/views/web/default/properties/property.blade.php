@@ -66,7 +66,7 @@
                         <!-- Properties description start -->
                         <div class="properties-description mb-10">
                             <div class="property-img">
-                                <img class="imgimovel" src="{{$property->cover()}}" alt="{{$property->title}}">
+                                <img class="imgimovel" src="{{$property->cover()}}" alt="{{$property->reference}}">
                                 <div class="property-overlay">
                                     @if($property->images()->get()->count())
                                         <div class="property-magnify-gallery"> 
