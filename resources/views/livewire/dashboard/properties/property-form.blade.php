@@ -806,7 +806,7 @@
             ],
             callbacks: {
                 onChange: function(contents, $editable) {
-                    Livewire.dispatch('updatePrivacyPolicy', { value: contents });
+                    Livewire.dispatch('updateDescription', { value: contents });
                 }
             }
         });

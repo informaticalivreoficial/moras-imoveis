@@ -8,6 +8,7 @@ use App\Models\PropertyGb;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
+use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
 
 class PropertyForm extends Component
@@ -244,5 +245,11 @@ class PropertyForm extends Component
                 $this->addError('zipcode', 'CEP não encontrado.'); 
             }
         }
+    }
+
+    #[On('updateDescription')]
+    public function updateDescription($value)
+    {
+        $this->description = $value;
     }
 }
