@@ -62,3 +62,30 @@
         </div>
     </div>
 </div>
+
+@push('scripts') 
+    <script>
+        document.addEventListener('livewire:init', () => {
+            // Configurações do Toastr
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "timeOut": "4000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut",
+                "preventDuplicates": false,
+                "newestOnTop": true
+            };
+
+            // Listener para o evento toast
+            Livewire.on('toast', (event) => {
+                const data = Array.isArray(event) ? event[0] : event;
+                toastr[data.type](data.message);
+            });
+        });
+    </script>
+@endpush
