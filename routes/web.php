@@ -31,6 +31,7 @@ use App\Livewire\Dashboard\Posts\PostForm;
 use App\Livewire\Dashboard\Posts\Posts;
 use App\Livewire\Dashboard\Properties\Properties;
 use App\Livewire\Dashboard\Properties\PropertyForm;
+use App\Livewire\Dashboard\Sitemap\SitemapGenerator;
 use App\Livewire\Dashboard\Slides\SlideForm;
 use App\Livewire\Dashboard\Slides\Slides;
 
@@ -40,25 +41,7 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
     Route::get('/', [WebController::class, 'home'])->name('home');
     Route::get('/politica-de-privacidade', [WebController::class, 'privacy'])->name('privacy');
 
-    // Route::get('/teste-r2', function () {
-    //     Storage::disk('s3')->put('example.txt', 'Hello World');
-    //     //return Storage::disk('s3')->url('teste.txt');
-    // });
-
-    // Route::get('/debug-disk', function () {
-    //     return [
-    //         'default_disk' => config('filesystems.default'),
-    //         'disk_exists' => Storage::disk('s3') !== null,
-    //     ];
-    // });
-
-    // Route::get('/debug-r2-list', function () {
-    //     try {
-    //         return Storage::disk('s3')->files('/');
-    //     } catch (\Exception $e) {
-    //         return $e->getMessage();
-    //     }
-    // });
+    
 
 //     /** FEED */
 //     Route::get('feed', [FeedController::class, 'feed'])->name('feed');
@@ -97,7 +80,7 @@ Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'admin'], functi
     Route::get('configuracoes', Settings::class)->name('settings');
 
     //******************************* Sitemap *********************************************/
-    // Route::get('gerarxml', [SitemapController::class, 'gerarxml'])->name('admin.gerarxml');
+    Route::get('sitemap-generator', SitemapGenerator::class)->name('sitemap.generator');
 
     
     // Route::put('listas/email/{id}', [NewsletterController::class, 'newsletterUpdate'])->name('listas.newsletter.update');
