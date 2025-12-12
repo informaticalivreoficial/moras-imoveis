@@ -137,7 +137,7 @@ class PropertyForm extends Component
                     'images.*' => 'image|max:2048',
                 ]);                
 
-                $maxImages = env('MAX_PROPERTY_IMAGES', 20);
+                $maxImages = env('MAX_PROPERTY_IMAGES', 40);
                 $existingImages = $this->property->images()->count();
                 $allowed = $maxImages - $existingImages;
                 if (count($this->images ?? []) > $allowed) {
