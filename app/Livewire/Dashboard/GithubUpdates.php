@@ -16,8 +16,8 @@ class GithubUpdates extends Component
 
     public function loadCommits()
     {
-        $repoUser = env('GITHUB_USER'); // exemplo: renato
-        $repoName = env('GITHUB_REPO'); // exemplo: noronhashop
+        $repoUser = config('services.github.user'); // exemplo: renato
+        $repoName = config('services.github.repo'); // exemplo: noronhashop
 
         $response = Http::get("https://api.github.com/repos/{$repoUser}/{$repoName}/commits");
         
