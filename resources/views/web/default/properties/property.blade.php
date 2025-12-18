@@ -38,7 +38,7 @@
                                                 : null;
 
                                             $aluguel = ($property->rental_value && !empty($property->rental_value))
-                                                ? 'R$' . number_format($property->rental_value, 0, ',', '.') . '/'. $propertyview->getLocationPeriod()
+                                                ? 'R$' . number_format($property->rental_value, 0, ',', '.') . '/'. $property->getLocationPeriod()
                                                 : null;
                                         @endphp
                                         @if($venda && $aluguel)
