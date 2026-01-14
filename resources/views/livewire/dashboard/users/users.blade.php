@@ -100,7 +100,7 @@
                                 </form> 
                                 <a wire:navigate href="visualizar/{{$user->id}}" class="btn btn-xs btn-info text-white"><i class="fas fa-search"></i></a>
                                 <a wire:navigate href="{{ route('users.edit', [ 'userId' => $user->id ]) }}" class="btn btn-xs btn-default"><i class="fas fa-pen"></i></a>
-                                <button type="button" class="btn btn-xs btn-danger text-white" wire:click="setDeleteId({{$user->id}})">
+                                <button type="button" class="btn btn-xs bg-danger text-white" wire:click="setDeleteId({{$user->id}})">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>

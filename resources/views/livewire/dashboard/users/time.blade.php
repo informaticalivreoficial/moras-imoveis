@@ -34,27 +34,25 @@
                 </div>
             </div>
         </div>  
-        <div class="card-body">
-            <div class="row">
-                <div class="col-12"></div>
-            </div>
+        <div class="card-body">            
             <div class="row d-flex align-items-stretch">
                 @if(!empty($users) && $users->count() > 0)
                     @foreach($users as $user) 
                         <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
-                            <div class="card bg-light" style="{{ ($user->status == true ? '' : 'background: #fffed8 !important;')  }}">
+                            <div class="card bg-light d-flex flex-column w-100" style="{{ ($user->status == true ? '' : 'background: #fffed8 !important;')  }}">
                                 <div class="card-header text-muted border-bottom-0"></div>
                                 <div class="card-body pt-0">
                                     <div class="row">
-                                        <div class="col-7">
-                                            <h2 class="lead"><b>{{$user->name}}</b></h2>
-                                            <p class="text-muted text-sm">{{$user->getFuncao()}}</p>
-                                            <p class="text-muted text-sm"><b>Data de Entrada: </b><br>
-                                                05/05/2025
+                                        <div class="col-8 text-muted">
+                                            <h3><b>{{$user->name}}</b></h3>
+                                            <p class="text-sm">{{$user->cargo}}</p>
+                                            <p><b>Data de Entrada: </b><br>
+                                                {{$user->created_at->format('d/m/Y')}}
                                             </p>
-                                            <ul class="ml-4 mb-0 fa-ul text-muted">
+                                            {{--  
+                                            <ul class="ml-4 mb-0 fa-ul">
                                                 <li class="small">sss</li>
-                                            </ul>
+                                            </ul>--}}
                                         </div>
                                         @php
                                             if(!empty($user->avatar) && \Illuminate\Support\Facades\Storage::exists($user->avatar)){
@@ -69,31 +67,45 @@
                                                 }
                                             }
                                         @endphp
-                                        <div class="col-5 text-center">
-                                            <img src="{{$cover}}" alt="{{$user->name}}" class="img-circle img-fluid">
+                                        <div class="col-4 text-right">
+                                            <img src="{{$cover}}" alt="{{$user->name}}" class="w-20 h-20 object-cover rounded-full">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-footer">
                                     <div class="text-right">
                                         <label class="switch" wire:model="active">
-                                            <input type="checkbox" value="{{$user->status}}"  wire:change="toggleStatus({{$user->id}})" wire:loading.attr="disabled" {{$user->status ? 'checked': ''}}>
+                                            <input type="checkbox" value="{{$user->status}}"  
+                                            wire:change="toggleStatus({{$user->id}})" 
+                                            wire:loading.attr="disabled" {{$user->status ? 'checked': ''}}>
                                             <span class="slider round"></span>
                                         </label>
                                         @if($user->whatsapp != '')
-                                            <a target="_blank" href="{{\App\Helpers\WhatsApp::getNumZap($user->whatsapp)}}" class="btn btn-xs btn-success text-white"><i class="fab fa-whatsapp"></i></a>
+                                            <a target="_blank" href="{{\App\Helpers\WhatsApp::getNumZap($user->whatsapp)}}" class="action-btn btn-whatsapp"><i class="fab fa-whatsapp"></i></a>
                                         @endif
-                                        <form action="" method="post"
-                                            class="btn btn-xs"><input type="hidden" name="_token"
-                                                value="EUfYkOMhYrVOzgaFb0paGfJmmOcY1GesG92hVj9Q" autocomplete="off"> <input
-                                                type="hidden" name="nome" value="Rafael"> <input type="hidden"
-                                                name="email" value="rafael@noronhaexpress.com.br"> <button
-                                                title="Enviar email para:rafael@noronhaexpress.com.br" type="submit"
-                                                class="btn btn-xs text-white bg-teal"><i class="fas fa-envelope"></i></button>
-                                        </form> 
-                                        <a href="" class="btn btn-xs btn-primary"><i class="fas fa-search"></i></a> 
-                                        <a href="{{ route('users.edit', [ 'userId' => $user->id ]) }}" class="btn btn-xs btn-default"><i class="fas fa-pen"></i></a> 
-                                        <button type="button" wire:click="setDeleteId({{$user->id}})" class="btn btn-xs btn-danger text-white j_modal_btn"><i class="fas fa-trash"></i></button>
+                                        <button 
+                                            class="action-btn btn-email" 
+                                            data-tooltip="Enviar Email"
+                                            wire:click="#">
+                                            <i class="fas fa-envelope"></i>
+                                        </button>                                             
+                                        <button 
+                                            class="action-btn btn-view" 
+                                            data-tooltip="Visualizar"
+                                            wire:click="#">
+                                            <i class="fas fa-search"></i>
+                                        </button> 
+                                        <a href="{{ route('users.edit', [ 'userId' => $user->id ]) }}" 
+                                            class="action-btn btn-edit" 
+                                            data-tooltip="Editar">
+                                            <i class="fas fa-pen"></i>
+                                        </a>
+                                        <button type="button" 
+                                            class="action-btn btn-delete" 
+                                            data-tooltip="Excluir"
+                                            wire:click="setDeleteId({{ $user->id }})">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -102,7 +114,7 @@
                 @else                    
                     <div class="col-12">                                                        
                         <div class="alert alert-info p-3">
-                            Não foram encontrados registros!
+                            Não foram encontrados registros!  
                         </div>                                                        
                     </div>                    
                 @endif
@@ -128,7 +140,7 @@
             swal.fire({
                 icon: 'warning',
                 title: 'Atenção',
-                text: 'Você tem certeza que deseja excluir este Usuário?',
+                text: 'Você tem certeza que deseja excluir este Colaborador?',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',

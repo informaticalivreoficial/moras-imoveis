@@ -31,6 +31,7 @@ use App\Livewire\Dashboard\Posts\PostForm;
 use App\Livewire\Dashboard\Posts\Posts;
 use App\Livewire\Dashboard\Properties\Properties;
 use App\Livewire\Dashboard\Properties\PropertyForm;
+use App\Livewire\Dashboard\Reports\PropertiesReport;
 use App\Livewire\Dashboard\Sitemap\SitemapGenerator;
 use App\Livewire\Dashboard\Slides\SlideForm;
 use App\Livewire\Dashboard\Slides\Slides;
@@ -82,6 +83,8 @@ Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'admin'], functi
     //******************************* Sitemap *********************************************/
     Route::get('sitemap-generator', SitemapGenerator::class)->name('sitemap.generator');
 
+    Route::get('/relatorios/imoveis', PropertiesReport::class)->name('reports.properties');
+
     
     // Route::put('listas/email/{id}', [NewsletterController::class, 'newsletterUpdate'])->name('listas.newsletter.update');
     // Route::get('listas/email/set-status', [NewsletterController::class, 'emailSetStatus'])->name('emails.emailSetStatus');
@@ -93,14 +96,14 @@ Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'admin'], functi
     // Route::get('listas/emails/categoria/{categoria}', [NewsletterController::class, 'newsletters'])->name('lista.newsletters');
 
     //******************* Templates ************************************************/
-    Route::get('templates/set-status', [TemplateController::class, 'templateSetStatus'])->name('templates.templateSetStatus');
-    Route::get('templates/delete', [TemplateController::class, 'delete'])->name('templates.delete');
-    Route::delete('templates/deleteon', [TemplateController::class, 'deleteon'])->name('templates.deleteon');
-    Route::put('templates/{id}', [TemplateController::class, 'update'])->name('templates.update');
-    Route::get('templates/{id}/edit', [TemplateController::class, 'edit'])->name('templates.edit');
-    Route::get('templates/create', [TemplateController::class, 'create'])->name('templates.create');
-    Route::post('templates/store', [TemplateController::class, 'store'])->name('templates.store');
-    Route::get('templates', [TemplateController::class, 'index'])->name('templates.index');
+    // Route::get('templates/set-status', [TemplateController::class, 'templateSetStatus'])->name('templates.templateSetStatus');
+    // Route::get('templates/delete', [TemplateController::class, 'delete'])->name('templates.delete');
+    // Route::delete('templates/deleteon', [TemplateController::class, 'deleteon'])->name('templates.deleteon');
+    // Route::put('templates/{id}', [TemplateController::class, 'update'])->name('templates.update');
+    // Route::get('templates/{id}/edit', [TemplateController::class, 'edit'])->name('templates.edit');
+    // Route::get('templates/create', [TemplateController::class, 'create'])->name('templates.create');
+    // Route::post('templates/store', [TemplateController::class, 'store'])->name('templates.store');
+    // Route::get('templates', [TemplateController::class, 'index'])->name('templates.index');
 
     /** Imóveis */
     Route::get('imoveis/{property}/editar', PropertyForm::class)->name('property.edit');
