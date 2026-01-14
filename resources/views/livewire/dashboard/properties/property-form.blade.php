@@ -593,7 +593,29 @@
                     </div>
                 </div>
             </div>
-            <div x-show="tab === 'imagens'" x-transition>
+            
+            <div x-show="tab === 'imagens'" x-transition class="relative">
+
+                <div
+                    wire:loading
+                    wire:target="images"
+                    class="absolute inset-0 bg-white/80 flex items-center justify-center z-[10000]"
+                >
+                    <div class="flex flex-col items-center gap-2">
+                        <svg class="animate-spin h-8 w-8 text-blue-600"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10"
+                                    stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8v8H4z"></path>
+                        </svg>
+
+                        <span class="text-sm text-gray-700 font-medium">
+                            Carregando imagens...
+                        </span>
+                    </div>
+                </div>
+
                 <div class="bg-white p-4">
                     <div class="row">                        
                         <div class="col-12 col-sm-12 col-md-6 col-lg-6">   
@@ -672,6 +694,8 @@
                     </div>
                 </div>
             </div>
+
+
             <div x-show="tab === 'seo'" x-transition>
                 <div class="bg-white p-4">
                     <div class="row mb-2 text-muted">                                   
@@ -749,8 +773,17 @@
             </div>
             <div class="row text-right p-4 bg-white">
                 <div class="col-12 mb-4">
-                    <button type="button" wire:click="save('draft')" class="btn btn-info"><i class="nav-icon fas fa-check mr-2"></i>{{ $property->exists ? 'Atualizar Rascunho' : 'Salvar Rascunho' }}</button>
-                    <button type="button" wire:click="save('published')" class="btn btn-success"><i class="nav-icon fas fa-check mr-2"></i>{{ $property->exists ? 'Atualizar e Publicar' : 'Salvar e Publicar' }}</button>
+                    <button 
+                        wire:loading.attr="disabled"
+                        wire:target="images"
+                        type="button" 
+                        wire:click="save('draft')" class="btn btn-info"><i class="nav-icon fas fa-check mr-2"></i>{{ $property->exists ? 'Atualizar Rascunho' : 'Salvar Rascunho' }}</button>
+                    <button 
+                        wire:loading.attr="disabled"
+                        wire:target="images"
+                        type="button" 
+                        wire:click="save('published')" 
+                    class="btn btn-success"><i class="nav-icon fas fa-check mr-2"></i>{{ $property->exists ? 'Atualizar e Publicar' : 'Salvar e Publicar' }}</button>
                 </div>
             </div>
         </form>
