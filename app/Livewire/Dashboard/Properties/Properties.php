@@ -84,9 +84,7 @@ class Properties extends Component
     public function toggleHighlight(Property $property)
     {
         $property->highlight = !$property->highlight;
-        $property->save();
-
-        //$this->dispatch('highlightToggled'); // opcional: evento p/ mostrar toast
+        $property->save();        
     }
 
     public function setDeleteId($id)
