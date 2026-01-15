@@ -124,7 +124,7 @@
                             <a href="{{route('reports.properties')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Relatório de Imóveis</p>
-                            </a>
+                            </a> 
                         </li>                        
                     </ul>
                 </li>
