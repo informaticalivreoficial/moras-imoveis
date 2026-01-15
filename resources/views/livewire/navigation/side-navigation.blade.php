@@ -24,6 +24,7 @@
                 <li class="nav-item">
                     <a href="{{route('admin')}}" class="nav-link {{ Route::is('admin') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
+                        
                         <p> Painel de Controle</p>
                     </a>                    
                 </li>
