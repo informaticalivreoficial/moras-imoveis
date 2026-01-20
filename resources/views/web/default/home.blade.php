@@ -70,7 +70,7 @@
                 <div class="row">
                     @foreach ($propertiesHighlights as $property)
                         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 wow fadeInUp delay-03s">
-                            <div class="property" style="min-height: 420px !important;">
+                            <div class="property" style="min-height: 370px !important;">
                                 <!-- Property img -->
                                 <div class="property-img">
                                     <div class="property-tag button alt featured">Referência: {{$property->reference}}</div>                                    
@@ -110,7 +110,7 @@
                                         </div>
                                     @endif
                                     
-                                    <img style="min-height: 240px !important;" src="{{$property->cover()}}" alt="{{$property->title}}" class="img-responsive"/>
+                                    <img src="{{$property->cover()}}" alt="{{$property->title}}" class="img-responsive"/>
                                                        
                                     <div class="property-overlay">
                                         <a href="{{route('web.property', $property->slug)}}" class="overlay-link">
@@ -129,7 +129,7 @@
                                             @if(auth()->user()->canEditProperties())
                                                 <a 
                                                     href="{{ route('property.edit', $property->id) }}"
-                                                    class="absolute top-2 right-2 z-50 bg-black/70 text-white px-4 py-3 rounded text-sm hover:bg-black"
+                                                    class="absolute top-2 right-2 z-50 bg-black/70 text-white hover:text-white px-4 py-3 rounded text-sm hover:bg-black"
                                                     title="Editar imóvel"
                                                 >
                                                     <i class="fa fa-pencil"></i>
@@ -208,7 +208,7 @@
                         <div class="item {{$key == 0 ? 'active' : ''}}">
                             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                 
-                                <div class="property-2" style="min-height: 350px !important;">
+                                <div class="property-2" style="min-height: 370px !important;">
                                     
                                     <div class="property-img">
                                         
@@ -243,7 +243,7 @@
                                             </div>
                                         </div>
                                         
-                                        <img style="min-height: 175px !important;" src="{{$propertyview->cover()}}" alt="{{$propertyview->title}}" class="img-responsive"/>
+                                        <img src="{{$propertyview->cover()}}" alt="{{$propertyview->title}}" class="img-responsive"/>
                                         
                                         <div class="property-overlay">
                                             <a href="{{route('web.property',['slug' => $propertyview->slug])}}" class="overlay-link">
@@ -262,7 +262,7 @@
                                                 @if(auth()->user()->canEditProperties())
                                                     <a 
                                                         href="{{ route('property.edit', $propertyview->id) }}"
-                                                        class="absolute top-2 right-2 z-50 bg-black/70 text-white px-4 py-3 rounded text-sm hover:bg-black"
+                                                        class="absolute top-2 right-2 z-50 bg-black/70 text-white hover:text-white px-4 py-3 rounded text-sm hover:bg-black"
                                                         title="Editar imóvel"
                                                     >
                                                         <i class="fa fa-pencil"></i>
@@ -422,7 +422,7 @@
             <div class="row">   
                 @foreach($artigos as $blog)
                     <div class="col-lg-4 col-md-4 col-sm-6 wow fadeInLeft delay-04s">
-                        <div class="thumbnail blog-box-2 clearfix" style="min-height: 440px;">
+                        <div class="thumbnail blog-box-2 clearfix" style="min-height: 370px;">
                             <div class="blog-photo">
                                 <img style="max-height: 160px !important;" src="{{$blog->cover()}}" alt="{{$blog->title}}" class="img-responsive">                
                             </div>

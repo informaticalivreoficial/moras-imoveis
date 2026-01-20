@@ -80,7 +80,7 @@
                                         @if(auth()->user()->canEditProperties())
                                             <a 
                                                 href="{{ route('property.edit', $property->id) }}"
-                                                class="absolute top-2 right-2 z-50 bg-black/70 text-white px-4 py-3 rounded text-sm hover:bg-black"
+                                                class="absolute top-2 right-2 z-50 bg-black/70 text-white hover:text-white px-4 py-3 rounded text-sm hover:bg-black"
                                                 title="Editar imóvel"
                                             >
                                                 <i class="fa fa-pencil"></i>
@@ -517,7 +517,7 @@
                                                     @endif
                                                 </div>                                            
                                             </div>                                                                       
-                                            <img style="min-height: 175px !important;" src="{{$item->cover()}}" alt="{{$item->title}}" class="img-responsive"/>            
+                                            <img src="{{$item->cover()}}" alt="{{$item->title}}" class="img-responsive"/>            
                                             <div class="property-overlay">
                                                 <a href="{{route('web.property',['slug' => $item->slug])}}" class="overlay-link">
                                                     <i class="fa fa-link"></i>
@@ -534,7 +534,7 @@
                                                     @if(auth()->user()->canEditProperties())
                                                         <a 
                                                             href="{{ route('property.edit', $item->id) }}"
-                                                            class="absolute top-2 right-2 z-50 bg-black/70 text-white px-4 py-3 rounded text-sm hover:bg-black"
+                                                            class="absolute top-2 right-2 z-50 bg-black/70 text-white hover:text-white px-4 py-3 rounded text-sm hover:bg-black"
                                                             title="Editar imóvel"
                                                         >
                                                             <i class="fa fa-pencil"></i>

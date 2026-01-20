@@ -21,7 +21,7 @@
                     <div class="filtr-container">
                         @forelse($properties as $property)
                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                                <div class="property" style="min-height: 460px !important;">                                
+                                <div class="property" style="min-height: 370px !important;">                                
                                     <div class="property-img">
                                         <div class="property-tag button alt featured">
                                             Referência: {{$property->reference}}
@@ -76,7 +76,7 @@
                                                 @if(auth()->user()->canEditProperties())
                                                     <a 
                                                         href="{{ route('property.edit', $property->id) }}"
-                                                        class="absolute top-2 right-2 z-50 bg-black/70 text-white px-4 py-3 rounded text-sm hover:bg-black"
+                                                        class="absolute top-2 right-2 z-50 bg-black/70 text-white hover:text-white px-4 py-3 rounded text-sm hover:bg-black"
                                                         title="Editar imóvel"
                                                     >
                                                         <i class="fa fa-pencil"></i>

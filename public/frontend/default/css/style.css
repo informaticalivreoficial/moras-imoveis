@@ -1354,7 +1354,7 @@ input[type=checkbox]:checked + label:before {
 }
 
 .property-content .facilities-list li {
-    width: 33%;
+    width: 25%;
     float: left;
     font-size: 13px;
     line-height: 29px;
