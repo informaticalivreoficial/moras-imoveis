@@ -72,6 +72,17 @@
                                                     <i class="fa fa-expand"></i>
                                                 </button>
                                             @endif 
+                                            @auth
+                                                @if(auth()->user()->canEditProperties())
+                                                    <a 
+                                                        href="{{ route('property.edit', $property->id) }}"
+                                                        class="absolute top-2 right-2 z-50 bg-black/70 text-white px-4 py-3 rounded text-sm hover:bg-black"
+                                                        title="Editar imóvel"
+                                                    >
+                                                        <i class="fa fa-pencil"></i>
+                                                    </a>
+                                                @endif
+                                            @endauth
                                         </div>
                                     </div>
                                     <div class="property-content" style="padding-bottom: 0px !important;">

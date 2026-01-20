@@ -34,6 +34,7 @@ class User extends Authenticatable
         'status',
         'information'
     ];
+    
 
     /**
      * The attributes that should be hidden for serialization.
@@ -57,6 +58,11 @@ class User extends Authenticatable
         'admin' => 'boolean',
         'superadmin' => 'boolean',
     ];
+
+    public function canEditProperties(): bool
+    {
+        return $this->admin || $this->superadmin || $this->editor;
+    }
 
     /**
      * Relacionamentos

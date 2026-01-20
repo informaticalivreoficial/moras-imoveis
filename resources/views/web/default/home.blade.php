@@ -113,7 +113,7 @@
                                     <img style="min-height: 240px !important;" src="{{$property->cover()}}" alt="{{$property->title}}" class="img-responsive"/>
                                                        
                                     <div class="property-overlay">
-                                        <a href="{{route('web.property',['$property->slug'])}}" class="overlay-link">
+                                        <a href="{{route('web.property', $property->slug)}}" class="overlay-link">
                                             <i class="fa fa-link"></i>
                                         </a>
                                         @if($property->images->count())
@@ -125,6 +125,17 @@
                                                 <i class="fa fa-expand"></i>
                                             </button>
                                         @endif
+                                        @auth
+                                            @if(auth()->user()->canEditProperties())
+                                                <a 
+                                                    href="{{ route('property.edit', $property->id) }}"
+                                                    class="absolute top-2 right-2 z-50 bg-black/70 text-white px-4 py-3 rounded text-sm hover:bg-black"
+                                                    title="Editar imóvel"
+                                                >
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                            @endif
+                                        @endauth
                                     </div>
                                 </div>
                                 <!-- Property content -->
@@ -247,6 +258,17 @@
                                                     <i class="fa fa-expand"></i>
                                                 </button>
                                             @endif
+                                            @auth
+                                                @if(auth()->user()->canEditProperties())
+                                                    <a 
+                                                        href="{{ route('property.edit', $propertyview->id) }}"
+                                                        class="absolute top-2 right-2 z-50 bg-black/70 text-white px-4 py-3 rounded text-sm hover:bg-black"
+                                                        title="Editar imóvel"
+                                                    >
+                                                        <i class="fa fa-pencil"></i>
+                                                    </a>
+                                                @endif
+                                            @endauth
                                         </div>
                                     </div>
                                     <!-- CONTEUDO -->

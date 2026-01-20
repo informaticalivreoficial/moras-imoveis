@@ -182,8 +182,7 @@ class Post extends Model
             return asset('theme/images/image.jpg');
         }
 
-        return Storage::url($cover->path);
-        //return \App\Support\ImageService::makeThumb($cover->path, 720, 480);
+        return Storage::url(Cropper::thumb($cover['path'], 720, 480));
     }  
 
     public function nocover()
@@ -198,43 +197,8 @@ class Post extends Model
             return asset('theme/images/image.jpg');
         }
         
-        return Storage::disk()->url($cover['path']);
-    }
-        
-    // public function cover()
-    // {
-    //     $images = $this->images();
-    //     $cover = $images->where('cover', 1)->first(['path']);
-
-    //     if(!$cover) {
-    //         $images = $this->images();
-    //         $cover = $images->first(['path']);
-    //     }
-
-    //     if(empty($cover['path']) || !Storage::disk()->exists($cover['path'])) {
-    //         return url(asset('theme/images/image.jpg'));
-    //     }
-
-    //     return Storage::url(Cropper::thumb($cover['path'], 720, 480));
-    //     //return Storage::url($cover['path']);
-    // }
-
-    // public function nocover()
-    // {
-    //     $images = $this->images();
-    //     $cover = $images->where('cover', 1)->first(['path']);
-
-    //     if(!$cover) {
-    //         $images = $this->images();
-    //         $cover = $images->first(['path']);
-    //     }
-
-    //     if(empty($cover['path']) || !Storage::disk()->exists($cover['path'])) {
-    //         return url(asset('theme/images/image.jpg'));
-    //     }
-
-    //     return Storage::url($cover['path']);
-    // }
+        return Storage::url($cover['path']);
+    } 
     
     public function setStatusAttribute($value)
     {

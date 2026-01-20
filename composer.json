@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "coffeecode/cropper": "^2.0",
         "coffeecode/optimizer": "^2.1",
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^2.7",
@@ -14,7 +15,6 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "laravellegends/pt-br-validator": "^12.2",
-        "league/flysystem-aws-s3-v3": "^3.16",
         "livewire/livewire": "^3.5",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/laravel-analytics": "^5.0",

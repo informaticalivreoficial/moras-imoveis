@@ -76,6 +76,17 @@
                                             @endforeach
                                         </div>
                                     @endif
+                                    @auth
+                                        @if(auth()->user()->canEditProperties())
+                                            <a 
+                                                href="{{ route('property.edit', $property->id) }}"
+                                                class="absolute top-2 right-2 z-50 bg-black/70 text-white px-4 py-3 rounded text-sm hover:bg-black"
+                                                title="Editar imóvel"
+                                            >
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
+                                        @endif
+                                    @endauth
                                 </div>
                                 @if ($property->caption_img_cover)
                                     <p>{{$property->caption_img_cover}}</p>
@@ -518,7 +529,18 @@
                                                             <a href="{{ $image->url_image }}" class="hidden"></a> 
                                                         @endforeach
                                                     </div>
-                                                @endif       
+                                                @endif  
+                                                @auth
+                                                    @if(auth()->user()->canEditProperties())
+                                                        <a 
+                                                            href="{{ route('property.edit', $item->id) }}"
+                                                            class="absolute top-2 right-2 z-50 bg-black/70 text-white px-4 py-3 rounded text-sm hover:bg-black"
+                                                            title="Editar imóvel"
+                                                        >
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                    @endif
+                                                @endauth     
                                             </div>
                                     </div>
                                     <div class="content">
