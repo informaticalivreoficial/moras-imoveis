@@ -154,10 +154,14 @@ class PropertyForm extends Component
                     if ($index >= $allowed) break; // garante que só serão salvas as permitidas
 
                     $path = $image->store('properties/' . $this->property->id, 'public');
+
+                    $maxOrder = PropertyGb::where('property', $this->property->id)->max('order_img') ?? 0;
+
                     PropertyGb::create([
                         'property' => $this->property->id,
                         'path' => $path,
                         'cover' => $this->cover ?? null,
+                        'order_img' => $maxOrder + $index + 1,
                     ]);
                 }
     
@@ -251,5 +255,22 @@ class PropertyForm extends Component
     public function updateDescription($value)
     {
         $this->description = $value;
+    }
+
+    public function updateImageOrder($order)
+    {
+        try {
+            foreach ($order as $item) {
+                PropertyGb::where('id', $item['id'])
+                    ->where('property', $this->property->id)
+                    ->update(['order_img' => $item['position']]);
+            }
+            
+            // Atualiza a propriedade para refletir a nova ordem
+            $this->property->refresh();
+            
+        } catch (\Exception $e) {
+            $this->toastError('Erro ao atualizar ordem das imagens: ' . $e->getMessage());
+        }
     }
 }

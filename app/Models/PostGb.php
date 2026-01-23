@@ -16,7 +16,8 @@ class PostGb extends Model
     protected $fillable = [
         'post',
         'path',
-        'cover'
+        'cover',
+        'order_img',
     ];
 
     /**

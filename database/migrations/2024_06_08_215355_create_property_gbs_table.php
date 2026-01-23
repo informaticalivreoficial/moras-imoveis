@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('property_gbs', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('order_img')->default(0);
             $table->unsignedInteger('property');
             $table->string('path');
             $table->boolean('cover')->nullable();

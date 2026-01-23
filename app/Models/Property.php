@@ -103,7 +103,9 @@ class Property extends Model
     */
     public function images()
     {
-        return $this->hasMany(PropertyGb::class, 'property', 'id')->orderBy('cover', 'ASC');
+        return $this->hasMany(PropertyGb::class, 'property', 'id')
+                    ->orderBy('order_img', 'ASC')
+                    ->orderBy('cover', 'DESC'); // cover primeiro (1 antes de 0)
     }
 
     public function imagesmarkedwater()

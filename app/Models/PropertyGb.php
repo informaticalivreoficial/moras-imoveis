@@ -16,8 +16,21 @@ class PropertyGb extends Model
         'property',
         'path',
         'cover',
-        'watermark'
+        'watermark',
+        'order_img',
     ];
+
+    protected $casts = [
+        'cover' => 'boolean',
+        'watermark' => 'boolean',
+        'order_img' => 'integer',
+    ];
+      
+
+    public function property()
+    {
+        return $this->belongsTo(Property::class, 'property');
+    }
 
     /**
      * Accerssors and Mutators
