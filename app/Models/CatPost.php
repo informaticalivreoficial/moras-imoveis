@@ -22,6 +22,10 @@ class CatPost extends Model
         'id_pai'
     ];
 
+    protected $casts = [
+        'status' => 'boolean',
+    ];
+
     /**
      * Scopes
      */
@@ -40,9 +44,7 @@ class CatPost extends Model
      */
     public function children()
     {
-        return $this->hasMany(CatPost::class, 'id_pai')
-            ->where('status', 1)
-            ->orderBy('title');
+        return $this->hasMany(CatPost::class, 'id_pai')->orderBy('title');
     }
 
     /**

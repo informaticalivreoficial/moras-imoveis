@@ -41,68 +41,70 @@
                         <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
                             <div class="card bg-light d-flex flex-column w-100" style="{{ ($user->status == true ? '' : 'background: #fffed8 !important;')  }}">
                                 <div class="card-header text-muted border-bottom-0"></div>
-                                <div class="card-body pt-0">
-                                    <div class="row">
-                                        <div class="col-8 text-muted">
-                                            <h3><b>{{$user->name}}</b></h3>
-                                            <p class="text-sm">{{$user->cargo}}</p>
-                                            <p><b>Data de Entrada: </b><br>
-                                                {{$user->created_at->format('d/m/Y')}}
-                                            </p>
-                                            {{--  
-                                            <ul class="ml-4 mb-0 fa-ul">
-                                                <li class="small">sss</li>
-                                            </ul>--}}
-                                        </div>
-                                        @php
-                                            if(!empty($user->avatar) && \Illuminate\Support\Facades\Storage::exists($user->avatar)){
-                                                $cover = \Illuminate\Support\Facades\Storage::url($user->avatar);
-                                            } else {
-                                                if($user->gender == 'masculino'){
-                                                    $cover = url(asset('theme/images/avatar5.png'));
-                                                }elseif($user->gender == 'feminino'){
-                                                    $cover = url(asset('theme/images/avatar3.png'));
-                                                }else{
-                                                    $cover = url(asset('theme/images/image.jpg'));
+                                    <div class="card-body pt-0">
+                                        <div class="row">
+                                            <div class="col-8 text-muted">
+                                                <h3><b>{{$user->name}}</b></h3>
+                                                <p class="text-sm">{{$user->getFuncao()}}</p>
+                                                <p><b>Data de Entrada: </b><br>
+                                                    {{$user->created_at->format('d/m/Y')}}
+                                                </p>
+                                                {{--  
+                                                <ul class="ml-4 mb-0 fa-ul">
+                                                    <li class="small">sss</li>
+                                                </ul>--}}
+                                            </div>
+                                            @php
+                                                if(!empty($user->avatar) && \Illuminate\Support\Facades\Storage::exists($user->avatar)){
+                                                    $cover = \Illuminate\Support\Facades\Storage::url($user->avatar);
+                                                } else {
+                                                    if($user->gender == 'masculino'){
+                                                        $cover = url(asset('theme/images/avatar5.png'));
+                                                    }elseif($user->gender == 'feminino'){
+                                                        $cover = url(asset('theme/images/avatar3.png'));
+                                                    }else{
+                                                        $cover = url(asset('theme/images/image.jpg'));
+                                                    }
                                                 }
-                                            }
-                                        @endphp
-                                        <div class="col-4 text-right">
-                                            <img src="{{$cover}}" alt="{{$user->name}}" class="w-20 h-20 object-cover rounded-full">
+                                            @endphp
+                                            <div class="col-4 text-right">
+                                                <img src="{{$cover}}" alt="{{$user->name}}" class="w-20 h-20 object-cover rounded-full">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                                 <div class="card-footer">
-                                    <div class="text-right">
-                                        <label class="switch" wire:model="active">
-                                            <input type="checkbox" value="{{$user->status}}"  
-                                            wire:change="toggleStatus({{$user->id}})" 
-                                            wire:loading.attr="disabled" {{$user->status ? 'checked': ''}}>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <div class="flex items-center gap-2">
+                                        <x-forms.switch-toggle
+                                            wire:key="safe-switch-{{ $user->id }}"
+                                            wire:click="toggleStatus({{ $user->id }})"
+                                            :checked="$user->status"
+                                            size="sm"
+                                            color="green"
+                                        />
                                         @if($user->whatsapp != '')
-                                            <a target="_blank" href="{{\App\Helpers\WhatsApp::getNumZap($user->whatsapp)}}" class="action-btn btn-whatsapp"><i class="fab fa-whatsapp"></i></a>
+                                            <a target="_blank" 
+                                                href="{{\App\Helpers\WhatsApp::getNumZap($user->whatsapp)}}" 
+                                                class="btn btn-xs bg-teal"><i class="fab fa-whatsapp"></i>
+                                            </a>
                                         @endif
                                         <button 
-                                            class="action-btn btn-email" 
-                                            data-tooltip="Enviar Email"
+                                            class="btn btn-xs btn-success" 
+                                            title="Enviar Email"
                                             wire:click="#">
                                             <i class="fas fa-envelope"></i>
                                         </button>                                             
-                                        <button 
-                                            class="action-btn btn-view" 
-                                            data-tooltip="Visualizar"
-                                            wire:click="#">
-                                            <i class="fas fa-search"></i>
-                                        </button> 
-                                        <a href="{{ route('users.edit', [ 'userId' => $user->id ]) }}" 
-                                            class="action-btn btn-edit" 
-                                            data-tooltip="Editar">
+                                        <a href="#" 
+                                            title="Visualizar"
+                                            class="btn btn-xs btn-info"><i class="fas fa-search"></i>
+                                        </a> 
+                                        <a href="{{ route('users.edit', [ 'user' => $user->id ]) }}" 
+                                            class="btn btn-xs btn-default" 
+                                            title="Editar">
                                             <i class="fas fa-pen"></i>
                                         </a>
                                         <button type="button" 
-                                            class="action-btn btn-delete" 
-                                            data-tooltip="Excluir"
+                                            class="btn btn-xs bg-danger text-white" 
+                                            title="Excluir Colaborador"
                                             wire:click="setDeleteId({{ $user->id }})">
                                             <i class="fas fa-trash"></i>
                                         </button>

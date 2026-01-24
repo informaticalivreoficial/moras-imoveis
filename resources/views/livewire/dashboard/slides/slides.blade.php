@@ -35,16 +35,7 @@
             </div>
         </div>        
         <!-- /.card-header -->
-        <div class="card-body">
-            <div class="row">
-                <div class="col-12">                
-                    @if(session()->exists('message'))
-                        @message(['color' => session()->get('color')])
-                            {{ session()->get('mensagem') }}
-                        @endmessage
-                    @endif
-                </div>            
-            </div>
+        <div class="card-body">            
             @if($slides->count() > 0)
                 <div class="overflow-x-auto" x-data="{ showModal: false, imageUrl: '' }">
                     <table class="table-auto w-full border-collapse border border-gray-200">
@@ -110,27 +101,22 @@
 
                                 <!-- Ações -->
                                 <td class="px-4 py-4 flex items-center justify-center gap-2 h-full">
-                                    <!-- Switch -->
-                                    <label class="switch flex-shrink-0">
-                                        <input type="checkbox" 
-                                            value="{{ $slide->status }}"  
-                                            wire:change="toggleStatus({{ $slide->id }})" 
-                                            wire:loading.attr="disabled" 
-                                            {{ $slide->status ? 'checked' : '' }}>
-                                        <span class="slider round"></span>
-                                    </label>
-
-                                    <!-- Edit -->
-                                    <a wire:navigate href="{{ route('slides.edit', $slide->id) }}" 
-                                    class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 hover:text-blue-800 transition flex-shrink-0">
+                                    <x-forms.switch-toggle
+                                        wire:key="safe-switch-{{ $slide->id }}"
+                                        wire:click="toggleStatus({{ $slide->id }})"
+                                        :checked="$slide->status"
+                                        size="sm"
+                                        color="green"
+                                    />
+                                    <a href="{{ route('slides.edit', $slide->id) }}" 
+                                        class="btn btn-xs btn-default" 
+                                        title="Editar">
                                         <i class="fas fa-pen"></i>
                                     </a>
-
-                                    <!-- Delete -->
                                     <button type="button" 
-                                            class="flex items-center justify-center w-8 h-8 rounded-full bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-800 transition flex-shrink-0"
-                                            wire:click="setDeleteId({{ $slide->id }})" 
-                                            title="Excluir">
+                                        class="btn btn-xs bg-danger text-white" 
+                                        title="Excluir Empresa"
+                                        wire:click="setDeleteId({{ $slide->id }})">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </td>

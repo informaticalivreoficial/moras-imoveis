@@ -132,7 +132,7 @@ Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'admin'], functi
     Route::get('usuarios/clientes', Users::class)->name('users.index');
     Route::get('usuarios/time', Time::class)->name('users.time');
     Route::get('usuarios/cadastrar', Form::class)->name('users.create');
-    Route::get('usuarios/{userId}/editar', Form::class)->name('users.edit');
+    Route::get('usuarios/{user}/editar', Form::class)->name('users.edit');
     Route::get('usuarios/{user}/visualizar', ViewUser::class)->name('users.view');  
 
     //*********************** Email **********************************************/

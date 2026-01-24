@@ -3,14 +3,17 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1><i class="fas fa-user mr-2"></i> {{ $userId ? 'Editar' : 'Cadastrar' }}</h1>
+                    <h1><i class="fas fa-user mr-2"></i> {{ $user ? 'Editar' : 'Cadastrar' }}</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('admin') }}">Painel de Controle</a></li>
-                        <li class="breadcrumb-item"><a wire:navigate href="{{ route('users.index') }}">Usuários</a>
+                        <li class="breadcrumb-item">
+                            <a wire:navigate href="{{ route('users.index') }}">
+                                {{ ($client = true ? 'Clientes' : 'Usuários' ) }}
+                            </a>
                         </li>
-                        <li class="breadcrumb-item active">{{ $userId ? 'Editar' : 'Cadastrar' }}</li>
+                        <li class="breadcrumb-item active">{{ $user ? 'Editar' : 'Cadastrar' }}</li>
                     </ol>
                 </div>
             </div>
@@ -201,8 +204,8 @@
                             <div class="col-12 col-md-6 col-lg-2"> 
                                 <div class="form-group">
                                     <label class="labelforms"><b>*CEP:</b></label>
-                                    <input type="text" x-mask="99.999-999" class="form-control @error('postcode') is-invalid @enderror" id="postcode" wire:model.lazy="postcode">
-                                    @error('postcode')
+                                    <input type="text" x-mask="99.999-999" class="form-control @error('zipcode') is-invalid @enderror" id="zipcode" wire:model.lazy="zipcode">
+                                    @error('zipcode')
                                         <span class="error erro-feedback">{{ $message }}</span>
                                     @enderror                                                    
                                 </div>
@@ -297,31 +300,30 @@
                                     <span class="mr-3"><b>Acesso ao Sistema:</b></span>
                                     <div class="form-check d-inline mx-2">
                                         <input id="client" class="form-check-input" type="checkbox"
-                                            wire:model="client" {{ $client == true ? 'checked' : null }}>
+                                            wire:model="client">
                                         <label for="client" class="form-check-label">Cliente</label>
                                     </div>
                                     <div class="form-check d-inline mx-2">
                                         <input id="editor" class="form-check-input" type="checkbox"
-                                            wire:model="editor" {{ $editor == true ? 'checked' : null }}>
+                                            wire:model="editor">
                                         <label for="editor" class="form-check-label">Editor</label>
                                     </div>
                                     @if (\Illuminate\Support\Facades\Auth::user()->superadmin == 1)
                                         <div class="form-check d-inline mx-2">
                                             <input id="admin" class="form-check-input" type="checkbox"
-                                                wire:model="admin" {{ $admin == true ? 'checked' : null }}>
+                                                wire:model="admin">
                                             <label for="admin" class="form-check-label">Administrador</label>
                                         </div>
 
                                         <div class="form-check d-inline mx-2">
                                             <input id="superadmin" class="form-check-input" type="checkbox"
-                                                wire:model="superadmin"
-                                                {{ $superadmin == true ? 'checked' : null }}>
+                                                wire:model="superadmin">
                                             <label for="superadmin" class="form-check-label">Super Administrador</label>
                                         </div>
                                     @endif
                                 </div>
                             </div>
-                            @if (!$userId)
+                            @if (!$user)
                                 <div class="col-12 col-md-6 col-lg-4">
                                     <label class="labelforms text-muted"><b>Senha:</b></label>
                                     <div class="input-group input-group-md">                                    
@@ -350,7 +352,7 @@
 
                 <div class="row text-right">
                     <div class="col-12 pb-4 mt-3">
-                        <button type="submit" class="btn btn-lg btn-success p-3"><i class="nav-icon fas fa-check mr-2"></i>{{ $userId ? 'Atualizar Agora' : 'Cadastrar Agora' }}</button>
+                        <button type="submit" class="btn btn-lg btn-success p-3"><i class="nav-icon fas fa-check mr-2"></i>{{ $user ? 'Atualizar Agora' : 'Cadastrar Agora' }}</button>
                     </div>
                 </div>
             </div>

@@ -31,21 +31,13 @@
                       </div>
                 </div>
                 <div class="col-12 col-sm-6 my-2 text-right">
-                    <a wire:navigate href="cadastrar-cliente" class="btn btn-sm btn-default"><i class="fas fa-plus mr-2"></i> Cadastrar Novo</a>
+                    <a href="{{ route('users.create') }}" class="btn btn-sm btn-default"><i class="fas fa-plus mr-2"></i> Cadastrar Novo</a>
                 </div>
             </div>
         </div>        
         <!-- /.card-header -->
         <div class="card-body">
-            <div class="row">
-                <div class="col-12">                
-                    @if(session()->exists('message'))
-                        @message(['color' => session()->get('color')])
-                            {{ session()->get('mensagem') }}
-                        @endmessage
-                    @endif
-                </div>            
-            </div>
+            
             @if(!empty($users) && $users->count() > 0)
                 <table class="table table-bordered table-striped projects">
                     <thead>
@@ -53,7 +45,6 @@
                             <th>Foto</th>
                             <th wire:click="sortBy('name')">Nome <i class="expandable-table-caret fas fa-caret-down fa-fw"></i></th>
                             <th>CPF</th>
-                            <th class="text-center">Status</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -80,29 +71,43 @@
                             </td>
                             <td>{{$user->name}}</td>
                             <td>{{$user->cpf}}</td>
-                            <td class="text-center">
-                                <label class="switch" wire:model="active">
-                                    <input type="checkbox" value="{{$user->status}}"  wire:change="toggleStatus({{$user->id}})" wire:loading.attr="disabled" {{$user->status ? 'checked': ''}}>
-                                    <span class="slider round"></span>
-                                </label>
-                            </td>
                             <td>
-                                
-                                @if($user->whatsapp != '')
-                                    <a target="_blank" href="{{\App\Helpers\WhatsApp::getNumZap($user->whatsapp)}}" class="btn btn-xs btn-success text-white"><i class="fab fa-whatsapp"></i></a>
-                                @endif
-                                
-                                <form class="btn btn-xs" action="{{--route('email.send')--}}" method="post">
-                                    @csrf
-                                    <input type="hidden" name="nome" value="{{ $user->name }}">
-                                    <input type="hidden" name="email" value="{{ $user->email }}">
-                                    <button title="Enviar Email" type="submit" class="btn btn-xs text-white bg-teal"><i class="fas fa-envelope"></i></button>
-                                </form> 
-                                <a wire:navigate href="visualizar/{{$user->id}}" class="btn btn-xs btn-info text-white"><i class="fas fa-search"></i></a>
-                                <a wire:navigate href="{{ route('users.edit', [ 'userId' => $user->id ]) }}" class="btn btn-xs btn-default"><i class="fas fa-pen"></i></a>
-                                <button type="button" class="btn btn-xs bg-danger text-white" wire:click="setDeleteId({{$user->id}})">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                <div class="flex items-center gap-2">
+                                    <x-forms.switch-toggle
+                                        wire:key="safe-switch-{{ $user->id }}"
+                                        wire:click="toggleStatus({{ $user->id }})"
+                                        :checked="$user->status"
+                                        size="sm"
+                                        color="green"
+                                    />
+                                    @if($user->whatsapp != '')
+                                        <a target="_blank" 
+                                            href="{{\App\Helpers\WhatsApp::getNumZap($user->whatsapp)}}" 
+                                            class="btn btn-xs bg-teal"><i class="fab fa-whatsapp"></i>
+                                        </a>
+                                    @endif                                
+                                    <button 
+                                        class="btn btn-xs btn-success" 
+                                        title="Enviar Email"
+                                        wire:click="#">
+                                        <i class="fas fa-envelope"></i>
+                                    </button> 
+                                    <a href="#" 
+                                        title="Visualizar"
+                                        class="btn btn-xs btn-info"><i class="fas fa-search"></i>
+                                    </a>
+                                    <a href="{{ route('users.edit', [ 'user' => $user->id ]) }}" 
+                                        class="btn btn-xs btn-default" 
+                                        title="Editar">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
+                                    <button type="button" 
+                                        class="btn btn-xs bg-danger text-white" 
+                                        title="Excluir Colaborador"
+                                        wire:click="setDeleteId({{ $user->id }})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>                                
                             </td>
                         </tr>
                         @endforeach

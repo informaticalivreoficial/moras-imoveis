@@ -3,8 +3,10 @@
 namespace App\Livewire\Dashboard\Slides;
 
 use App\Models\Slide;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\On;
 
 class Slides extends Component
 {
@@ -17,8 +19,6 @@ class Slides extends Component
     protected $updatesQueryString = ['search'];
     public string $sortField = 'created_at';
     public string $sortDirection = 'desc';
-    public bool $active = false;
-    public ?int $delete_id = null; 
 
     #{Url}
     public function updatingSearch(): void
@@ -60,9 +60,42 @@ class Slides extends Component
 
     public function toggleStatus($id)
     {              
-        $slide = Slide::find($id);
-        $slide->status = !$this->active;        
+        $slide = Slide::findOrFail($id);
+        $slide->status = !$slide->status;        
         $slide->save();
-        $this->active = $slide->status;
     }
+
+    public function setDeleteId($id)
+    {
+        $this->dispatch('swal:confirm', [
+            'title' => 'Excluir Banner Slide?',
+            'text' => 'Essa ação não pode ser desfeita.',
+            'icon' => 'warning',
+            'confirmButtonText' => 'Sim, excluir',
+            'cancelButtonText' => 'Cancelar',
+            'confirmEvent' => 'deleteBanner',
+            'confirmParams' => [$id],
+        ]);       
+    }
+
+    #[On('deleteBanner')]
+    public function deleteBanner($id): void
+    {
+        $slide = Slide::findOrFail($id);
+
+        $logoPath = $slide->image;
+        if ($logoPath && Storage::disk('public')->exists($logoPath)) {
+            Storage::disk('public')->delete($logoPath);
+        }
+
+        $slide->delete();
+
+        $this->dispatch('swal', [
+            'title' => 'Excluído!',
+            'text'  => 'Banner Slide excluído com sucesso!',
+            'icon'  => 'success',
+            'timer' => 2000,
+            'showConfirmButton' => false,
+        ]);                
+    }  
 }

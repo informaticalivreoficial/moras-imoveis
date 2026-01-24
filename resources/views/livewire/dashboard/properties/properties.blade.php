@@ -61,11 +61,14 @@
                                             @endif
                                         </div>
                                         <div class="col-12 text-center mb-2">                                            
-                                            <label class="switch" wire:model="active">
-                                                <input type="checkbox" value="{{$property->status}}"  wire:change="toggleStatus({{$property->id}})" wire:loading.attr="disabled" {{$property->status ? 'checked': ''}}>
-                                                <span class="slider round"></span>
-                                            </label>
-                                            <div x-data="{ open: false }" class="d-inline-block ml-2 relative">
+                                            <div x-data="{ open: false }" class="flex items-center gap-2">
+                                                <x-forms.switch-toggle
+                                                    wire:key="safe-switch-{{ $property->id }}"
+                                                    wire:click="toggleStatus({{ $property->id }})"
+                                                    :checked="$property->status"
+                                                    size="sm"
+                                                    color="green"
+                                                />
                                                 <button 
                                                     wire:click="toggleHighlight({{ $property->id }})"
                                                     @mouseenter="open = true" 
@@ -81,23 +84,27 @@
                                                 >
                                                     {{ $property->highlight ? 'Remover destaque' : 'Marcar como destaque' }}
                                                 </div>
-                                            </div>
-                                            <button 
-                                                type="button" 
-                                                wire:click="applyWatermark({{ $property->id }})"
-                                                class="btn btn-xs {{ $property->display_marked_water ? 'btn-warning' : 'btn-secondary' }}"
-                                                title="Inserir Marca d'água"
-                                                @if($property->display_marked_water) disabled @endif
-                                            >
-                                                <i class="fas fa-copyright"></i>
-                                            </button>
-                                            @if ($property->slug)
-                                                <a target="_blank" data-toggle="tooltip" data-placement="top" title="Visualizar Imóvel" class="btn btn-xs btn-info text-white" href="{{ route('web.property', ['slug' => $property->slug]) }}" title="{{$property->title}}"><i class="fas fa-search"></i></a>
-                                            @endif                            
-                                            <a title="Editar Imóvel" href="{{ route('property.edit', [ 'property' => $property->id ]) }}" class="btn btn-xs btn-default"><i class="fas fa-pen"></i></a>
-                                            <button type="button" class="btn btn-xs btn-danger text-white p-0" wire:click="setDeleteId({{$property->id}})" title="Excluir" style="width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center;">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
+
+                                                <button 
+                                                    type="button" 
+                                                    wire:click="applyWatermark({{ $property->id }})"
+                                                    class="btn btn-xs {{ $property->display_marked_water ? 'btn-warning' : 'btn-secondary' }}"
+                                                    title="Inserir Marca d'água"
+                                                    @if($property->display_marked_water) disabled @endif
+                                                >
+                                                    <i class="fas fa-copyright"></i>
+                                                </button>
+                                                @if ($property->slug)
+                                                    <a target="_blank" title="Visualizar Imóvel" class="btn btn-xs btn-info text-white" href="{{ route('web.property', ['slug' => $property->slug]) }}" title="{{$property->title}}"><i class="fas fa-search"></i></a>
+                                                @endif                            
+                                                <a title="Editar Imóvel" href="{{ route('property.edit', [ 'property' => $property->id ]) }}" class="btn btn-xs btn-default"><i class="fas fa-pen"></i></a>
+                                                <button type="button" 
+                                                    class="btn btn-xs bg-danger text-white" 
+                                                    title="Excluir Imóvel"
+                                                    wire:click="setDeleteId({{ $property->id }})">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>                                            
                                         </div>
 
                                         <div class="col-sm-4 border-right">
@@ -175,32 +182,3 @@
         </div>
     </div>
 </div>
-
-<script>    
-    document.addEventListener('livewire:initialized', () => {
-        @this.on('swal', (event) => {
-            const data = event
-            swal.fire({
-                icon:data[0]['icon'],
-                title:data[0]['title'],
-                text:data[0]['text'],
-            })
-        })
-
-        @this.on('delete-prompt', (event) => {
-            swal.fire({
-                icon: 'warning',
-                title: 'Atenção',
-                text: 'Você tem certeza que deseja excluir este Imóvel?',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sim, excluir!',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    @this.dispatch('goOn-Delete')
-                }
-            })
-        })
-    });
-</script>

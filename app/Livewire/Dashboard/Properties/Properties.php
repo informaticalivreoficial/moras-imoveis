@@ -27,10 +27,6 @@ class Properties extends Component
 
     public string $sortDirection = 'desc';
 
-    public bool $active;
-
-    public ?int $delete_id = null;    
-
     #{Url}
     public function updatingSearch(): void
     {
@@ -75,10 +71,9 @@ class Properties extends Component
 
     public function toggleStatus($id)
     {              
-        $property = Property::find($id);
-        $property->status = !$this->active;        
+        $property = Property::findOrFail($id);
+        $property->status = !$property->status;        
         $property->save();
-        $this->active = $property->status;
     }
 
     public function toggleHighlight(Property $property)
@@ -89,32 +84,31 @@ class Properties extends Component
 
     public function setDeleteId($id)
     {
-        $this->delete_id = $id;
-        $this->dispatch('delete-prompt');        
+        $this->dispatch('swal:confirm', [
+            'title' => 'Excluir Imóvel',
+            'text' => 'Essa ação não pode ser desfeita.',
+            'icon' => 'warning',
+            'confirmButtonText' => 'Sim, excluir',
+            'cancelButtonText' => 'Cancelar',
+            'confirmEvent' => 'deleteProperty',
+            'confirmParams' => [$id],
+        ]);       
     }
 
-    #[On('goOn-Delete')]
-    public function delete(): void
+    #[On('deleteProperty')]
+    public function deleteProperty($id): void
     {
-        try {
-            $property = Property::findOrFail($this->delete_id);
+        $property = Property::findOrFail($id);
 
-            $property->delete(); // já dispara o hook no model
+        $property->delete();
 
-            $this->delete_id = null;
-
-            $this->dispatch('swal', [
-                'title' => 'Sucesso!',
-                'icon'  => 'success',
-                'text'  => 'Imóvel e todas as imagens foram removidas!',
-            ]);
-        } catch (\Exception $e) {
-            $this->dispatch('swal', [
-                'title' => 'Erro!',
-                'icon'  => 'error',
-                'text'  => 'Não foi possível excluir o imóvel.',
-            ]);
-        }
+        $this->dispatch('swal', [
+            'title' => 'Excluído!',
+            'text'  => 'Imóvel e todas as imagens foram removidas!',
+            'icon'  => 'success',
+            'timer' => 2000,
+            'showConfirmButton' => false,
+        ]);                
     }    
 
     public function applyWatermark(Property $property)

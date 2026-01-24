@@ -14,19 +14,11 @@ class Users extends Component
     use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
-
     public string $search = '';
-
     public string $sortField = 'name';
-
-    public $delete_id;
-
     public string $sortDirection = 'asc';
 
-    public bool $active;
-
     public bool $updateMode = false;
-
         
     #{Url}
     public function updatingSearch(): void
@@ -44,7 +36,7 @@ class Users extends Component
         }
 
         $this->resetPage();
-    }
+    }    
 
     #[Title('Clientes')]
     public function render()
@@ -60,30 +52,37 @@ class Users extends Component
 
     public function setDeleteId($id)
     {
-        $this->delete_id = $id;
-        $this->dispatch('delete-prompt');        
+        $this->dispatch('swal:confirm', [
+            'title' => 'Excluir Cliente?',
+            'text' => 'Essa ação não pode ser desfeita.',
+            'icon' => 'warning',
+            'confirmButtonText' => 'Sim, excluir',
+            'cancelButtonText' => 'Cancelar',
+            'confirmEvent' => 'deleteUser',
+            'confirmParams' => [$id],
+        ]);        
     }
-    #[On('goOn-Delete')]
-    public function delete()
+    #[On('deleteUser')]
+    public function deleteUser($id)
     {
-        $user = \App\Models\User::where('id', $this->delete_id)->first();
-        if(!empty($user)){
-            $user->delete();
-            
-            $this->dispatch('swal', [
-                'title' =>  'Success!',
-                'icon' => 'success',
-                'text' => 'Cliente removido com sucesso!'
-            ]);
-        }
+        $user = User::findOrFail($id);
+
+        $user->delete();
+
+        $this->dispatch('swal', [
+            'title' => 'Excluído!',
+            'text'  => 'Cliente excluído com sucesso.',
+            'icon'  => 'success',
+            'timer' => 2000,
+            'showConfirmButton' => false,
+        ]);
     }
 
     public function toggleStatus($id)
     {              
-        $user = User::find($id);
-        $user->status = !$this->active;        
+        $user = User::findOrFail($id);
+        $user->status = !$user->status;        
         $user->save();
-        $this->active = $user->status;
     }
 
     public function edit($id)

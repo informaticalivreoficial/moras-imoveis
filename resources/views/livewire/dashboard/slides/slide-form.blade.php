@@ -4,14 +4,14 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1><i class="fas fa-film mr-2"></i> {{ $slide->exists ? 'Editar' : 'Cadastrar' }}</h1>
+                    <h1><i class="fas fa-film mr-2"></i> {{ $slide ? 'Editar' : 'Cadastrar' }}</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('admin') }}">Painel de Controle</a></li>
                         <li class="breadcrumb-item"><a wire:navigate href="{{ route('slides.index') }}">Banners</a>
                         </li>
-                        <li class="breadcrumb-item active">{{ $slide->exists ? 'Editar' : 'Cadastrar' }}</li>
+                        <li class="breadcrumb-item active">{{ $slide ? 'Editar' : 'Cadastrar' }}</li>
                     </ol>
                 </div>
             </div>
@@ -69,7 +69,7 @@
 
                         <div 
                             x-data="{
-                                preview: '{{ $slide->getimagem() }}',
+                                preview: '{{ $slide ? $slide->getimagem() : asset('theme/images/image.jpg') }}',
                                 updatePreview(event) {
                                     const file = event.target.files[0];
                                     if (file) {
@@ -142,7 +142,7 @@
                 <div class="row text-right mt-3">
                     <div class="col-12 mb-4">
                         <button type="button" wire:click="save" class="btn btn-lg btn-success p-3">
-                            <i class="nav-icon fas fa-check mr-2"></i> {{ $slide->exists ? 'Atualizar Agora' : 'Salvar Agora' }}
+                            <i class="nav-icon fas fa-check mr-2"></i> {{ $slide ? 'Atualizar Agora' : 'Salvar Agora' }}
                         </button>
                     </div>
                 </div>                
@@ -153,31 +153,7 @@
 
 </div>
 
-<script>
-    document.addEventListener('atualizado', function() {
-        Swal.fire({
-            title: 'Sucesso!',
-            text: "Slide atualizado com sucesso!",
-            icon: 'success',
-            timerProgressBar: true,
-            showConfirmButton: false,
-            timer: 3000 // Fecha automaticamente após 3 segundos
-        });
-    });
-
-    document.addEventListener('cadastrado', function() {
-        Swal.fire({
-            title: 'Sucesso!',
-            text: "Slide cadastrado com sucesso!",
-            icon: 'success',
-            timerProgressBar: true,
-            showConfirmButton: true,
-            timer: 3000 // Fecha automaticamente após 3 segundos
-        }).then(() => {
-            window.location.href = `/admin/slides/${slide}/editar`;
-        });
-    });
-    
+<script>     
     document.addEventListener("livewire:navigated", () => {
         $('#description').summernote({
             height: 300,

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Support\Cropper;
@@ -47,16 +46,11 @@ class Slide extends Model
     */
     public function getimagem()
     {
-        if (empty($this->image) || !Storage::disk()->exists($this->image)) {
+        if (empty($this->image) || !Storage::disk('public')->exists($this->image)) {
             return asset('theme/images/image.jpg');
         }
 
-        //return \App\Support\ImageService::makeThumb($this->image, 2200, 1200);
-
-        // if(empty($this->image) || !Storage::disk()->exists($this->image)) {
-        //     return url(asset('theme/images/image.jpg'));
-        // } 
-        return Storage::url($this->image);
+        return Storage::url(Cropper::thumb($this->image, 2200, 1200));
     }
 
     public function setExpiredAtAttribute($value)
