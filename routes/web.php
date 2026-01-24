@@ -15,14 +15,8 @@ use App\Livewire\Dashboard\Users\{
 use App\Livewire\Dashboard\Permissions\Index as PermissionIndex;
 use App\Livewire\Dashboard\Roles\Index as RoleIndex;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\{
-    ConfigController,
-    EmailController,
-    TemplateController,
-    UserController
-};
 use App\Http\Controllers\Web\{
-    FeedController,
+    PropertyRssController,
     Webcontroller
 };
 
@@ -41,8 +35,8 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
     //Institucional
     Route::get('/', [WebController::class, 'home'])->name('home');
     Route::get('/politica-de-privacidade', [WebController::class, 'privacy'])->name('privacy');
-
     
+    Route::get('/rss/imoveis', [PropertyRssController::class, 'index'])->name('rss.properties');
 
 //     /** FEED */
 //     Route::get('feed', [FeedController::class, 'feed'])->name('feed');
@@ -133,14 +127,7 @@ Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'admin'], functi
     Route::get('usuarios/time', Time::class)->name('users.time');
     Route::get('usuarios/cadastrar', Form::class)->name('users.create');
     Route::get('usuarios/{user}/editar', Form::class)->name('users.edit');
-    Route::get('usuarios/{user}/visualizar', ViewUser::class)->name('users.view');  
-
-    //*********************** Email **********************************************/
-    Route::get('email/suporte', [EmailController::class, 'suporte'])->name('email.suporte');
-    Route::match(['post', 'get'], 'email/enviar-email', [EmailController::class, 'send'])->name('email.send');
-    Route::post('email/sendEmail', [EmailController::class, 'sendEmail'])->name('email.sendEmail');
-    Route::match(['post', 'get'], 'email/success', [EmailController::class, 'success'])->name('email.success');
-
+    Route::get('usuarios/{user}/visualizar', ViewUser::class)->name('users.view');     
 });
 
 
