@@ -84,6 +84,13 @@ class Property extends Model
 
     protected static function booted()
     {
+        // 🔹 Gerar slug automaticamente
+        static::saving(function ($property) {
+            if ($property->isDirty('title')) {
+                $property->setSlug();
+            }
+        });
+        
         static::deleting(function ($property) {
             // Deleta imagens físicas e registros relacionados
             foreach ($property->images as $image) {
