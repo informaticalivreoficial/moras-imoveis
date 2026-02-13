@@ -329,14 +329,22 @@ class Property extends Model
 
     public function setSlug()
     {
-        if(!empty($this->title)){
-            $property = Property::where('title', $this->title)->first(); 
-            if(!empty($property) && $property->id != $this->id){
-                $this->attributes['slug'] = Str::slug($this->title) . '-' . $this->id;
-            }else{
-                $this->attributes['slug'] = Str::slug($this->title);
-            }            
-            $this->save();
+        if (!empty($this->title)) {
+    
+            $baseSlug = Str::slug($this->title);
+            $slug = $baseSlug;
+            $count = 1;
+    
+            while (
+                Property::where('slug', $slug)
+                    ->where('id', '!=', $this->id)
+                    ->exists()
+            ) {
+                $slug = $baseSlug . '-' . str_pad($count, 2, '0', STR_PAD_LEFT);
+                $count++;
+            }
+    
+            $this->attributes['slug'] = $slug;
         }
     }    
 
