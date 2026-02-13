@@ -86,9 +86,7 @@ class Property extends Model
     {
         // 🔹 Gerar slug automaticamente
         static::saving(function ($property) {
-            if ($property->isDirty('title')) {
-                $property->setSlug();
-            }
+            $property->setSlug();
         });
         
         static::deleting(function ($property) {
