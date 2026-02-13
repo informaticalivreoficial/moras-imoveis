@@ -130,7 +130,6 @@ class PropertyForm extends Component
                 //Atualizar
 
                 $this->property->update($validated);
-                $this->property->setSlug();
 
                 // Validação das imagens
                 $this->validate([
