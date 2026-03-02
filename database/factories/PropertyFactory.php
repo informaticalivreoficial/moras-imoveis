@@ -20,7 +20,7 @@ class PropertyFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence(),
-            'owner' => User::factory(),
+            //'owner' => User::factory(),
             'reference' => Str::random(4),
             'sale' => $this->faker->boolean(),
             'location' => $this->faker->boolean(),

@@ -146,7 +146,7 @@ class Webcontroller extends Controller
             $head = $this->seo->render($property->title ?? env('APP_NAME'),
                 $property->headline ?? $property->title,
                 route('web.property', ['slug' => $property->slug]),
-                $property->nocover() ?? $this->config->getMetaImg()
+                $property->cover() ?? $this->config->getMetaImg()
             );
 
             return view('web.'.$this->config->template.'.properties.property', [

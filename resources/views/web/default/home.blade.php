@@ -113,7 +113,7 @@
                                     <img src="{{$property->cover()}}" alt="{{$property->title}}" class="img-responsive"/>
                                                        
                                     <div class="property-overlay">
-                                        <a href="{{route('web.property', $property->slug)}}" class="overlay-link">
+                                        <a href="{{route('web.property', ['slug' => $property->slug])}}" class="overlay-link">
                                             <i class="fa fa-link"></i>
                                         </a>
                                         @if($property->images->count())
@@ -142,12 +142,12 @@
                                 <div class="property-content">
                                     <!-- title -->
                                     <h1 class="title">
-                                        <a href="{{route('web.property',['$property->slug'])}}">{{$property->title}}</a>                                        
+                                        <a href="{{route('web.property',['slug' => $property->slug])}}">{{$property->title}}</a>                                        
                                     </h1>
                                     <!-- Property address -->
                                     @if ($property->neighborhood)
                                         <h3 class="property-address">
-                                            <a href="{{route('web.property',['$property->slug'])}}">
+                                            <a href="{{route('web.property',['slug' => $property->slug])}}">
                                                 <i class="fa fa-map-marker"></i> {{$property->neighborhood}}, {{$property->city}} / {{$property->state}}
                                             </a>
                                         </h3>                                        

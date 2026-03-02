@@ -16,7 +16,7 @@ class CatPostFactory extends Factory
             'slug'        => $this->faker->slug(),
             'content'     => $this->faker->sentence(),
             'status'      => $this->faker->boolean(),
-            'tipo'        => $this->faker->randomElement(['artigo', 'noticia', 'pagina']),
+            'type'        => $this->faker->randomElement(['artigo', 'noticia', 'pagina']),
             'id_pai'      => null, // raiz por padrão
         ];
     }
