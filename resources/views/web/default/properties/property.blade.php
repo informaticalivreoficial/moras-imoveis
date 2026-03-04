@@ -68,23 +68,24 @@
                             <div class="property-img">
                                 <img class="imgimovel" src="{{$property->cover()}}" alt="{{$property->reference}}">
                                 <div class="property-overlay">
-                                    @if($property->images()->get()->count())
-                                        <div class="property-magnify-gallery"> 
+                                    @if($property->images->count())
+    
+                                        <a 
+                                            data-fancybox="gallery-{{ $property->id }}"
+                                            data-caption="{{ $property->title }}"
+                                            href="{{ $property->cover() }}" 
+                                            class="overlay-link"
+                                        >
+                                            <i class="fa fa-expand"></i>
+                                        </a>                                        
+                                        @foreach($property->images as $image)                                  
                                             <a 
-                                                data-fancybox="gallery"
+                                                data-fancybox="gallery-{{ $property->id }}"
                                                 data-caption="{{ $property->title }}"
-                                                style="font-size:22px;line-height: 46px;width: 56px; height: 56px;" 
-                                                href="{{$property->cover()}}" 
-                                                class="overlay-link"
-                                            ><i class="fa fa-expand"></i></a>
-                                            @foreach($property->images()->get() as $image)                                      
-                                                <a 
-                                                    data-fancybox="gallery"
-                                                    data-caption="{{ $property->title }}" 
-                                                    href="{{ $image->url_image }}" class="hidden"
-                                                ></a>                                      
-                                            @endforeach
-                                        </div>
+                                                href="{{ $image->url_image }}" 
+                                                class="hidden"
+                                            ></a> 
+                                        @endforeach   
                                     @endif
                                     @auth
                                         @if(auth()->user()->canEditProperties())
@@ -598,22 +599,24 @@
                                                 <a href="{{route('web.property',['slug' => $item->slug])}}" class="overlay-link">
                                                     <i class="fa fa-link"></i>
                                                 </a>    
-                                                @if($item->images()->get()->count())
+                                                @if($item->images->count())
+    
                                                     <a 
-                                                        data-fancybox="gallery"
+                                                        data-fancybox="gallery-{{ $item->id }}"
                                                         data-caption="{{ $item->title }}"
-                                                        href="{{$item->cover()}}" 
+                                                        href="{{ $item->cover() }}" 
                                                         class="overlay-link"
-                                                    ><i class="fa fa-expand"></i></a>
-                                                    <div class="property-magnify-gallery"> 
-                                                        @foreach($item->images()->get() as $image)                                  
-                                                            <a 
-                                                                data-fancybox="gallery"
-                                                                data-caption="{{ $item->title }}"
-                                                                href="{{ $image->url_image }}" 
-                                                            class="hidden"></a> 
-                                                        @endforeach
-                                                    </div>
+                                                    >
+                                                        <i class="fa fa-expand"></i>
+                                                    </a>                                                     
+                                                    @foreach($item->images as $image)                                  
+                                                        <a 
+                                                            data-fancybox="gallery-{{ $item->id }}"
+                                                            data-caption="{{ $item->title }}"
+                                                            href="{{ $image->url_image }}" 
+                                                            class="hidden"
+                                                        ></a> 
+                                                    @endforeach
                                                 @endif  
                                                 @auth
                                                     @if(auth()->user()->canEditProperties())
@@ -684,9 +687,9 @@
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.umd.js"></script>
     <script>
-        Fancybox.bind("[data-fancybox='gallery']", {
+         Fancybox.bind("[data-fancybox]", {
             Thumbs: {
-            autoStart: true,
+                autoStart: true,
             },
         });
     </script>

@@ -63,14 +63,23 @@
                                             <a href="{{route('web.property',['slug' => $property->slug])}}" class="overlay-link">
                                                 <i class="fa fa-link"></i>
                                             </a>  
-                                            @if($property->images->count())
-                                                <button 
-                                                    type="button" 
-                                                    class="overlay-link open-gallery-btn"
-                                                    data-images='@json($property->images->pluck("url_image"))'
+                                            @if($property->images->count())    
+                                                <a 
+                                                    data-fancybox="gallery-{{ $property->id }}"
+                                                    data-caption="{{ $property->title }}"
+                                                    href="{{ $property->cover() }}" 
+                                                    class="overlay-link"
                                                 >
                                                     <i class="fa fa-expand"></i>
-                                                </button>
+                                                </a>                                                
+                                                @foreach($property->images as $image)                                  
+                                                    <a 
+                                                        data-fancybox="gallery-{{ $property->id }}"
+                                                        data-caption="{{ $property->title }}"
+                                                        href="{{ $image->url_image }}" 
+                                                        class="hidden"
+                                                    ></a> 
+                                                @endforeach                                                
                                             @endif 
                                             @auth
                                                 @if(auth()->user()->canEditProperties())

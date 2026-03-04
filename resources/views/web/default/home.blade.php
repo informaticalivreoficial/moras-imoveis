@@ -116,14 +116,23 @@
                                         <a href="{{route('web.property', ['slug' => $property->slug])}}" class="overlay-link">
                                             <i class="fa fa-link"></i>
                                         </a>
-                                        @if($property->images->count())
-                                            <button 
-                                                type="button" 
-                                                class="overlay-link open-gallery-btn"
-                                                data-images='@json($property->images->pluck("url_image"))'
+                                        @if($property->images->count())    
+                                            <a 
+                                                data-fancybox="gallery-{{ $property->id }}"
+                                                data-caption="{{ $property->title }}"
+                                                href="{{ $property->cover() }}" 
+                                                class="overlay-link"
                                             >
                                                 <i class="fa fa-expand"></i>
-                                            </button>
+                                            </a>                                                
+                                            @foreach($property->images as $image)                                  
+                                                <a 
+                                                    data-fancybox="gallery-{{ $property->id }}"
+                                                    data-caption="{{ $property->title }}"
+                                                    href="{{ $image->url_image }}" 
+                                                    class="hidden"
+                                                ></a> 
+                                            @endforeach                                                
                                         @endif
                                         @auth
                                             @if(auth()->user()->canEditProperties())
@@ -249,14 +258,23 @@
                                             <a href="{{route('web.property',['slug' => $propertyview->slug])}}" class="overlay-link">
                                                 <i class="fa fa-link"></i>
                                             </a>
-                                            @if($propertyview->images->count())
-                                                <button 
-                                                    type="button" 
-                                                    class="overlay-link open-gallery-btn"
-                                                    data-images='@json($propertyview->images->pluck("url_image"))'
+                                            @if($propertyview->images->count())    
+                                                <a 
+                                                    data-fancybox="gallery-{{ $propertyview->id }}"
+                                                    data-caption="{{ $propertyview->title }}"
+                                                    href="{{ $propertyview->cover() }}" 
+                                                    class="overlay-link"
                                                 >
                                                     <i class="fa fa-expand"></i>
-                                                </button>
+                                                </a>                                                
+                                                @foreach($propertyview->images as $image)                                  
+                                                    <a 
+                                                        data-fancybox="gallery-{{ $propertyview->id }}"
+                                                        data-caption="{{ $propertyview->title }}"
+                                                        href="{{ $image->url_image }}" 
+                                                        class="hidden"
+                                                    ></a> 
+                                                @endforeach                                                
                                             @endif
                                             @auth
                                                 @if(auth()->user()->canEditProperties())
@@ -457,6 +475,7 @@
 @endsection
 
 @section('css')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.css"/>
     <style>
         .stars-outer {
             position: relative;
@@ -483,6 +502,14 @@
 @endsection
 
 @section('js')
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.umd.js"></script>
+    <script>
+         Fancybox.bind("[data-fancybox]", {
+            Thumbs: {
+                autoStart: true,
+            },
+        });
+    </script>
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('galleryRoot', () => ({

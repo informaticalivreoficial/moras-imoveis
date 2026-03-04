@@ -11,10 +11,18 @@
 @endsection
 
 @section('css')
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.css"/>
 @endsection
 
 @section('js')
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.umd.js"></script>
+    <script>
+         Fancybox.bind("[data-fancybox]", {
+            Thumbs: {
+                autoStart: true,
+            },
+        });
+    </script>
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('galleryRoot', () => ({
