@@ -70,9 +70,19 @@
                                 <div class="property-overlay">
                                     @if($property->images()->get()->count())
                                         <div class="property-magnify-gallery"> 
-                                            <a style="font-size:22px;line-height: 46px;width: 56px; height: 56px;" href="{{$property->cover()}}" class="overlay-link"><i class="fa fa-expand"></i></a>
+                                            <a 
+                                                data-fancybox="gallery"
+                                                data-caption="{{ $property->title }}"
+                                                style="font-size:22px;line-height: 46px;width: 56px; height: 56px;" 
+                                                href="{{$property->cover()}}" 
+                                                class="overlay-link"
+                                            ><i class="fa fa-expand"></i></a>
                                             @foreach($property->images()->get() as $image)                                      
-                                                <a href="{{ $image->url_image }}" class="hidden"></a>                                      
+                                                <a 
+                                                    data-fancybox="gallery"
+                                                    data-caption="{{ $property->title }}" 
+                                                    href="{{ $image->url_image }}" class="hidden"
+                                                ></a>                                      
                                             @endforeach
                                         </div>
                                     @endif
@@ -589,10 +599,19 @@
                                                     <i class="fa fa-link"></i>
                                                 </a>    
                                                 @if($item->images()->get()->count())
-                                                    <a href="{{$item->cover()}}" class="overlay-link"><i class="fa fa-expand"></i></a>
+                                                    <a 
+                                                        data-fancybox="gallery"
+                                                        data-caption="{{ $item->title }}"
+                                                        href="{{$item->cover()}}" 
+                                                        class="overlay-link"
+                                                    ><i class="fa fa-expand"></i></a>
                                                     <div class="property-magnify-gallery"> 
                                                         @foreach($item->images()->get() as $image)                                  
-                                                            <a href="{{ $image->url_image }}" class="hidden"></a> 
+                                                            <a 
+                                                                data-fancybox="gallery"
+                                                                data-caption="{{ $item->title }}"
+                                                                href="{{ $image->url_image }}" 
+                                                            class="hidden"></a> 
                                                         @endforeach
                                                     </div>
                                                 @endif  
@@ -659,12 +678,18 @@
 @endsection
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{url(asset('frontend/'.$configuracoes->template.'/js/shadowbox/shadowbox.css'))}}"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.css"/>
 @endsection
 
 @section('js')
-    <script src="{{asset('frontend/'.$configuracoes->template.'/js/jquery.magnific-popup.min.js')}}"></script>
-    <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/shadowbox/shadowbox.js'))}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.umd.js"></script>
+    <script>
+        Fancybox.bind("[data-fancybox='gallery']", {
+            Thumbs: {
+            autoStart: true,
+            },
+        });
+    </script>
     <script>
         function shareWhatsApp(event) {
             event.preventDefault();
@@ -681,22 +706,5 @@
 
             window.open(whatsappUrl, '_blank');
         }
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('.overlay-link').on('click', function(e) {
-                e.preventDefault(); // evita o comportamento padrão do link
-
-                // seleciona o container de imagens ocultas
-                const $gallery = $(this).siblings('.property-magnify-gallery');
-
-                // inicializa o Magnific Popup
-                $gallery.magnificPopup({
-                    delegate: 'a',        // todos os <a> dentro do container
-                    type: 'image',
-                    gallery: { enabled: true }
-                }).magnificPopup('open', 0); // abre a partir do primeiro link
-            });
-        });
-    </script>
+    </script>    
 @endsection
