@@ -17,6 +17,7 @@ use App\Livewire\Dashboard\Roles\Index as RoleIndex;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\{
     PropertyRssController,
+    RssFeedController,
     Webcontroller
 };
 
@@ -38,8 +39,8 @@ Route::group(['namespace' => 'Web', 'as' => 'web.'], function () {
     
     Route::get('/rss/imoveis', [PropertyRssController::class, 'index'])->name('rss.properties');
 
-//     /** FEED */
-//     Route::get('feed', [FeedController::class, 'feed'])->name('feed');
+    /** FEED */    
+    Route::get('feed', [RssFeedController::class, 'feed'])->name('feed');
     
 //     Route::get('/sitemap', [WebController::class, 'sitemap'])->name('sitemap');
 
