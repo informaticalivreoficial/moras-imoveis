@@ -22,6 +22,8 @@ return [
     'desenvolvedor_email' => env('DESENVOLVEDOR_EMAIL', 'suporte@informaticalivre.com.br'),
     'desenvolvedor_nome' => env('DESENVOLVEDOR', 'Informática Livre'),
 
+    'api_token' => env('API_TOKEN', 'your-default-api-token-here'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

@@ -10,19 +10,30 @@ use Illuminate\Support\Facades\Cache;
 class PropertyRssController extends Controller
 {
     protected $config;
+
     public function __construct()
     {
-        $this->config = Config::where('id', 1)->first();
+        $this->config = Cache::remember('site_config', 3600, function () {
+            return Config::find(1);
+        });
     }
 
     public function index()
     {
-        $properties = Cache::remember('rss_properties', 300, function () {
-            return Property::available()->latest()->limit(20)->get();
+        $properties = Cache::remember('rss_properties_latest', 300, function () {
+            return Property::select('id', 'title', 'slug', 'description', 'created_at')
+                ->available()
+                ->orderByDesc('created_at')
+                ->limit(20)
+                ->get();
         });
 
+        if ($properties->isEmpty()) {
+            logger()->warning('RSS: nenhum imóvel encontrado');
+        }
+
         return response()
-            ->view('web.'.$this->config->template.'.rss.properties', compact('properties'))
-            ->header('Content-Type', 'application/rss+xml; charset=UTF-8');
+            ->view('web.' . $this->config->template . '.rss.properties', compact('properties'))
+            ->header('Content-Type', 'text/xml; charset=UTF-8');
     }
 }

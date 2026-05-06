@@ -1,48 +1,86 @@
 <?= '<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL ?>
-<rss version="2.0">
+<rss version="2.0"
+     xmlns:media="http://search.yahoo.com/mrss/">
+
     <channel>
         <title><![CDATA[{{ $config->app_name }}]]></title>
         <link><![CDATA[{{ url('feed') }}]]></link>
         <description><![CDATA[{{ $config->information }}]]></description>
         <language>pt-br</language>
-        <pubDate>{{ now() }}</pubDate>
+        <pubDate>{{ now()->toRssString() }}</pubDate>
 
         @foreach($noticias as $noticia)
             <item>
                 <title><![CDATA[{{ $noticia->title }}]]></title>
+
                 <link>{{ route('web.blog.noticia', ['slug' => $noticia->slug]) }}</link>
-                <image>{{ $noticia->cover() }}</image>
+
+                <guid isPermaLink="true">
+                    {{ route('web.blog.noticia', ['slug' => $noticia->slug]) }}
+                </guid>
+
+                <pubDate>{{ $noticia->created_at->toRssString() }}</pubDate>
+
                 <description><![CDATA[{!! $noticia->getContentWebAttribute() !!}]]></description>
-                <category>{{ $noticia->categoryObject->title }}</category>
+
+                <category><![CDATA[{{ $noticia->categoryObject->title }}]]></category>
+
                 <author><![CDATA[{{ $noticia->userObject->name }}]]></author>
-                <guid>{{ $noticia->id }}</guid>
-                <pubDate>{{ $noticia->created_at }}</pubDate>
+
+                @if($noticia->cover())
+                    <media:content url="{{ $noticia->cover() }}" medium="image" />
+                    <enclosure url="{{ $noticia->cover() }}" type="image/jpeg" />
+                @endif
             </item>
         @endforeach
 
         @foreach($artigos as $artigo)
             <item>
                 <title><![CDATA[{{ $artigo->title }}]]></title>
+
                 <link>{{ route('web.blog.artigo', ['slug' => $artigo->slug]) }}</link>
-                <image>{{ $artigo->cover() }}</image>
+
+                <guid isPermaLink="true">
+                    {{ route('web.blog.artigo', ['slug' => $artigo->slug]) }}
+                </guid>
+
+                <pubDate>{{ $artigo->created_at->toRssString() }}</pubDate>
+
                 <description><![CDATA[{!! $artigo->getContentWebAttribute() !!}]]></description>
-                <category>{{ $artigo->categoryObject->title }}</category>
+
+                <category><![CDATA[{{ $artigo->categoryObject->title }}]]></category>
+
                 <author><![CDATA[{{ $artigo->userObject->name }}]]></author>
-                <guid>{{ $artigo->id }}</guid>
-                <pubDate>{{ $artigo->created_at }}</pubDate>
+
+                @if($artigo->cover())
+                    <media:content url="{{ $artigo->cover() }}" medium="image" />
+                    <enclosure url="{{ $artigo->cover() }}" type="image/jpeg" />
+                @endif
             </item>
         @endforeach
 
         @foreach($imoveis as $imovel)
             <item>
                 <title><![CDATA[{{ $imovel->title }}]]></title>
+
                 <link>{{ route('web.property', ['slug' => $imovel->slug]) }}</link>
-                <image>{{ $imovel->cover() }}</image>
+
+                <guid isPermaLink="true">
+                    {{ route('web.property', ['slug' => $imovel->slug]) }}
+                </guid>
+
+                <pubDate>{{ $imovel->created_at->toRssString() }}</pubDate>
+
                 <description><![CDATA[{!! $imovel->getContentWebAttribute() !!}]]></description>
-                <category>{{ $imovel->category }} - {{ $imovel->type }}</category>
+
+                <category><![CDATA[{{ $imovel->category }} - {{ $imovel->type }}]]></category>
+
                 <author><![CDATA[{{ $config->app_name }}]]></author>
-                <guid>{{ $imovel->id }}</guid>
-                <pubDate>{{ $imovel->created_at }}</pubDate>
+
+                @if($imovel->cover())
+                    <media:content url="{{ $imovel->cover() }}" medium="image" />
+                    <enclosure url="{{ $imovel->cover() }}" type="image/jpeg" />
+                @endif
             </item>
         @endforeach
 
