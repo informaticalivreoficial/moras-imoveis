@@ -11,7 +11,7 @@ class PostFacebookService
     public function post(Post $post): bool
     {
         try {
-            $response = Http::post(config('services.make'), [
+            $response = Http::post(config('services.make.webhook'), [
                 'title'   => $post->title,
                 'content' => strip_tags($post->content),
                 'url'     => url('/blog/artigo/' . $post->slug),
