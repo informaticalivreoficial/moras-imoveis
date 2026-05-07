@@ -59,18 +59,7 @@ class Posts extends Component
     {              
         $post = Post::findOrFail($id);
         $post->status = !$post->status;        
-        $post->save();
-
-        if ($post->status == 1) {
-            Http::post(config('services.make'), [
-                'title'   => $post->title,
-                'content' => strip_tags($post->content),
-                'url'     => url('/blog/artigo/' . $post->slug),
-                'image'   => $post->cover()?->path ?? null,
-            ]);
-        }
-
-        return back();        
+        $post->save();        
     }
 
     public function setDeleteId($id)
