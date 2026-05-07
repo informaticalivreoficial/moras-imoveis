@@ -9,7 +9,8 @@
 
     <link rel="icon" href="{{ asset('theme/images/chave.png')}}" type="image/x-icon">
     
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
     {{-- FontAwesome --}}
     <link rel="stylesheet" href="{{ asset('theme/plugins/fontawesome-free/css/all.min.css') }}">
     {{-- Bootstrap 4 --}}
