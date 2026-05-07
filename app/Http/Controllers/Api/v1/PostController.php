@@ -70,7 +70,7 @@ class PostController extends Controller
 
             // 📝 título
             $title = wordwrap(
-                Str::limit($post->title, 90),
+                Str::limit($post->title, 130),
                 54,
                 "\n"
             );
@@ -78,8 +78,8 @@ class PostController extends Controller
             // ✍️ texto Preto
             $image->text(
                 $title,
-                52,
-                483,
+                49,
+                470,
                 function ($font) {
 
                     $font->filename(
@@ -97,8 +97,8 @@ class PostController extends Controller
             // ✍️ texto
             $image->text(
                 $title,
-                49,
-                480,
+                46,
+                467,
                 function ($font) {
 
                     $font->filename(
