@@ -71,8 +71,8 @@ class Webcontroller extends Controller
             return $b;
         });
         
-        $head = $this->seo->render($this->config->app_name ?? env('APP_NAME'),
-            $this->config->information ?? env('APP_NAME'),
+        $head = $this->seo->render($this->config->app_name ?? config('app.name'),
+            $this->config->information ?? config('app.name'),
             route('web.home'),
             $this->config->getmetaimg() ?? url(asset('theme/images/image.jpg'))
         );
@@ -89,7 +89,7 @@ class Webcontroller extends Controller
 
     public function Properties()
     {
-        $head = $this->seo->render('Últimos imóveis cadastrados - ' . $this->config->app_name ?? env('APP_NAME'),
+        $head = $this->seo->render('Últimos imóveis cadastrados - ' . $this->config->app_name ?? config('app.name'),
             'Confira nossos imóveis disponíveis para venda e locação.',
             route('web.properties'),
             $this->config->getMetaImg() ?? url(asset('theme/images/image.jpg'))
@@ -103,7 +103,7 @@ class Webcontroller extends Controller
 
     public function propertyNeighborhood($neighborhood)
     {
-        $head = $this->seo->render('Imóveis no bairro de ' . ucwords(str_replace('-', ' ', $neighborhood)) . ' - ' . $this->config->app_name ?? env('APP_NAME'),
+        $head = $this->seo->render('Imóveis no bairro de ' . ucwords(str_replace('-', ' ', $neighborhood)) . ' - ' . $this->config->app_name ?? config('app.name'),
             'Confira os imóveis disponíveis para venda e locação no bairro de ' . ucwords(str_replace('-', ' ', $neighborhood)) . '.',
             route('web.properties.neighborhood', ['neighborhood' => $neighborhood]),
             $this->config->getMetaImg() ?? url(asset('theme/images/image.jpg'))
@@ -118,7 +118,7 @@ class Webcontroller extends Controller
 
     public function propertyList($type)
     {
-        $head = $this->seo->render('Imóveis para ' . $type . $this->config->app_name ?? env('APP_NAME'),
+        $head = $this->seo->render('Imóveis para ' . $type . $this->config->app_name ?? config('app.name'),
             'Confira os imóveis para '.$type.' temos ótimas oportunidades de negócio.',
             route('web.propertylist', $type),
             $this->config->getMetaImg() ?? url(asset('theme/images/image.jpg'))
@@ -143,7 +143,7 @@ class Webcontroller extends Controller
             $property->views = $property->views + 1;
             $property->save();
 
-            $head = $this->seo->render($property->title ?? env('APP_NAME'),
+            $head = $this->seo->render($property->title ?? config('app.name'),
                 $property->headline ?? $property->title,
                 route('web.property', ['slug' => $property->slug]),
                 $property->cover() ?? $this->config->getMetaImg()
@@ -159,7 +159,7 @@ class Webcontroller extends Controller
 
     public function pesquisaImoveis(Request $request)
     {
-        $head = $this->seo->render('Pesquisa de Imóveis - ' . $this->config->app_name ?? env('APP_NAME'),
+        $head = $this->seo->render('Pesquisa de Imóveis - ' . $this->config->app_name ?? config('app.name'),
             'Resultados da sua pesquisa de imóveis.',
             route('web.pesquisar-imoveis'),
             $this->config->getMetaImg() ?? url(asset('theme/images/image.jpg'))
@@ -172,7 +172,7 @@ class Webcontroller extends Controller
 
     public function PropertyHighliths()
     {
-        $head = $this->seo->render('Lançamentos - ' . $this->config->app_name ?? env('APP_NAME'),
+        $head = $this->seo->render('Lançamentos - ' . $this->config->app_name ?? config('app.name'),
             'Confira nossos lançamentos imobiliários.',
             route('web.highliths'),
             $this->config->getMetaImg() ?? url(asset('theme/images/image.jpg'))
@@ -195,7 +195,7 @@ class Webcontroller extends Controller
                 ->orderBy('created_at', 'DESC')
                 ->paginate(21);
 
-        $head = $this->seo->render('Blog - ' . $this->config->app_name ?? env('APP_NAME'),
+        $head = $this->seo->render('Blog - ' . $this->config->app_name ?? config('app.name'),
             'Confira nossos artigos e notícias sobre o mercado imobiliário.',
             route('web.blog.index'),
             $this->config->getmetaimg() ?? url(asset('theme/images/image.jpg'))
@@ -209,14 +209,14 @@ class Webcontroller extends Controller
 
     public function blogCategory($slug)
     {
-        $category = CatPost::where('slug', $slug)->first();
+        $category = CatPost::where('slug', $slug)->firstOrFail();
 
         $posts = Post::where('category', $category->id)
                 ->postson()
                 ->orderBy('created_at', 'DESC')
                 ->paginate(21);
 
-        $head = $this->seo->render('Blog - ' . $category->title ?? env('APP_NAME'),
+        $head = $this->seo->render('Blog - ' . $category->title ?? config('app.name'),
             'Confira nossos artigos e notícias sobre o mercado imobiliário na categoria '.$category->title.'.',
             route('web.blog.category', ['slug' => $category->slug]),
             $this->config->getmetaimg() ?? url(asset('theme/images/image.jpg'))
@@ -231,16 +231,15 @@ class Webcontroller extends Controller
 
     public function artigo(Request $request)
     {
-        $post = Post::where('slug', $request->slug)->postson()->first();
+        $post = Post::where('slug', $request->slug)->visibleTo()->firstOrFail();
 
         $postsTags = Post::where('type', 'artigo')->postson()->limit(3)->get();
         $categorias = CatPost::orderBy('title', 'ASC')->where('type', 'artigo')->get();
         $postsMais = Post::orderBy('views', 'DESC')->where('type', 'artigo')->limit(3)->postson()->get();
         
-        $post->views = $post->views + 1;
-        $post->save();
+        $post->increment('views');
 
-        $head = $this->seo->render('Blog - ' . $post->title ?? env('APP_NAME'),
+        $head = $this->seo->render('Blog - ' . $post->title ?? config('app.name'),
             $post->title,
             route('web.blog.artigo', ['slug' => $post->slug]),
             $post->nocover() ?? $this->config->getmetaimg()
@@ -257,16 +256,15 @@ class Webcontroller extends Controller
 
     public function noticia(Request $request)
     {
-        $post = Post::where('slug', $request->slug)->postson()->first();
+        $post = Post::where('slug', $request->slug)->visibleTo()->firstOrFail();
 
         $postsTags = Post::where('type', 'noticia')->postson()->limit(3)->get();
         $categorias = CatPost::orderBy('title', 'ASC')->where('type', 'noticia')->get();
         $postsMais = Post::orderBy('views', 'DESC')->where('type', 'noticia')->limit(3)->postson()->get();
         
-        $post->views = $post->views + 1;
-        $post->save();
+        $post->increment('views');
 
-        $head = $this->seo->render('Blog - ' . $post->title ?? env('APP_NAME'),
+        $head = $this->seo->render('Blog - ' . $post->title ?? config('app.name'),
             $post->title,
             route('web.blog.noticia', ['slug' => $post->slug]),
             $post->cover() ?? $this->config->getmetaimg()
@@ -289,7 +287,9 @@ class Webcontroller extends Controller
             return redirect()->route('web.home');
         }
 
-        $head = $this->seo->render($page->title . ' - ' . $this->config->app_name ?? env('APP_NAME'),
+        $page->increment('views');
+
+        $head = $this->seo->render($page->title . ' - ' . $this->config->app_name ?? config('app.name'),
             $page->headline ?? $page->title,
             route('web.page', ['slug' => $page->slug]),
             $page->cover() ?? $this->config->getmetaimg()
@@ -303,7 +303,7 @@ class Webcontroller extends Controller
 
     public function privacy()
     {
-        $head = $this->seo->render('Política de Privacidade - ' . $this->config->app_name ?? env('APP_NAME'),
+        $head = $this->seo->render('Política de Privacidade - ' . $this->config->app_name ?? config('app.name'),
             'Leia nossa política de privacidade e saiba como protegemos seus dados.',
             route('web.privacy'),
             $this->config->getmetaimg() ?? url(asset('theme/images/image.jpg'))
@@ -320,7 +320,7 @@ class Webcontroller extends Controller
 
     public function contact()
     {
-        $head = $this->seo->render('Atendimento - ' . $this->config->app_name ?? env('APP_NAME'),
+        $head = $this->seo->render('Atendimento - ' . $this->config->app_name ?? config('app.name'),
             'Entre em contato conosco, teremos prazer em atendê-lo!',
             route('web.contact'),
             $this->config->getmetaimg() ?? url(asset('theme/images/image.jpg'))
@@ -333,7 +333,7 @@ class Webcontroller extends Controller
 
     public function creditSimulator()
     {
-        $head = $this->seo->render('Simulador de Crédito Imobiliário - ' . $this->config->app_name ?? env('APP_NAME'),
+        $head = $this->seo->render('Simulador de Crédito Imobiliário - ' . $this->config->app_name ?? config('app.name'),
             'Simule seu crédito imobiliário conosco!',
             route('web.simulator'),
             $this->config->getmetaimg() ?? url(asset('theme/images/image.jpg'))

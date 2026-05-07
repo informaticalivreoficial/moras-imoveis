@@ -88,20 +88,14 @@ class PostForm extends Component
 
     public function mount(Post $post)
     {
-        // ✅ Carregar autores disponíveis
-        $this->autores = User::where(function ($q) {
-                $q->where('admin', 1)
-                  ->orWhere('editor', 1);
-            })
-            ->where('superadmin', 0) // exclui superadmins
-            ->where('client', 0)     // exclui clients
-            ->orderBy('name')
-            ->get();
-
-        // ✅ Definir autor padrão APENAS se não houver autores disponíveis
-        if ($this->autores->isEmpty()) {
-            $this->autor = auth()->id();
-        }
+        $this->autores = User::query()
+        ->when(!auth()->user()->isSuperAdmin(), function ($query) {
+            $query->whereDoesntHave('roles', function ($q) {
+                $q->where('name', 'super-admin');
+            });
+        })
+        ->orderBy('name')
+        ->get();
 
         // Carregar tipos disponíveis
         $this->types = PostType::labels();
@@ -113,10 +107,9 @@ class PostForm extends Component
             $this->title = $post->title;            
             $this->content = $post->content;
             $this->type = $post->type;
-            $this->category = $post->category; // ✅ Corrigido
+            $this->category = $post->category; 
             $this->status = $post->status ?? 1;
-            $this->publish_at = $post->publish_at ? $post->publish_at : now()->format('d/m/Y');
-            //$this->publish_at = $post->publish_at?->format('d/m/Y H:i');
+            $this->publish_at = $post->publish_at;
             $this->thumb_caption = $post->thumb_caption ?? '';
             $this->comments = $post->comments ?? 0;
             $this->tags = is_string($post->tags) ? explode(',', $post->tags) : ($post->tags ?? []);
@@ -130,7 +123,6 @@ class PostForm extends Component
         } else {
             // Modo criação
             $this->post = new Post();
-            $this->publish_at = $post->publish_at ? $post->publish_at : now()->format('d/m/Y');
         }
     }
 

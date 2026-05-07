@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     protected $table = 'posts'; 
 
@@ -34,72 +35,30 @@ class Post extends Model
     ];
 
     protected $casts = [
-        //'publish_at' => 'datetime',
         'status' => 'boolean',
-        'coments' => 'boolean',
+        'comments' => 'boolean',
     ];
 
-    /**
-     * Boot do model - executado automaticamente
-    */
     protected static function boot()
     {
-        parent::boot();
-
-        // Antes de salvar (criar ou atualizar)
-        static::saving(function ($post) {
-            if (empty($post->slug) && !empty($post->title)) {
-                $post->slug = $post->generateUniqueSlug($post->title);
-            }
-        });
-    }
-
-    /**
-     * Gera um slug único
-    */
-    public function generateUniqueSlug($title)
-    {
-        $slug = Str::slug($title);
-        $originalSlug = $slug;
-        $counter = 1;
-
-        // Verifica se já existe, excluindo o próprio post em caso de edição
-        while (static::where('slug', $slug)
-                    ->where('id', '!=', $this->id ?? 0)
-                    ->exists()) {
-            $slug = $originalSlug . '-' . $counter;
-            $counter++;
-        }
-
-        return $slug;
-    }
-
-    /**
-     * Método manual para atualizar o slug (se necessário)
-    */
-    public function updateSlug()
-    {
-        if (!empty($this->title)) {
-            $this->slug = $this->generateUniqueSlug($this->title);
-            $this->save();
-        }
+        parent::boot();        
     }
 
     protected static function booted()
     {
-        static::deleting(function ($post) {
-            // Deleta imagens físicas e registros relacionados
-            foreach ($post->images as $image) {
-                if ($image->path && Storage::disk('public')->exists($image->path)) {
-                    Storage::disk('public')->delete($image->path);
-                }
-                $image->delete();
-            }
-
-            // Deleta a pasta inteira do imóvel no storage
-            Storage::disk('public')->deleteDirectory("posts/{$post->id}");
+        static::saving(function ($post) {
+            $post->setSlug();
         });
-    }
+
+        static::deleting(function ($post) {
+            // Só deleta as imagens no forceDelete
+            if ($post->isForceDeleting()) {
+                Storage::disk('public')->deleteDirectory("posts/{$post->id}");
+                $post->images()->delete();
+            }
+        });
+    }  
+   
 
     /**
      * Scopes
@@ -112,6 +71,20 @@ class Post extends Model
     public function scopePostsoff($query)
     {
         return $query->where('status', 0);
+    }
+
+    public function scopeVisibleTo($query)
+    {
+        // 👑 admin pode ver tudo
+        if (
+            auth()->check() &&
+            auth()->user()->canPreviewPosts()
+        ) {
+            return $query;
+        }
+
+        // 🌎 visitante só vê publicados
+        return $query->postson();
     }
 
     /**
@@ -127,7 +100,7 @@ class Post extends Model
     {
         return $this->hasOne(CatPost::class, 'id', 'category');
     }
-
+    
     public function categoryObject()
     {
         return $this->hasOne(CatPost::class, 'id', 'category');
@@ -135,7 +108,7 @@ class Post extends Model
     
     public function userObject()
     {
-        return $this->hasOne(User::class, 'id', 'category');
+        return $this->hasOne(User::class, 'id', 'autor');
     }
     
     public function images()
@@ -183,7 +156,7 @@ class Post extends Model
         }
 
         return Storage::url(Cropper::thumb($cover['path'], 720, 480));
-    }  
+    }    
 
     public function nocover()
     {
@@ -221,6 +194,27 @@ class Post extends Model
             return null;
         }
         return date('d/m/Y', strtotime($value));
+    }
+
+    public function setSlug()
+    {
+        if (!empty($this->title)) {
+    
+            $baseSlug = Str::slug($this->title);
+            $slug = $baseSlug;
+            $count = 1;
+    
+            while (
+                Post::where('slug', $slug)
+                    ->where('id', '!=', $this->id)
+                    ->exists()
+            ) {
+                $slug = $baseSlug . '-' . str_pad($count, 2, '0', STR_PAD_LEFT);
+                $count++;
+            }
+    
+            $this->attributes['slug'] = $slug;
+        }
     }
     
     private function convertStringToDate(?string $param)

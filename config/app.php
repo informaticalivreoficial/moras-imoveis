@@ -18,9 +18,19 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'logomarca_width'  => env('LOGOMARCA_GERENCIADOR_WIDTH', 447),
+    'logomarca_height' => env('LOGOMARCA_GERENCIADOR_HEIGHT', 155),
+    'metaimg_width' => env('METAIMG_WIDTH', 800),
+    'metaimg_height' => env('METAIMG_HEIGHT', 418),
+
+    'max_images' => env('MAX_PROPERTY_IMAGES', 20),
+
+    'desenvolvedor' => env('DESENVOLVEDOR', 'Informática Livre'),
     'desenvolvedor_url' => env('DESENVOLVEDOR_URL', 'https://informaticalivre.com.br'),
+    'desenvolvedor_logo' => env('DESENVOLVEDOR_LOGO', 'https://informaticalivre.com.br/media/logo.png'),
     'desenvolvedor_email' => env('DESENVOLVEDOR_EMAIL', 'suporte@informaticalivre.com.br'),
-    'desenvolvedor_nome' => env('DESENVOLVEDOR', 'Informática Livre'),
+    'desenvolvedor_telefone' => env('DESENVOLVEDOR_TELEFONE', '(12) 99138-5030'),
+    'versao_sistema' => env('VERSAO_SISTEMA', '3.0'),
 
     'api_token' => env('API_TOKEN', 'your-default-api-token-here'),
 
@@ -175,7 +185,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        Intervention\Image\ImageServiceProvider::class,
+        //Intervention\Image\ImageServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -190,7 +200,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Image' => Intervention\Image\Facades\Image::class,
+        //'Image' => Intervention\Image\Facades\Image::class,
     ])->toArray(),
 
 ];

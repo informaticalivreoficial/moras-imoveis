@@ -102,7 +102,7 @@
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>
                                     Listar Todos
-                                    <span class="badge badge-info right">{{$postsCount}}</span>
+                                    <span class="badge badge-info right">{{--$postsCount--}}</span>
                                 </p>
                             </a>
                         </li>
@@ -110,6 +110,12 @@
                             <a href="{{route('posts.categories.index')}}" class="nav-link {{ Route::is('posts.categories.index') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Categorias</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('posts.lixeira')}}" class="nav-link {{ Route::is('posts.lixeira') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Lixeira</p>
                             </a>
                         </li>
                     </ul>

@@ -45,7 +45,7 @@
                 <div class="bg-white">
                     <div class="card-body text-muted">
                         <div class="row">                           
-                            <div class="col-12 col-md-6 col-lg-6">   
+                            <div class="col-12 col-md-6 col-lg-9">   
                                 <div class="form-group">
                                     <label class="labelforms"><b>*Título</b></label>
                                     <input type="text" class="form-control @error('title') is-invalid @enderror"  wire:model="title">

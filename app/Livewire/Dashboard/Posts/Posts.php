@@ -3,6 +3,7 @@
 namespace App\Livewire\Dashboard\Posts;
 
 use App\Models\Post;
+use App\Models\User;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
@@ -10,6 +11,10 @@ use Livewire\WithPagination;
 class Posts extends Component
 {
     use WithPagination;
+
+    public string $filterType = '';
+    public string $filterAutor = '';
+    public $autores = [];
 
     public int $perPage = 25;
 
@@ -46,25 +51,7 @@ class Posts extends Component
         $this->resetPage();
     }
 
-    public function render()
-    {
-        $title = 'Lista de Posts';
-        $searchableFields = ['title','content','slug','category'];
-        $posts = Post::query()
-            ->when($this->search, function ($query) use ($searchableFields) {
-                $query->where(function ($q) use ($searchableFields) {
-                    foreach ($searchableFields as $field) {
-                        $q->orWhere($field, 'LIKE', "%{$this->search}%");
-                    }
-                });
-            })
-            ->orderBy($this->sortField, $this->sortDirection)
-            ->paginate($this->perPage);
-        return view('livewire.dashboard.posts.posts',[
-            'title' => $title,
-            'posts' => $posts,
-        ]);
-    }
+    
 
     public function toggleStatus($id)
     {              
@@ -100,5 +87,44 @@ class Posts extends Component
             'timer' => 2000,
             'showConfirmButton' => false,
         ]);
-    }    
+    }  
+
+    public function mount()
+    {
+        $this->autores = User::query()
+            ->when(!auth()->user()->isSuperAdmin(), function ($q) {
+                $q->whereDoesntHave('roles', fn($q) =>
+                    $q->where('name', 'super-admin')
+                );
+            })
+            ->orderBy('name')
+            ->get();
+    }
+    
+    public function render()
+    {
+        $title = 'Lista de Posts';
+        $searchableFields = ['title','content','slug','category'];
+        $posts = Post::query()
+            ->when($this->search, function ($query) use ($searchableFields) {
+                $query->where(function ($q) use ($searchableFields) {
+                    foreach ($searchableFields as $field) {
+                        $q->orWhere($field, 'LIKE', "%{$this->search}%");
+                    }
+                });
+            })
+            ->when($this->filterType, function ($query) {
+                $query->where('type', $this->filterType);
+            })
+            ->when($this->filterAutor, function ($query) {
+                $query->where('autor', $this->filterAutor);
+            })
+            ->orderBy($this->sortField, $this->sortDirection)
+            ->paginate($this->perPage);
+
+        return view('livewire.dashboard.posts.posts',[
+            'title' => $title,
+            'posts' => $posts,
+        ]);
+    }
 }
