@@ -115,5 +115,3 @@ GEMINI_API_KEY=sua-chave
 Este projeto está sob a licença [MIT](https://opensource.org/licenses/MIT).
 
 ---
-
-<p align="center">Desenvolvido com ❤️ para o Litoral Norte de São Paulo</p>
