@@ -37,4 +37,8 @@ return [
         'token' => env('GITHUB_TOKEN'),
     ],
 
+    'make' => [
+        'webhook' => env('MAKE_WEBHOOK_URL'),
+    ],
+
 ];

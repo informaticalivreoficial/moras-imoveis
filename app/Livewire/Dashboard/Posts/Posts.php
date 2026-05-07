@@ -4,6 +4,7 @@ namespace App\Livewire\Dashboard\Posts;
 
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
@@ -58,6 +59,17 @@ class Posts extends Component
         $post = Post::findOrFail($id);
         $post->status = !$post->status;        
         $post->save();
+
+        if ($post->status == 1) {
+            Http::post(config('services.make'), [
+                'title'   => $post->title,
+                'content' => strip_tags($post->content),
+                'url'     => url('/blog/artigo/' . $post->slug),
+                'image'   => $post->cover()?->path ?? null,
+            ]);
+        }
+
+        return back();        
     }
 
     public function setDeleteId($id)
