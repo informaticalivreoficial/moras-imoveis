@@ -110,7 +110,7 @@
                                     <div class="flex items-center justify-center gap-2">
                                         <x-forms.switch-toggle
                                             wire:key="safe-switch-{{ $post->id }}"
-                                            wire:click="toggleStatus({{ $post->id }})"
+                                            wire:change="toggleStatus({{ $post->id }})"
                                             :checked="$post->status"
                                             size="sm"
                                             color="green"
