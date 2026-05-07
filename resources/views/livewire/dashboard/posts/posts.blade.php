@@ -117,7 +117,7 @@
                                         />         
                                         <button
                                             x-data
-                                            x-on:click="$wire.confirm('Deseja postar no Facebook?').then(() => $wire.postarFacebook({{ $post->id }}))"
+                                            @click="if(confirm('Deseja postar no Facebook?')) $wire.postarFacebook({{ $post->id }})"
                                             class="btn btn-xs bg-primary"
                                             title="Postar no Facebook"
                                         >
