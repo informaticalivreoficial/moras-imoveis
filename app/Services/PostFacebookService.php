@@ -15,7 +15,7 @@ class PostFacebookService
                 'title'   => $post->title,
                 'content' => strip_tags($post->content),
                 'url'     => url('/blog/artigo/' . $post->slug),
-                'image'   => $post->cover()?->path ?? null,
+                'image'   => $post->cover(),
             ]);
 
             if ($response->failed()) {
