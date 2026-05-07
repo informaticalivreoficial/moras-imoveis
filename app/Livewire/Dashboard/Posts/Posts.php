@@ -4,6 +4,7 @@ namespace App\Livewire\Dashboard\Posts;
 
 use App\Models\Post;
 use App\Models\User;
+use App\Services\PostFacebookService;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -111,6 +112,24 @@ class Posts extends Component
             })
             ->orderBy('name')
             ->get();
+    }
+
+    public function postarFacebook(int $id): void
+    {
+        $post = Post::findOrFail($id);
+        $sucesso = app(PostFacebookService::class)->post($post);
+
+        if ($sucesso) {
+            $this->dispatch('toast', [
+                'type' => 'success',
+                'message' => 'Post enviado ao Facebook!'
+            ]);
+        } else {
+            $this->dispatch('toast', [
+                'type' => 'error',
+                'message' => 'Falha ao enviar ao Facebook.'
+            ]);
+        }
     }
     
     public function render()

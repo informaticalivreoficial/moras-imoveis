@@ -110,11 +110,19 @@
                                     <div class="flex items-center justify-center gap-2">
                                         <x-forms.switch-toggle
                                             wire:key="safe-switch-{{ $post->id }}"
-                                            wire:change="toggleStatus({{ $post->id }})"
+                                            wire:click="toggleStatus({{ $post->id }})"
                                             :checked="$post->status"
                                             size="sm"
                                             color="green"
-                                        />                                        
+                                        />         
+                                        <button
+                                            wire:click="postarFacebook({{ $post->id }})"
+                                            wire:confirm="Deseja postar no Facebook?"
+                                            class="btn btn-xs bg-primary"
+                                            title="Postar no Facebook"
+                                        >
+                                        <i class="fab fa-facebook"></i>
+                                        </button>                               
                                         <a target="_blank" href="{{ route('web.' . (
                                                                     $post->type == 'artigo' ? 'blog.artigo' : (
                                                                     $post->type == 'noticia' ? 'blog.noticia' : 'page')), $post->slug) }}" 
