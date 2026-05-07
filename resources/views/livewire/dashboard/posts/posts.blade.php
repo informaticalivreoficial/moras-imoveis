@@ -110,14 +110,14 @@
                                     <div class="flex items-center justify-center gap-2">
                                         <x-forms.switch-toggle
                                             wire:key="safe-switch-{{ $post->id }}"
-                                            wire:click="toggleStatus({{ $post->id }})"
+                                            wire:change="toggleStatus({{ $post->id }})"
                                             :checked="$post->status"
                                             size="sm"
                                             color="green"
                                         />         
                                         <button
-                                            wire:click="postarFacebook({{ $post->id }})"
-                                            wire:confirm="Deseja postar no Facebook?"
+                                            x-data
+                                            x-on:click="$wire.confirm('Deseja postar no Facebook?').then(() => $wire.postarFacebook({{ $post->id }}))"
                                             class="btn btn-xs bg-primary"
                                             title="Postar no Facebook"
                                         >
