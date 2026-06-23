@@ -22,13 +22,13 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p ${{ secrets.SSH_PORT }} << 'ENDSSH'
           
-          git config --global --add safe.directory /www/wwwroot/imobiliariaubatuba.com
+          git config --global --add safe.directory /www/wwwroot/ubatubanorthshore.com.br
 
           export PATH=/usr/local/node/bin:/usr/local/bin:$PATH
           export NODE_PATH=/usr/local/node/lib/node_modules:$NODE_PATH
           export PATH=/www/server/php/81/bin:$PATH
 
-          cd /www/wwwroot/imobiliariaubatuba.com
+          cd /www/wwwroot/ubatubanorthshore.com.br
 
           echo "🚀 Pull do GitHub"
           git pull origin main
