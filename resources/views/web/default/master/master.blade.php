@@ -45,290 +45,95 @@
         <!-- Google fonts -->
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800%7CPlayfair+Display:400,700%7CRoboto:100,300,400,400i,500,700">  
         
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style>
+            [x-cloak] { display: none !important; }          
+        </style>
+
+        @vite(['resources/css/app.css', 'resources/js/front.js'])
         
         @hasSection('css')
             @yield('css')
         @endif    
 
     </head>
-    <body>
-        <!-- Top header start -->
-        <header class="top-header hidden-xs" id="top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <div class="list-inline">
-                            @if ($configuracoes->cell_phone)
-                                <a href="tel:{{$configuracoes->cell_phone}}"><i class="fa fa-phone"></i>{{$configuracoes->cell_phone}}</a>
-                            @endif
-                            @if ($configuracoes->whatsapp)
-                                <a target="_blank" href="{{\App\Helpers\WhatsApp::getNumZap($configuracoes->whatsapp ,'Atendimento '.$configuracoes->name)}}"><i class="fa fa-whatsapp"></i>{{$configuracoes->whatsapp}}</a>
-                            @endif
-                            @if ($configuracoes->email)
-                                <a href="mailto:{{$configuracoes->email}}"><i class="fa fa-envelope"></i>{{$configuracoes->email}}</a>                                
-                            @endif
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="text-align: right;">
-                        <a target="_blank" style="margin-top: 5px;margin-bottom: 5px;" href="{{route('web.simulator')}}" class="btn button-sm border-button-theme">financiamento</a>
-                        <a style="margin-top: 5px;margin-bottom: 5px;margin-left: 10px;" href="{{route('web.pesquisar-imoveis')}}" class="btn button-sm border-button-theme">Buscar Imóveis</a>
-                                               
-                        <ul class="top-social-media pull-right" style="margin-left: 10px;">
-                            @if ($configuracoes->facebook)
-                                <li><a target="_blank" href="{{$configuracoes->facebook}}" class="facebook"><i class="fa fa-facebook"></i></a></li>                                
-                            @endif
-                            @if ($configuracoes->twitter)
-                                <li><a target="_blank" href="{{$configuracoes->twitter}}" class="twitter"><i class="fa fa-twitter"></i></a></li>
-                            @endif
-                            @if ($configuracoes->linkedin)
-                                <li><a target="_blank" href="{{$configuracoes->linkedin}}" class="linkedin"><i class="fa fa-linkedin"></i></a></li>                                
-                            @endif
-                            @if ($configuracoes->instagram)
-                                <li><a target="_blank" href="{{$configuracoes->instagram}}" class="instagram"><i class="fa fa-instagram"></i></a></li>
-                            @endif
-                        </ul>
-
-                    </div>
-                </div>
-            </div>
-        </header>
-    <!-- Top header end -->
-
-    <!-- Main header start -->
-    <header class="main-header">
-        <div class="container">
-            <nav class="navbar navbar-default">
-                <div class="navbar-header">                
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navigation" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a href="{{route('web.home')}}" class="logo" title="{{$configuracoes->app_name}}">
-                        <img src="{{$configuracoes->getlogo()}}" alt="{{$configuracoes->app_name}}"/>
-                    </a>
-                    <ul class="top-social-media mobile">
-                        @if ($configuracoes->facebook)
-                            <li><a target="_blank" href="{{$configuracoes->facebook}}" class="facebook"><i class="fa fa-facebook"></i></a></li>                                
-                        @endif
-                        @if ($configuracoes->twitter)
-                            <li><a target="_blank" href="{{$configuracoes->twitter}}" class="twitter"><i class="fa fa-twitter"></i></a></li>
-                        @endif
-                        @if ($configuracoes->linkedin)
-                            <li><a target="_blank" href="{{$configuracoes->linkedin}}" class="linkedin"><i class="fa fa-linkedin"></i></a></li>                                
-                        @endif
-                        @if ($configuracoes->instagram)
-                            <li><a target="_blank" href="{{$configuracoes->instagram}}" class="instagram"><i class="fa fa-instagram"></i></a></li>
-                        @endif
-                    </ul>
-                </div>
-                <!-- MENU -->
-                <div class="navbar-collapse collapse" role="navigation" aria-expanded="true" id="app-navigation">
-                    <ul class="nav navbar-nav">                         
-                        @if (!empty($Links) && $Links->count())                            
-                            @foreach($Links as $menuItem) 
-                                <li {{($menuItem->children && $menuItem->parent ? 'class=dropdown' : '')}}>
-                                    <a 
-                                        {{($menuItem->target == 1 ? 'target=_blank' : 'target=_self')}} 
-                                        target="_self" 
-                                        href="{{($menuItem->type == 'pagina' ? route('web.page', [ 'slug' => ($menuItem->post != null ? $menuItem->PostObject->slug : '#') ]) : $menuItem->url)}}">
-                                        {{ $menuItem->title }}{!!($menuItem->children && $menuItem->parent ? "<span class=\"caret\"></span>" : '')!!}
-                                    </a>
-                                    @if( $menuItem->children && $menuItem->parent)
-                                        <ul class="dropdown-menu">
-                                            @foreach($menuItem->children as $subMenuItem)
-                                            <li class="dropdown-submenu">
-                                                <a {{($subMenuItem->target == 1 ? 'target=_blank' : 'target=_self')}} href="{{($subMenuItem->tipo == 'Página' ? route('web.page', [ 'slug' => ($subMenuItem->post != null ? $subMenuItem->PostObject->slug : '#') ]) : $subMenuItem->url)}}">{{ $subMenuItem->title }}</a>
-                                            </li>                                        
-                                            @endforeach
-                                        </ul>
-                                    @endif
-                                </li>
-                            @endforeach
-                        @endif
-                        <li class="dropdown">
-                            <a title="Imóveis" class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Imóveis
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-submenu" href="{{route('web.propertylist', ['type' => 'venda'])}}" title="Comprar">Comprar</a></li>
-                                <li><a class="dropdown-submenu" href="{{route('web.propertylist', ['type' => 'locacao'])}}" title="Alugar">Alugar</a></li>
-                            </ul>
-                        </li>
-                        @if (!empty($lancamentoMenu) && $lancamentoMenu->count() > 0)
-                            <li><a href="{{route('web.highliths')}}" title="Lançamentos">Lançamentos</a></li>
-                        @endif 
-                        <li><a href="{{route('web.contact')}}">Atendimento</a></li>                        
-                    </ul>
-                    
-                    {{--
-                    <ul class="nav navbar-nav navbar-right rightside-navbar">
-                        <li>
-                            <a href="" class="button">
-                                Cadastre seu Imóvel
-                            </a>
-                        </li>
-                    </ul>
-                    --}}
-                </div>
-            </nav>
-        </div>
-    </header>
-    <!-- Main header end -->    
+    <body x-data="cookieConsent">       
+    
+    {{-- HEADER --}}
+    @include('web.' . $configuracoes->template . '.master.header')
 
     @yield('content')
 
-    <!-- Footer start -->
-<!-- Footer start -->
-<footer class="bg-gray-900 text-gray-100 py-24">
-    <div class="container mx-auto px-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8">
-            <!-- Atendimento: ocupa mais espaço -->
-            <div class="lg:col-span-5">
-                <h2 class="text-md font-bold mb-5 text-gray-100">Atendimento</h2>
-                <p class="mb-5 text-md text-gray-200">{{ $configuracoes->information }}</p>
-                <ul class="space-y-4 text-md text-gray-200">
-                    @if ($configuracoes->display_address)
-                        <li class="flex items-start gap-2">
-                            <i class="fa fa-map-marker mt-1"></i>
-                            <span>
-                                @if ($configuracoes->street) {{ $configuracoes->street }} @endif
-                                @if ($configuracoes->number) , {{ $configuracoes->number }} @endif
-                                @if ($configuracoes->neighborhood) , {{ $configuracoes->neighborhood }} @endif
-                                @if ($configuracoes->city) - {{ $configuracoes->city }} @endif
-                                @if ($configuracoes->state) / {{ $configuracoes->state }} @endif
-                            </span>
-                        </li>
-                    @endif
-                    @if ($configuracoes->email)
-                        <li class="flex items-center gap-2">
-                            <i class="fa fa-envelope"></i>
-                            <a href="mailto:{{$configuracoes->email}}" class="text-gray-200 hover:text-teal-400">{{ $configuracoes->email }}</a>
-                        </li>
-                    @endif
-                    @if ($configuracoes->additional_email)
-                        <li class="flex items-center gap-2">
-                            <i class="fa fa-envelope"></i>
-                            <a href="mailto:{{$configuracoes->additional_email}}" class="text-gray-200 hover:text-teal-400">{{ $configuracoes->additional_email }}</a>
-                        </li>
-                    @endif
-                    @if ($configuracoes->phone)
-                        <li class="flex items-center gap-2">
-                            <i class="fa fa-phone"></i>
-                            <a href="tel:{{$configuracoes->phone}}" class="text-gray-200 hover:text-teal-400">{{ $configuracoes->phone }}</a>
-                        </li>
-                    @endif
-                    @if ($configuracoes->cell_phone)
-                        <li class="flex items-center gap-2">
-                            <i class="fa fa-phone"></i>
-                            <a href="tel:{{$configuracoes->cell_phone}}" class="text-gray-200 hover:text-teal-400">{{ $configuracoes->cell_phone }}</a>
-                        </li>
-                    @endif
-                    @if ($configuracoes->whatsapp)
-                        <li class="flex items-center gap-2">
-                            <i class="fa fa-whatsapp"></i>
-                            <a target="_blank" href="{{ \App\Helpers\WhatsApp::getNumZap($configuracoes->whatsapp, 'Atendimento '.$configuracoes->app_name) }}" class="text-gray-200 hover:text-teal-400">{{ $configuracoes->whatsapp }}</a>
-                        </li>
-                    @endif
-                </ul>
-            </div>
+    {{-- FOOTER --}}
+    @include('web.' . $configuracoes->template . '.master.footer')
 
-            <!-- Links -->
-            <div class="lg:col-span-3">
-                <h2 class="text-md font-bold mb-5 text-gray-100">Links</h2>
-                <ul class="space-y-2 text-md text-gray-200">
-                    <li><a href="{{ route('web.home') }}" class="text-gray-200 hover:text-teal-400">Início</a></li>
-                    <li><a href="{{ route('web.blog.index') }}" class="text-gray-200 hover:text-teal-400">Blog</a></li>
-                    <li><a href="{{route('web.properties')}}" class="text-gray-200 hover:text-teal-400">Imóveis</a></li>
-                    <li><a target="_blank" href="{{route('web.simulator')}}" class="text-gray-200 hover:text-teal-400">Financiamento</a></li>
-                    <li><a href="{{route('web.pesquisar-imoveis')}}" class="text-gray-200 hover:text-teal-400">Buscar Imóvel</a></li>
-                    @if (!empty($lancamentoMenu) && $lancamentoMenu->count() > 0)
-                        <li><a class="text-gray-200 hover:text-teal-400" href="{{route('web.highliths')}}" title="Lançamentos">Lançamentos</a></li>
-                    @endif
-                    @if ($configuracoes->privacy_policy)
-                        <li><a href="{{route('web.privacy')}}" class="text-gray-200 hover:text-teal-400">Política de Privacidade</a></li>                        
-                    @endif
-                    <li><a href="{{route('web.contact')}}" class="text-gray-200 hover:text-teal-400">Atendimento</a></li>
-                </ul>
-            </div>
+    {{-- Copyright --}}  
+    @include('web.' . $configuracoes->template . '.master.copyright')
 
-            <!-- Blog -->
-            <div class="lg:col-span-4">
-                <h2 class="text-md font-bold mb-5 text-gray-100">Blog</h2>
-                <div class="space-y-8">
-                    @if($postsfooter && $postsfooter->count())
-                        @foreach($postsfooter as $blog)
-                            @php
-                                $tipo = $blog->type == 'noticia' ? 'noticia' : 'artigo';
-                            @endphp
-                            <div class="flex items-start gap-4 mb-8">
-                                <div class="flex-shrink-0">
-                                    <img src="{{ $blog->cover() }}" alt="{{ $blog->title }}" class="w-24 h-24 object-cover rounded">
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="text-md font-semibold text-teal-400 hover:text-gray-400 transition">
-                                        <a href="{{ route('web.blog.'.$tipo,['slug' => $blog->slug]) }}">
-                                            {{ $blog->title }}
-                                        </a>
-                                    </h3>
-                                    <p class="text-sm text-gray-300 mt-1">{{ $blog->created_at->format('d M, Y') }}</p>
-                                </div>
-                            </div>
-                        @endforeach
-                    @endif
-                </div>
+    <!-- BANNER -->
+    <div 
+        x-cloak
+        x-show="!accepted"
+        class="fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-4 z-40"
+    >
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <p>
+                Utilizamos cookies para melhorar sua experiência.
+            </p>
+
+            <div class="flex gap-3">
+                <button @click="acceptAll()" class="bg-green-600 px-4 py-2 rounded">
+                    Aceitar todos
+                </button>
+
+                <button @click="openModal()" class="bg-gray-600 px-4 py-2 rounded">
+                    Preferências
+                </button>
             </div>
         </div>
     </div>
-</footer>
-<!-- Footer end -->
 
-    <!-- Copy right start -->
-    <div class="copy-right">
-        <div class="container">
-            <div class="row clearfix">
-                <div class="col-md-8 col-sm-12">
-                    &copy;  {{$configuracoes->init_date}} {{$configuracoes->app_name}} - Todos os direitos reservados.
-                </div>
-                <div class="col-md-4 col-sm-12">
-                    <ul class="social-list clearfix">
-                        @if ($configuracoes->facebook)
-                            <li>
-                                <a target="_blank" href="{{$configuracoes->facebook}}" class="facebook">
-                                    <i class="fa fa-facebook"></i>
-                                </a>
-                            </li>                            
-                        @endif
-                        @if ($configuracoes->twitter)
-                            <li>
-                                <a target="_blank" href="{{$configuracoes->twitter}}" class="twitter">
-                                    <i class="fa fa-twitter"></i>
-                                </a>
-                            </li>
-                        @endif
-                        @if ($configuracoes->linkedin)
-                            <li>
-                                <a target="_blank" href="{{$configuracoes->linkedin}}" class="linkedin">
-                                    <i class="fa fa-linkedin"></i>
-                                </a>
-                            </li>
-                        @endif
-                        @if ($configuracoes->instagram)
-                            <li>
-                                <a target="_blank" href="{{$configuracoes->instagram}}" class="instagram">
-                                    <i class="fa fa-instagram"></i>
-                                </a>
-                            </li>
-                        @endif                        
-                    </ul>
-                    <span class="small text-silver-dark">Feito com <i style="color:red;" class="fa fa-heart"></i> por <a style="color:#fff;" target="_blank" href="{{env('DESENVOLVEDOR_URL')}}">{{env('DESENVOLVEDOR')}}</a></span>                    
-                </div>
-            </div>
+    <!-- MODAL -->
+    <div 
+        x-cloak
+        x-show="open"
+        x-transition
+        class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+        @click.self="closeModal()"
+    >
+        <div class="bg-white text-black p-6 rounded w-96 relative">
+            
+            <button 
+                @click="closeModal()" 
+                class="absolute top-2 right-2 text-gray-500"
+            >
+                ✕
+            </button>
+
+            <h2 class="text-lg font-bold mb-4">Preferências de Cookies</h2>
+
+            <label class="block mb-2">
+                <input type="checkbox" checked disabled>
+                Essenciais
+            </label>
+
+            <label class="block mb-2">
+                <input type="checkbox" x-model="stats">
+                Estatísticos
+            </label>
+
+            <label class="block mb-4">
+                <input type="checkbox" x-model="marketing">
+                Marketing
+            </label>
+
+            <button 
+                @click="save()" 
+                class="bg-blue-600 text-white px-4 py-2 rounded w-full"
+            >
+                Salvar preferências
+            </button>
         </div>
-    </div>
-    <!-- Copy end right-->   
+    </div> 
 
     <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery-2.2.0.min.js'))}}"></script>
     <script type="text/javascript" src="{{url(asset('frontend/'.$configuracoes->template.'/js/jquery.form.js'))}}"></script>

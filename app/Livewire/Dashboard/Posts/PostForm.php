@@ -37,6 +37,8 @@ class PostForm extends Component
     public $title = '';
     public $slug = '';
     public $content = '';
+    public $excerpt = '';
+    public $metaDescription = '';
     public $cat_pai;
     public $status = 1;
     public ?string $publish_at = null;
@@ -61,6 +63,8 @@ class PostForm extends Component
             ],
             'title' => 'required|min:3|string|max:191',
             'content' => 'required|string',
+            'excerpt' => 'nullable|string|max:255',
+            'metaDescription' => 'nullable|string|max:255',
             'status' => 'required|boolean',
             'publish_at' => 'nullable|date_format:d/m/Y',
             'thumb_caption' => 'nullable|string|max:255',
@@ -71,11 +75,39 @@ class PostForm extends Component
     }
 
     protected $messages = [
-        'autor.required' => 'Selecione um autor',
-        'type.required' => 'Selecione o tipo',
-        'category.required' => 'Selecione uma categoria',
-        'title.required' => 'O título é obrigatório',
-        'content.required' => 'O conteúdo é obrigatório',
+        'autor.required' => 'Selecione um autor.',
+        'autor.exists' => 'O autor selecionado é inválido.',
+
+        'type.required' => 'Selecione o tipo.',
+        'type.string' => 'O tipo informado é inválido.',
+
+        'category.required' => 'Selecione uma categoria.',
+        'category.exists' => 'A categoria selecionada é inválida.',
+
+        'title.required' => 'O título é obrigatório.',
+        'title.min' => 'O título deve ter no mínimo :min caracteres.',
+        'title.max' => 'O título deve ter no máximo :max caracteres.',
+        'title.string' => 'O título informado é inválido.',
+
+        'content.required' => 'O conteúdo é obrigatório.',
+        'content.string' => 'O conteúdo informado é inválido.',
+
+        'status.required' => 'Selecione o status.',
+        'status.boolean' => 'O status informado é inválido.',
+
+        'publish_at.date_format' => 'A data de publicação deve estar no formato dd/mm/aaaa.',
+
+        'thumb_caption.string' => 'A legenda da imagem é inválida.',
+        'thumb_caption.max' => 'A legenda da imagem deve ter no máximo :max caracteres.',
+
+        'comments.required' => 'Informe se os comentários estão habilitados.',
+        'comments.boolean' => 'O campo comentários é inválido.',
+
+        'tags.array' => 'As tags devem ser enviadas em formato de lista.',
+
+        'images.*.image' => 'O arquivo deve ser uma imagem válida.',
+        'images.*.mimes' => 'A imagem deve ser do tipo: jpeg, jpg, png ou webp.',
+        'images.*.max' => 'A imagem não pode ultrapassar 2MB.',
     ];
 
     public function render()
@@ -106,6 +138,8 @@ class PostForm extends Component
             $this->autor = $post->autor ?? auth()->id();
             $this->title = $post->title;            
             $this->content = $post->content;
+            $this->excerpt = $post->excerpt;
+            $this->metaDescription = $post->metaDescription;
             $this->type = $post->type;
             $this->category = $post->category; 
             $this->status = $post->status ?? 1;
@@ -161,6 +195,8 @@ class PostForm extends Component
                 'category' => $validated['category'],
                 'title' => $validated['title'],
                 'content' => $validated['content'],
+                'excerpt' => $validated['excerpt'],
+                'metaDescription' => $validated['metaDescription'],
                 'status' => $validated['status'],
                 'publish_at' => $validated['publish_at'],
                 'thumb_caption' => $validated['thumb_caption'],
@@ -266,6 +302,8 @@ class PostForm extends Component
         $this->title = '';
         $this->slug = '';
         $this->content = '';
+        $this->excerpt = '';
+        $this->metaDescription = '';
         $this->type = '';
         $this->category = null; // ✅ Corrigido
         $this->status = 1;

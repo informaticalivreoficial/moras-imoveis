@@ -4,6 +4,7 @@ use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Dashboard\Dashboard;
 use App\Livewire\Dashboard\{
+    NotificationsList,
     Settings,
 };
 use App\Livewire\Dashboard\Users\{
@@ -75,6 +76,7 @@ Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'admin'], functi
 
     Route::get('/', Dashboard::class)->name('admin');
     Route::get('configuracoes', Settings::class)->name('settings');
+    Route::get('notificacoes', NotificationsList::class)->name('notifications.index'); 
 
     //******************************* Sitemap *********************************************/
     Route::get('sitemap-generator', SitemapGenerator::class)->name('sitemap.generator');
