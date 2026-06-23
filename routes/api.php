@@ -7,4 +7,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('imoveis', [PropertyController::class, 'index']);
 
-Route::post('/posts', [PostController::class, 'store']);
+Route::middleware('api.token')->post('/posts', [PostController::class, 'store']);
