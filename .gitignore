@@ -19,3 +19,6 @@ yarn-error.log
 /.vscode
 /arquivos_locais
 /public/sitemap.xml
+package-lock.json
+public/.well-known/
+public/vendor/livewire/
