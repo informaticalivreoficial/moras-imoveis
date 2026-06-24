@@ -84,7 +84,7 @@ class PostController extends Controller
             'title'            => $data['title'],
             'content'          => $data['content'],
             'type'             => $type,
-            'autor'            => 30,
+            'autor'            => 82,
             'status'           => 0,
             'category'         => $categoryData['id'],
             'cat_pai'          => $categoryData['pai'],

@@ -30,48 +30,50 @@
                       </div>
                 </div>
                 <div class="col-12 col-sm-6 my-2 text-right">
-                    <a wire:navigate href="cadastrar" class="btn btn-sm btn-default"><i class="fas fa-plus mr-2"></i> Cadastrar Novo</a>
+                    <a href="{{ route('users.create') }}" class="btn btn-sm btn-default"><i class="fas fa-plus mr-2"></i> Cadastrar Novo</a>
                 </div>
             </div>
         </div>  
-        <div class="card-body">            
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12"></div>
+            </div>
             <div class="row d-flex align-items-stretch">
                 @if(!empty($users) && $users->count() > 0)
                     @foreach($users as $user) 
                         <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
-                            <div class="card bg-light d-flex flex-column w-100" style="{{ ($user->status == true ? '' : 'background: #fffed8 !important;')  }}">
+                            <div class="card bg-light" style="{{ ($user->status == true ? '' : 'background: #fffed8 !important;')  }}">
                                 <div class="card-header text-muted border-bottom-0"></div>
-                                    <div class="card-body pt-0">
-                                        <div class="row">
-                                            <div class="col-8 text-muted">
-                                                <h3><b>{{$user->name}}</b></h3>
-                                                <p class="text-sm">{{$user->getFuncao()}}</p>
-                                                <p><b>Data de Entrada: </b><br>
-                                                    {{$user->created_at->format('d/m/Y')}}
-                                                </p>
-                                                {{--  
-                                                <ul class="ml-4 mb-0 fa-ul">
-                                                    <li class="small">sss</li>
-                                                </ul>--}}
-                                            </div>
-                                            @php
-                                                if(!empty($user->avatar) && \Illuminate\Support\Facades\Storage::exists($user->avatar)){
-                                                    $cover = \Illuminate\Support\Facades\Storage::url($user->avatar);
-                                                } else {
-                                                    if($user->gender == 'masculino'){
-                                                        $cover = url(asset('theme/images/avatar5.png'));
-                                                    }elseif($user->gender == 'feminino'){
-                                                        $cover = url(asset('theme/images/avatar3.png'));
-                                                    }else{
-                                                        $cover = url(asset('theme/images/image.jpg'));
-                                                    }
+                                <div class="card-body pt-0">
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <h2 class="lead"><b>{{$user->name}}</b></h2>
+                                            <p class="text-muted text-sm">{{$user->cargo}}</p>
+                                            <p class="text-muted text-sm"><b>Data de Entrada: </b><br>
+                                                05/05/2025
+                                            </p>
+                                            <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                <li class="small">sss</li>
+                                            </ul>
+                                        </div>
+                                        @php
+                                            if(!empty($user->avatar) && \Illuminate\Support\Facades\Storage::exists($user->avatar)){
+                                                $cover = \Illuminate\Support\Facades\Storage::url($user->avatar);
+                                            } else {
+                                                if($user->gender == 'masculino'){
+                                                    $cover = url(asset('theme/images/avatar5.png'));
+                                                }elseif($user->gender == 'feminino'){
+                                                    $cover = url(asset('theme/images/avatar3.png'));
+                                                }else{
+                                                    $cover = url(asset('theme/images/image.jpg'));
                                                 }
-                                            @endphp
-                                            <div class="col-4 text-right">
-                                                <img src="{{$cover}}" alt="{{$user->name}}" class="w-20 h-20 object-cover rounded-full">
-                                            </div>
+                                            }
+                                        @endphp
+                                        <div class="col-5 text-center">
+                                            <img src="{{$cover}}" alt="{{$user->name}}" class="img-circle img-fluid">
                                         </div>
                                     </div>
+                                </div>
                                 <div class="card-footer">
                                     <div class="flex items-center gap-2">
                                         <x-forms.switch-toggle
@@ -97,7 +99,7 @@
                                             title="Visualizar"
                                             class="btn btn-xs btn-info"><i class="fas fa-search"></i>
                                         </a> 
-                                        <a href="{{ route('users.edit', [ 'user' => $user->id ]) }}" 
+                                        <a href="{{ route('users.edit', [ 'userId' => $user->id ]) }}" 
                                             class="btn btn-xs btn-default" 
                                             title="Editar">
                                             <i class="fas fa-pen"></i>
@@ -116,7 +118,7 @@
                 @else                    
                     <div class="col-12">                                                        
                         <div class="alert alert-info p-3">
-                            Não foram encontrados registros!  
+                            Não foram encontrados registros!
                         </div>                                                        
                     </div>                    
                 @endif
@@ -125,34 +127,3 @@
         <div class="card-footer paginacao">{{ $users->links() }}</div>
     </div>
 </div>
-
-<script>
-    
-    document.addEventListener('livewire:initialized', () => {
-        @this.on('swal', (event) => {
-            const data = event
-            swal.fire({
-                icon:data[0]['icon'],
-                title:data[0]['title'],
-                text:data[0]['text'],
-            })
-        })
-
-        @this.on('delete-prompt', (event) => {
-            swal.fire({
-                icon: 'warning',
-                title: 'Atenção',
-                text: 'Você tem certeza que deseja excluir este Colaborador?',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sim, excluir!',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    @this.dispatch('goOn-Delete')
-                }
-            })
-        })
-    });
-
-</script>
