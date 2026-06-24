@@ -113,7 +113,7 @@ class PostController extends Controller
         }
 
         Notification::send(
-            User::where(['superadmin' => true, 'admin' => true])->get(),
+            User::role('super-admin')->get(),
             new MakePostArticle($post)
         );
 
