@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\v1\PostController;
+use App\Http\Controllers\Api\PostController as ApiPostController;
 use App\Http\Controllers\Api\v1\PropertyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('imoveis', [PropertyController::class, 'index']);
 
-Route::middleware('api.token')->post('/posts', [PostController::class, 'store']);
+Route::middleware('api.token')->post('/posts', [ApiPostController::class, 'store']);
