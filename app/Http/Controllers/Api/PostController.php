@@ -101,7 +101,7 @@ class PostController extends Controller
 
         // logger()->info('Iniciando geração da imagem', [
         //     'prompt' => $data['imageUrl']
-        // ]);
+        // ]);  
 
         // 🖼️ baixa e salva a imagem do Stable Diffusion
         if (!empty($data['imageUrl'])) {
