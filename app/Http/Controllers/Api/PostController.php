@@ -157,12 +157,13 @@ class PostController extends Controller
             $contentType = $response->header('Content-Type');
             $extension = $this->extensionFromMime($contentType);
 
-            // 📁 define caminho e salva no disco público
+            // 📁 define caminho e salva no R2
             $dir = 'posts/'.$post->id;
-            $name = Str::slug($post->title).'.'.$extension;
+            $name = Str::slug($post->title).'.webp';
             $path = $dir.'/'.$name;
 
-            Storage::makeDirectory($dir);
+            $disk = Storage::disk('r2');
+            $disk->makeDirectory($dir);
 
             $manager = new ImageManager(new Driver);
 
@@ -204,10 +205,11 @@ class PostController extends Controller
                 $startY += self::LINE_HEIGHT;
             }
 
-            // salva a imagem processada
-            Storage::put(
+            // salva a imagem processada no R2
+            $disk->put(
                 $path,
-                (string) $image->toWebp(85)
+                (string) $image->toWebp(85),
+                ['visibility' => 'public']
             );
 
             // 🗂️ registra no banco
@@ -217,7 +219,7 @@ class PostController extends Controller
                 'path' => $path,
             ]);
 
-            return Storage::url($path);
+            return $disk->url($path);
 
         } catch (\Exception $e) {
             logger()->error('Erro ao salvar imagem do SD', [

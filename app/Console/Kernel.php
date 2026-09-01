@@ -12,6 +12,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('sitemap:generate')->everyMinute()->withoutOverlapping();
         $schedule->command('notifications:clean-old')->everyMinute()->withoutOverlapping();
         $schedule->command('app:clear-logs')->everyMinute()->withoutOverlapping();
+        $schedule->command('cache:clear-thumbs')->everyMinute()->withoutOverlapping();
     }
 
     protected function commands(): void

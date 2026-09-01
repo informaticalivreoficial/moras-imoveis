@@ -16,28 +16,57 @@ class Properties extends Component
 {
     use WithPagination;
 
-    // Quantidade de itens por página
     public int $perPage = 24;
 
     protected $paginationTheme = 'bootstrap';
 
     public string $search = '';
 
-    protected $updatesQueryString = ['search'];
+    // Filtros
+    public string $filterNegocio = '';
+
+    public string $filterCategory = '';
+
+    public string $filterCity = '';
+
+    public string $filterNeighborhood = '';
 
     public string $sortField = 'created_at';
 
     public string $sortDirection = 'desc';
 
-    // {Url}
+    protected $updatesQueryString = ['search', 'filterNegocio', 'filterCategory', 'filterCity', 'filterNeighborhood'];
+
     public function updatingSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatingFilterNegocio(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatingFilterCategory(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatingFilterCity(): void
+    {
+        $this->resetPage();
+        // Ao mudar cidade, reseta bairro (pois bairros dependem da cidade)
+        $this->filterNeighborhood = '';
+    }
+
+    public function updatingFilterNeighborhood(): void
     {
         $this->resetPage();
     }
 
     public function loadMore()
     {
-        $this->perPage += 12; // aumenta a quantidade de itens carregados
+        $this->perPage += 12;
     }
 
     public function sortBy(string $field): void
@@ -56,6 +85,7 @@ class Properties extends Component
     {
         $title = 'Lista de Imóveis';
         $searchableFields = ['title', 'city', 'state', 'reference', 'type', 'neighborhood'];
+
         $properties = Property::query()
             ->when($this->search, function ($query) use ($searchableFields) {
                 $query->where(function ($q) use ($searchableFields) {
@@ -64,11 +94,26 @@ class Properties extends Component
                     }
                 });
             })
+            ->when($this->filterNegocio === 'sale', fn ($q) => $q->where('sale', 1)->where('location', 0))
+            ->when($this->filterNegocio === 'location', fn ($q) => $q->where('location', 1)->where('sale', 0))
+            ->when($this->filterNegocio === 'both', fn ($q) => $q->where('sale', 1)->where('location', 1))
+            ->when($this->filterCategory !== '', fn ($q) => $q->where('category', $this->filterCategory))
+            ->when($this->filterCity !== '', fn ($q) => $q->where('city', $this->filterCity))
+            ->when($this->filterNeighborhood !== '', fn ($q) => $q->where('neighborhood', $this->filterNeighborhood))
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate($this->perPage);
 
+        $categories = Property::distinct()->pluck('category')->filter()->sort()->values();
+        $cities = Property::distinct()->pluck('city')->filter()->sort()->values();
+        $neighborhoods = Property::when($this->filterCity, function ($query) {
+            $query->where('city', $this->filterCity);
+        })->distinct()->pluck('neighborhood')->filter()->sort()->values();
+
         return view('livewire.dashboard.properties.properties', [
             'properties' => $properties,
+            'categories' => $categories,
+            'cities' => $cities,
+            'neighborhoods' => $neighborhoods,
         ])->with('title', $title);
     }
 
@@ -116,18 +161,16 @@ class Properties extends Component
 
     public function applyWatermark(Property $property)
     {
-        // Se já estiver marcada, não faz nada
         if ($property->display_marked_water) {
             return;
         }
 
-        // Pega a marca d'água da tabela config
-        $config = Config::first(); // ou filtro específico se tiver mais de uma
+        $config = Config::first();
         if (! $config || ! $config->watermark) {
             $this->dispatch('swal', [
                 'title' => 'Erro!',
                 'icon' => 'error',
-                'text' => 'Nenhuma marca d’água configurada.',
+                'text' => 'Nenhuma marca dagua configurada.',
             ]);
 
             return;
@@ -135,12 +178,11 @@ class Properties extends Component
 
         $disk = Storage::disk('r2');
 
-        // Marca d'água armazenada no R2
         if (! $disk->exists($config->watermark)) {
             $this->dispatch('swal', [
                 'title' => 'Erro!',
                 'icon' => 'error',
-                'text' => 'Arquivo de marca d’água não encontrado.',
+                'text' => 'Arquivo de marca dagua não encontrado.',
             ]);
 
             return;
@@ -157,17 +199,14 @@ class Properties extends Component
 
             $img = $manager->read($disk->get($image->path));
 
-            // Prepara a marca d'água (redimensiona para no máximo 25% da largura da foto)
             $mark = $manager->read($watermarkBinary);
             $maxWidth = (int) ($img->width() * 0.25);
             if ($mark->width() > $maxWidth) {
                 $mark->scale($maxWidth);
             }
 
-            // Aplica a marca d'água no canto inferior direito
             $img->place($mark, 'bottom-right', 20, 20);
 
-            // Salva de volta no R2 (WebP)
             $disk->put(
                 $image->path,
                 (string) $img->toWebp(ImageService::WEBP_QUALITY),
@@ -177,11 +216,10 @@ class Properties extends Component
             $image->update(['watermark' => true]);
         }
 
-        // Atualiza o campo display_marked_water
         $property->update(['display_marked_water' => true]);
 
         $this->dispatch('swal', [
-            'title' => 'Marca d’água aplicada!',
+            'title' => 'Marca dagua aplicada!',
             'icon' => 'success',
         ]);
 

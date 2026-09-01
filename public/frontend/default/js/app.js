@@ -8,7 +8,7 @@ $(function () {
         }, 100)
         
         // Filterizr initialization
-        if($('.filtr-container').length > 0) {
+        if($('.filtr-container').length > 0 && $('.filtr-container .filtr-item').length > 0) {
             $(function () {
                 $('.filtr-container').filterizr(
                     {
