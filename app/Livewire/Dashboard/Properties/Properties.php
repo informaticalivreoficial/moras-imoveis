@@ -4,11 +4,13 @@ namespace App\Livewire\Dashboard\Properties;
 
 use App\Models\Config;
 use App\Models\Property;
+use App\Support\ImageService;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Livewire\Attributes\On;
-use Intervention\Image\Facades\Image;
 
 class Properties extends Component
 {
@@ -27,7 +29,7 @@ class Properties extends Component
 
     public string $sortDirection = 'desc';
 
-    #{Url}
+    // {Url}
     public function updatingSearch(): void
     {
         $this->resetPage();
@@ -53,7 +55,7 @@ class Properties extends Component
     public function render()
     {
         $title = 'Lista de Imóveis';
-        $searchableFields = ['title','city','state','reference','type','neighborhood'];
+        $searchableFields = ['title', 'city', 'state', 'reference', 'type', 'neighborhood'];
         $properties = Property::query()
             ->when($this->search, function ($query) use ($searchableFields) {
                 $query->where(function ($q) use ($searchableFields) {
@@ -64,22 +66,23 @@ class Properties extends Component
             })
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate($this->perPage);
-        return view('livewire.dashboard.properties.properties',[
-            'properties' => $properties
+
+        return view('livewire.dashboard.properties.properties', [
+            'properties' => $properties,
         ])->with('title', $title);
     }
 
     public function toggleStatus($id)
-    {              
+    {
         $property = Property::findOrFail($id);
-        $property->status = !$property->status;        
+        $property->status = ! $property->status;
         $property->save();
     }
 
     public function toggleHighlight(Property $property)
     {
-        $property->highlight = !$property->highlight;
-        $property->save();        
+        $property->highlight = ! $property->highlight;
+        $property->save();
     }
 
     public function setDeleteId($id)
@@ -92,7 +95,7 @@ class Properties extends Component
             'cancelButtonText' => 'Cancelar',
             'confirmEvent' => 'deleteProperty',
             'confirmParams' => [$id],
-        ]);       
+        ]);
     }
 
     #[On('deleteProperty')]
@@ -104,12 +107,12 @@ class Properties extends Component
 
         $this->dispatch('swal', [
             'title' => 'Excluído!',
-            'text'  => 'Imóvel e todas as imagens foram removidas!',
-            'icon'  => 'success',
+            'text' => 'Imóvel e todas as imagens foram removidas!',
+            'icon' => 'success',
             'timer' => 2000,
             'showConfirmButton' => false,
-        ]);                
-    }    
+        ]);
+    }
 
     public function applyWatermark(Property $property)
     {
@@ -120,33 +123,58 @@ class Properties extends Component
 
         // Pega a marca d'água da tabela config
         $config = Config::first(); // ou filtro específico se tiver mais de uma
-        if (!$config || !$config->watermark) {
+        if (! $config || ! $config->watermark) {
             $this->dispatch('swal', [
                 'title' => 'Erro!',
-                'icon'  => 'error',
-                'text'  => 'Nenhuma marca d’água configurada.'
+                'icon' => 'error',
+                'text' => 'Nenhuma marca d’água configurada.',
             ]);
+
             return;
         }
-        
-        $watermarkPath = storage_path('app/public/' . $config->watermark);
-        if (!file_exists($watermarkPath)) {
+
+        $disk = Storage::disk('r2');
+
+        // Marca d'água armazenada no R2
+        if (! $disk->exists($config->watermark)) {
             $this->dispatch('swal', [
                 'title' => 'Erro!',
-                'icon'  => 'error',
-                'text'  => 'Arquivo de marca d’água não encontrado.'
+                'icon' => 'error',
+                'text' => 'Arquivo de marca d’água não encontrado.',
             ]);
+
             return;
         }
+
+        $watermarkBinary = $disk->get($config->watermark);
+
+        $manager = new ImageManager(new Driver);
 
         foreach ($property->images as $image) {
-            $imagePath = storage_path('app/public/' . $image->path);
-
-            if (file_exists($imagePath)) {
-                $img = Image::make($imagePath);
-                $img->insert($watermarkPath, 'bottom-right', 20, 20); // posição
-                $img->save($imagePath);
+            if (! $disk->exists($image->path)) {
+                continue;
             }
+
+            $img = $manager->read($disk->get($image->path));
+
+            // Prepara a marca d'água (redimensiona para no máximo 25% da largura da foto)
+            $mark = $manager->read($watermarkBinary);
+            $maxWidth = (int) ($img->width() * 0.25);
+            if ($mark->width() > $maxWidth) {
+                $mark->scale($maxWidth);
+            }
+
+            // Aplica a marca d'água no canto inferior direito
+            $img->place($mark, 'bottom-right', 20, 20);
+
+            // Salva de volta no R2 (WebP)
+            $disk->put(
+                $image->path,
+                (string) $img->toWebp(ImageService::WEBP_QUALITY),
+                ['visibility' => 'public']
+            );
+
+            $image->update(['watermark' => true]);
         }
 
         // Atualiza o campo display_marked_water
@@ -154,7 +182,7 @@ class Properties extends Component
 
         $this->dispatch('swal', [
             'title' => 'Marca d’água aplicada!',
-            'icon'  => 'success',
+            'icon' => 'success',
         ]);
 
         $property->refresh();

@@ -7,6 +7,7 @@ use App\Models\CatPost;
 use App\Models\Post;
 use App\Models\PostGb;
 use App\Models\User;
+use App\Support\ImageService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
@@ -84,7 +85,7 @@ class PostForm extends Component
             'thumb_caption' => 'nullable|string|max:255',
             'comments' => 'required|boolean',
             'tags' => 'nullable|array',
-            'images.*' => 'nullable|image|max:2048',
+            'images.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
         ];
     }
 
@@ -241,13 +242,13 @@ class PostForm extends Component
                 return;
             }
 
-            // Salvar imagens
+            // Salvar imagens (convertidas para WebP)
             foreach ($this->images as $index => $image) {
                 if ($index >= $allowed) {
                     break;
                 } // garante que só serão salvas as permitidas
 
-                $path = $image->store('posts/'.$this->post->id, 'r2');
+                $path = ImageService::storeAsWebp($image, 'posts/'.$this->post->id);
                 PostGb::create([
                     'post' => $this->post->id,
                     'path' => $path,

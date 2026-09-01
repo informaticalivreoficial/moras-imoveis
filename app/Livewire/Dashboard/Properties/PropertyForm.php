@@ -5,6 +5,7 @@ namespace App\Livewire\Dashboard\Properties;
 use App\Http\Requests\Admin\StoreUpdatePropertyRequest;
 use App\Models\Property;
 use App\Models\PropertyGb;
+use App\Support\ImageService;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -283,48 +284,19 @@ class PropertyForm extends Component
                 $validated[$field] = (bool) $this->{$field};
             }
 
+            // Valida as imagens enviadas (jpeg, jpg, png, webp — até 5MB, pois serão convertidas para WebP)
+            $this->validate([
+                'images.*' => 'image|mimes:jpeg,jpg,png,webp|max:5120',
+            ]);
+
             if ($this->property->exists) {
                 // Atualizar
-
                 $this->property->update($validated);
 
-                // Validação das imagens
-                $this->validate([
-                    'images.*' => 'image|max:2048',
-                ]);
-
-                $maxImages = env('MAX_PROPERTY_IMAGES', 40);
-                $existingImages = $this->property->images()->count();
-                $allowed = $maxImages - $existingImages;
-                if (count($this->images ?? []) > $allowed) {
-                    $this->dispatch('swal', [
-                        'title' => 'Atenção!',
-                        'text' => "Você já atingiu o limite máximo de {$maxImages} imagens para este imóvel.",
-                        'icon' => 'warning',
-                    ]);
-
+                if (! $this->storeImages()) {
                     return;
                 }
 
-                // Salvar imagens
-                foreach ($this->images as $index => $image) {
-                    if ($index >= $allowed) {
-                        break;
-                    } // garante que só serão salvas as permitidas
-
-                    $path = $image->store('properties/'.$this->property->id, 'r2');
-
-                    $maxOrder = PropertyGb::where('property', $this->property->id)->max('order_img') ?? 0;
-
-                    PropertyGb::create([
-                        'property' => $this->property->id,
-                        'path' => $path,
-                        'cover' => $this->cover ?? null,
-                        'order_img' => $maxOrder + $index + 1,
-                    ]);
-                }
-
-                // Limpar imagens temporárias
                 $this->reset('images');
                 $this->dispatch(['atualizado']);
             } else {
@@ -341,17 +313,63 @@ class PropertyForm extends Component
                 }
 
                 $property = Property::create($validated);
+                $this->property = $property; // Atualiza a propriedade para o novo registro
+
+                if (! $this->storeImages()) {
+                    return;
+                }
+
                 $this->reset('images');
                 $this->dispatch(['cadastrado']);
-                $this->property = $property; // Atualiza a propriedade para o novo registro
             }
 
         } catch (ValidationException $e) {
-            // dd($e->errors());
             // Muda para a aba "dados" se houver erro
             $this->currentTab = 'dados';
             throw $e; // Deixa Livewire lidar com os erros e mostrar mensagens
         }
+    }
+
+    /**
+     * Salva as imagens enviadas (convertidas para WebP) vinculadas ao imóvel.
+     *
+     * @return bool false se o limite de imagens foi atingido (mensagem já exibida)
+     */
+    protected function storeImages(): bool
+    {
+        $maxImages = (int) env('MAX_PROPERTY_IMAGES', 40);
+        $existingImages = $this->property->images()->count();
+        $allowed = $maxImages - $existingImages;
+
+        if (count($this->images ?? []) > $allowed) {
+            $this->dispatch('swal', [
+                'title' => 'Atenção!',
+                'text' => "Você já atingiu o limite máximo de {$maxImages} imagens para este imóvel.",
+                'icon' => 'warning',
+            ]);
+
+            return false;
+        }
+
+        foreach ($this->images as $index => $image) {
+            if ($index >= $allowed) {
+                break;
+            } // garante que só serão salvas as permitidas
+
+            // Converte para WebP e salva no R2
+            $path = ImageService::storeAsWebp($image, 'properties/'.$this->property->id);
+
+            $maxOrder = PropertyGb::where('property', $this->property->id)->max('order_img') ?? 0;
+
+            PropertyGb::create([
+                'property' => $this->property->id,
+                'path' => $path,
+                'cover' => $this->cover ?? null,
+                'order_img' => $maxOrder + $index + 1,
+            ]);
+        }
+
+        return true;
     }
 
     // Remover imagem temporária

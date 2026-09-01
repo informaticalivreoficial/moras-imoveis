@@ -3,6 +3,7 @@
 namespace App\Livewire\Dashboard\Users;
 
 use App\Models\User;
+use App\Support\ImageService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -28,6 +29,7 @@ class Form extends Component
             'email' => 'required|email|unique:users,email,'.($this->user?->id),
             'cell_phone' => 'required|celular_com_ddd',
             'zipcode' => 'required|string|max:10',
+            'foto' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120',
         ];
     }
 
@@ -152,13 +154,13 @@ class Form extends Component
     {
         $this->validate();
 
-        // Upload da foto
+        // Upload da foto (convertida para WebP)
         if ($this->foto) {
             if ($this->user && $this->avatar && Storage::disk('r2')->exists($this->avatar)) {
                 Storage::disk('r2')->delete($this->avatar);
             }
 
-            $caminhoFoto = $this->foto->store('client', 'r2');
+            $caminhoFoto = ImageService::storeAsWebp($this->foto, 'client');
         }
 
         $data = [

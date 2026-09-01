@@ -3,6 +3,7 @@
 namespace App\Livewire\Dashboard\Slides;
 
 use App\Models\Slide;
+use App\Support\ImageService;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -35,7 +36,7 @@ class SlideForm extends Component
     {
         return [
             'title' => 'required|string|max:255',
-            'image' => $this->slide ? 'nullable|image|max:2048' : 'required|image|max:2048',
+            'image' => $this->slide ? 'nullable|image|mimes:jpeg,jpg,png,webp|max:5120' : 'required|image|mimes:jpeg,jpg,png,webp|max:5120',
         ];
     }
 
@@ -70,7 +71,8 @@ class SlideForm extends Component
             if ($this->slide && $this->logoPath) {
                 Storage::disk('r2')->delete($this->logoPath);
             }
-            $this->logoPath = $this->image->store('slides', 'r2');
+            // Converte para WebP e salva no R2
+            $this->logoPath = ImageService::storeAsWebp($this->image, 'slides');
         }
 
         $data = [

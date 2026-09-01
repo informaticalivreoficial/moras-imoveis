@@ -3,6 +3,7 @@
 namespace App\Livewire\Dashboard;
 
 use App\Models\Config;
+use App\Support\ImageService;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -82,12 +83,8 @@ class Settings extends Component
                 Storage::disk('r2')->delete($this->configData[$key]);
             }
 
-            // Salva sempre com o mesmo nome (sobrescrevendo)
-            $path = $file->storeAs(
-                'config',
-                "{$key}.".$file->getClientOriginalExtension(),
-                'r2'
-            );
+            // Salva sempre com o mesmo nome, convertido para WebP (sobrescrevendo)
+            $path = ImageService::storeAsWebp($file, 'config', null, "{$key}.webp");
 
             // Atualiza no array
             $this->configData[$key] = $path;
@@ -331,12 +328,8 @@ class Settings extends Component
                     Storage::disk('r2')->delete($this->configData[$key]);
                 }
 
-                // Salva a nova
-                $path = $file->storeAs(
-                    'config',
-                    "{$key}.".$file->getClientOriginalExtension(), // força o mesmo nome
-                    'r2'
-                );
+                // Salva a nova (convertida para WebP, sempre com o mesmo nome)
+                $path = ImageService::storeAsWebp($file, 'config', null, "{$key}.webp");
 
                 $this->configData[$key] = $path;
             }
