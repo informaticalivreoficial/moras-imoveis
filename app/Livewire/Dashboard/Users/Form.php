@@ -2,14 +2,12 @@
 
 namespace App\Livewire\Dashboard\Users;
 
-use App\Http\Requests\Admin\UserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Livewire\Attributes\Title;
-use Livewire\Component;
-use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Form extends Component
 {
@@ -18,50 +16,99 @@ class Form extends Component
     public ?User $user = null;
 
     public $foto; // Propriedade para armazenar a foto temporariamente
+
     public $fotoUrl; // Propriedade para armazenar o caminho da foto após o upload
-    
+
     protected function rules()
     {
         return [
             'name' => 'required|min:3',
             'birthday' => 'required|date_format:d/m/Y|before:today',
-            'cpf' => 'required|cpf|unique:users,cpf,' . ($this->user?->id),
-            'email' => 'required|email|unique:users,email,' . ($this->user?->id),
+            'cpf' => 'required|cpf|unique:users,cpf,'.($this->user?->id),
+            'email' => 'required|email|unique:users,email,'.($this->user?->id),
             'cell_phone' => 'required|celular_com_ddd',
             'zipcode' => 'required|string|max:10',
         ];
-    }       
+    }
 
-    //Informations about
-    public $name, $birthday, $gender, $naturalness, $civil_status, $code ,$avatar, $information;    
-    
-    //Documents
-    public $cpf, $rg, $rg_expedition;
+    // Informations about
+    public $name;
 
-    //Address
-    public $zipcode = '', $street, $neighborhood, $city, $state, $complement, $number;
+    public $birthday;
 
-    //Contact
-    public $phone, $cell_phone, $whatsapp, $email, $additional_email, $telegram;
+    public $gender;
 
-    //Social
-    public $facebook, $instagram, $linkedin;
+    public $naturalness;
 
-    //Function
+    public $civil_status;
+
+    public $code;
+
+    public $avatar;
+
+    public $information;
+
+    // Documents
+    public $cpf;
+
+    public $rg;
+
+    public $rg_expedition;
+
+    // Address
+    public $zipcode = '';
+
+    public $street;
+
+    public $neighborhood;
+
+    public $city;
+
+    public $state;
+
+    public $complement;
+
+    public $number;
+
+    // Contact
+    public $phone;
+
+    public $cell_phone;
+
+    public $whatsapp;
+
+    public $email;
+
+    public $additional_email;
+
+    public $telegram;
+
+    // Social
+    public $facebook;
+
+    public $instagram;
+
+    public $linkedin;
+
+    // Function
     public bool $admin = false;
+
     public bool $client = false;
+
     public bool $editor = false;
+
     public bool $superadmin = false;
 
     public $password;
+
     public $password_confirmation;
 
     public $errorMessage;
 
     public function mount(?User $user = null)
     {
-        $this->user = $user; 
-        if($this->user){
+        $this->user = $user;
+        if ($this->user) {
             $this->name = $user->name;
             $this->code = $user->code;
             $this->avatar = $user->avatar;
@@ -107,11 +154,11 @@ class Form extends Component
 
         // Upload da foto
         if ($this->foto) {
-            if ($this->user && $this->avatar && Storage::disk('public')->exists($this->avatar)) {
-                Storage::disk('public')->delete($this->avatar);
+            if ($this->user && $this->avatar && Storage::disk('r2')->exists($this->avatar)) {
+                Storage::disk('r2')->delete($this->avatar);
             }
 
-            $caminhoFoto = $this->foto->store('client', 'public');
+            $caminhoFoto = $this->foto->store('client', 'r2');
         }
 
         $data = [
@@ -154,6 +201,7 @@ class Form extends Component
             $this->user->update($data);
         } else {
             $this->user = User::create($data);
+
             return redirect()->route('users.edit', $this->user);
         }
 
@@ -165,22 +213,22 @@ class Form extends Component
             'showConfirmButton' => false,
         ]);
 
-    }    
+    }
 
     public function updatedZipcode(string $value)
-    {        
+    {
         $this->zipcode = preg_replace('/[^0-9]/', '', $value);
 
-        if(strlen($this->zipcode) === 8){
-            $response = Http::get("https://viacep.com.br/ws/{$this->zipcode}/json/")->json();            
-            if(!isset($response['erro'])){                
+        if (strlen($this->zipcode) === 8) {
+            $response = Http::get("https://viacep.com.br/ws/{$this->zipcode}/json/")->json();
+            if (! isset($response['erro'])) {
                 $this->street = $response['logradouro'] ?? '';
                 $this->neighborhood = $response['bairro'] ?? '';
                 $this->state = $response['uf'] ?? '';
                 $this->city = $response['localidade'] ?? '';
-                $this->complement = $response['complemento'] ?? '';      
-            }else{                
-                $this->addError('zipcode', 'CEP não encontrado.'); 
+                $this->complement = $response['complemento'] ?? '';
+            } else {
+                $this->addError('zipcode', 'CEP não encontrado.');
             }
         }
     }

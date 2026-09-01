@@ -16,12 +16,12 @@ class Template extends Model
         'name',
         'image',
         'content',
-        'status'
+        'status',
     ];
 
     /**
      * Scopes
-    */
+     */
     public function scopeAvailable($query)
     {
         return $query->where('status', 1);
@@ -34,17 +34,17 @@ class Template extends Model
 
     /**
      * Relacionamentos
-    */
-    
+     */
 
     /**
      * Accerssors and Mutators
-    */
+     */
     public function getimagem()
     {
-        if(empty($this->image) || !Storage::disk()->exists($this->image)) {
+        if (empty($this->image) || ! Storage::disk()->exists($this->image)) {
             return url(asset('backend/assets/images/image.jpg'));
-        } 
+        }
+
         return Storage::url($this->image);
     }
 }

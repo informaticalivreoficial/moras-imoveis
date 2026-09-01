@@ -33,7 +33,7 @@
                             @php
                                 if (
                                     !empty($avatar) &&
-                                    env('AWS_PASTA') . \Illuminate\Support\Facades\Storage::exists($avatar)
+                                    \Illuminate\Support\Facades\Storage::disk('r2')->exists($avatar)
                                 ) {
                                     $cover = \Illuminate\Support\Facades\Storage::url($avatar);
                                 } else {

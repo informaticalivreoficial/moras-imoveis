@@ -32,12 +32,12 @@ class Portal extends Model
         'plano3_qtd',
         'plano4_nome',
         'plano4_qtd',
-        'xml_nome'
+        'xml_nome',
     ];
 
     /**
      * Scopes
-    */
+     */
     public function scopeAvailable($query)
     {
         return $query->where('status', 1);
@@ -60,11 +60,11 @@ class Portal extends Model
 
     /**
      * Relacionamentos
-    */    
+     */
     public function pimoveis()
     {
         return $this->hasMany(PortalImoveis::class, 'portal', 'id');
-    } 
+    }
 
     public function countimoveis()
     {
@@ -73,12 +73,13 @@ class Portal extends Model
 
     /**
      * Accerssors and Mutators
-    */  
+     */
     public function getUrlLogomarcaAttribute()
     {
-        if(empty($this->logomarca) || !Storage::disk()->exists($this->logomarca)) {
+        if (empty($this->logomarca) || ! Storage::disk()->exists($this->logomarca)) {
             return url(asset('backend/assets/images/image.jpg'));
-        } 
+        }
+
         return Storage::url($this->logomarca);
     }
 

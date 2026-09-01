@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use App\Support\Cropper;
+use App\Support\ImageService;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -40,29 +41,29 @@ class Property extends Model
         'useful_area',
         'measures',
 
-        /** address */ 
+        /** address */
         'latitude', 'longitude', 'display_address', 'zipcode', 'street',
         'number', 'complement', 'neighborhood', 'state', 'city',
 
-        //accessories
+        // accessories
         'ar_condicionado', 'areadelazer', 'aquecedor_solar', 'bar', 'banheirosocial', 'brinquedoteca',
         'biblioteca', 'balcaoamericano', 'churrasqueira', 'condominiofechado', 'estacionamento',
         'cozinha_americana', 'cozinha_planejada', 'dispensa', 'edicula', 'espaco_fitness',
         'escritorio', 'banheira', 'geradoreletrico', 'interfone', 'jardim', 'lareira', 'lavabo', 'lavanderia',
         'elevador', 'mobiliado', 'vista_para_mar', 'piscina', 'quadrapoliesportiva', 'sauna', 'salaodejogos',
-        'salaodefestas', 'sistemadealarme', 'saladetv', 'ventilador_teto', 'armarionautico', 'fornodepizza',  
-        'portaria24hs', 'permiteanimais', 'pertodeescolas', 'quintal', 'zeladoria', 'varandagourmet', 
+        'salaodefestas', 'sistemadealarme', 'saladetv', 'ventilador_teto', 'armarionautico', 'fornodepizza',
+        'portaria24hs', 'permiteanimais', 'pertodeescolas', 'quintal', 'zeladoria', 'varandagourmet',
         'internet', 'geladeira',
 
-        //SEO
+        // SEO
         'title', 'slug', 'url_booking', 'url_arbnb', 'status', 'views', 'metatags', 'headline',
         'display_marked_water', 'youtube_video', 'caption_img_cover', 'google_map',
-        'experience', 'highlight', 'publication_type'
+        'experience', 'highlight', 'publication_type',
     ];
 
     /**
      * Scopes
-    */
+     */
     public function scopeAvailable($query)
     {
         return $query->where('status', 1);
@@ -71,7 +72,8 @@ class Property extends Model
     public function scopeUnavailable($query)
     {
         return $query->where('status', 0);
-    }    
+    }
+
     public function scopeSale($query)
     {
         return $query->where('sale', 1);
@@ -88,29 +90,29 @@ class Property extends Model
         static::saving(function ($property) {
             $property->setSlug();
         });
-        
+
         static::deleting(function ($property) {
             // Deleta imagens físicas e registros relacionados
             foreach ($property->images as $image) {
-                if ($image->path && Storage::disk('public')->exists($image->path)) {
-                    Storage::disk('public')->delete($image->path);
+                if ($image->path && Storage::disk('r2')->exists($image->path)) {
+                    Storage::disk('r2')->delete($image->path);
                 }
                 $image->delete();
             }
 
             // Deleta a pasta inteira do imóvel no storage
-            Storage::disk('public')->deleteDirectory("properties/{$property->id}");
+            Storage::disk('r2')->deleteDirectory("properties/{$property->id}");
         });
     }
 
     /**
      * Relationships
-    */
+     */
     public function images()
     {
         return $this->hasMany(PropertyGb::class, 'property', 'id')
-                    ->orderBy('order_img', 'ASC')
-                    ->orderBy('cover', 'DESC'); // cover primeiro (1 antes de 0)
+            ->orderBy('order_img', 'ASC')
+            ->orderBy('cover', 'DESC'); // cover primeiro (1 antes de 0)
     }
 
     public function imagesmarkedwater()
@@ -125,7 +127,7 @@ class Property extends Model
 
     /**
      * Accerssors and Mutators
-    */  
+     */
     public function getContentWebAttribute()
     {
         return Str::words($this->description, '20', ' ...');
@@ -137,12 +139,12 @@ class Property extends Model
         $cover = $images->where('cover', 1)->first(['path']) ??
                 $images->first(['path']);
 
-        if (!$cover || empty($cover->path)) {
+        if (! $cover || empty($cover->path)) {
             return asset('theme/images/image.jpg');
         }
 
-        return Storage::url(Cropper::thumb($cover['path'], 1366, 768));
-    }  
+        return ImageService::makeThumb($cover['path'], 1366, 768);
+    }
 
     public function nocover()
     {
@@ -152,10 +154,10 @@ class Property extends Model
         $cover = $images->where('cover', 1)->first(['path'])
             ?? $images->first(['path']);
 
-        if (empty($cover['path']) || !Storage::disk()->exists($cover['path'])) {
+        if (empty($cover['path']) || ! Storage::disk()->exists($cover['path'])) {
             return asset('theme/images/image.jpg');
         }
-        
+
         return Storage::url($cover['path']);
     }
 
@@ -168,12 +170,12 @@ class Property extends Model
     //         $images = $this->images();
     //         $cover = $images->first(['path']);
     //     }
-        
+
     //     if(empty($cover['path']) || !Storage::disk()->exists($cover['path'])) {
     //         return url(asset('theme/images/image.jpg'));
     //     }
-        
-    //     return Storage::url($cover['path']);        
+
+    //     return Storage::url($cover['path']);
     // }
 
     public function getStarsAttribute()
@@ -242,7 +244,7 @@ class Property extends Model
     {
         $this->attributes['display_marked_water'] = ($value == true || $value == '1' ? 1 : 0);
     }
-    
+
     public function setStatusAttribute($value)
     {
         $this->attributes['status'] = ($value == '1' ? 1 : 0);
@@ -251,14 +253,14 @@ class Property extends Model
     public function getFormattedSaleValueAttribute(): ?string
     {
         return $this->sale_value !== null
-            ? 'R$ ' . number_format($this->sale_value, 0, ',', '.')
+            ? 'R$ '.number_format($this->sale_value, 0, ',', '.')
             : null;
     }
 
     public function getFormattedRentalValueAttribute(): ?string
     {
         return $this->rental_value !== null
-            ? 'R$ ' . number_format($this->rental_value, 0, ',', '.')
+            ? 'R$ '.number_format($this->rental_value, 0, ',', '.')
             : null;
     }
 
@@ -275,7 +277,7 @@ class Property extends Model
 
     //     return number_format($value, 2, ',', '.');
     // }
-    
+
     // public function setRentalValueAttribute($value)
     // {
     //     $this->attributes['rental_value'] = (!empty($value) ? floatval($this->convertStringToDouble($value)) : null);
@@ -289,7 +291,7 @@ class Property extends Model
 
     //     return number_format($value, 2, ',', '.');
     // }
-    
+
     // public function setIptuAttribute($value)
     // {
     //     $this->attributes['iptu'] = (!empty($value) ? floatval($this->convertStringToDouble($value)) : null);
@@ -303,7 +305,7 @@ class Property extends Model
 
     //     return number_format($value, 2, ',', '.');
     // }
-    
+
     // public function setCondominiumAttribute($value)
     // {
     //     $this->attributes['condominium'] = (!empty($value) ? floatval($this->convertStringToDouble($value)) : null);
@@ -317,7 +319,7 @@ class Property extends Model
 
     //     return number_format($value, 2, ',', '.');
     // }
-    
+
     // public function setZipcodeAttribute($value)
     // {
     //     $this->attributes['zipcode'] = (!empty($value) ? $this->clearField($value) : null);
@@ -334,43 +336,45 @@ class Property extends Model
 
     public function setSlug()
     {
-        if (!empty($this->title)) {
-    
+        if (! empty($this->title)) {
+
             $baseSlug = Str::slug($this->title);
             $slug = $baseSlug;
             $count = 1;
-    
+
             while (
                 Property::where('slug', $slug)
                     ->where('id', '!=', $this->id)
                     ->exists()
             ) {
-                $slug = $baseSlug . '-' . str_pad($count, 2, '0', STR_PAD_LEFT);
+                $slug = $baseSlug.'-'.str_pad($count, 2, '0', STR_PAD_LEFT);
                 $count++;
             }
-    
+
             $this->attributes['slug'] = $slug;
         }
-    }    
+    }
 
     public function setExpiredAtAttribute($value)
     {
-        $this->attributes['expired_at'] = (!empty($value) ? $this->convertStringToDate($value) : null);
+        $this->attributes['expired_at'] = (! empty($value) ? $this->convertStringToDate($value) : null);
     }
-    
+
     public function getExpiredAtAttribute($value)
     {
         if (empty($value)) {
             return null;
         }
-        return \Carbon\Carbon::parse($value)->format('d/m/Y');
+
+        return Carbon::parse($value)->format('d/m/Y');
     }
 
     private function convertStringToDouble($param)
     {
-        if(empty($param)){
+        if (empty($param)) {
             return null;
         }
+
         return str_replace(',', '.', str_replace('.', '', $param));
     }
 
@@ -379,15 +383,17 @@ class Property extends Model
         if (empty($param)) {
             return null;
         }
-        list($day, $month, $year) = explode('/', $param);
-        return (new \DateTime($year . '-' . $month . '-' . $day))->format('Y-m-d');
+        [$day, $month, $year] = explode('/', $param);
+
+        return (new \DateTime($year.'-'.$month.'-'.$day))->format('Y-m-d');
     }
 
     private function clearField(?string $param)
     {
-        if(empty($param)){
+        if (empty($param)) {
             return null;
         }
+
         return str_replace(['.', '-', '/', '(', ')', ' '], '', $param);
     }
 }

@@ -14,13 +14,21 @@ class SlideForm extends Component
     public ?Slide $slide = null;
 
     public $title;
+
     public $link;
+
     public $target;
+
     public $view_title;
+
     public $content;
+
     public $expired_at;
+
     public $status;
+
     public $image;
+
     public ?string $logoPath = null;
 
     protected function rules(): array
@@ -33,14 +41,14 @@ class SlideForm extends Component
 
     public function render()
     {
-        return view('livewire.dashboard.slides.slide-form',[
+        return view('livewire.dashboard.slides.slide-form', [
             'titlee' => $this->slide ? 'Editar Banner' : 'Cadastrar Banner',
         ]);
     }
 
     public function mount(?Slide $slide = null)
     {
-        $this->slide = $slide;        
+        $this->slide = $slide;
 
         if ($this->slide) {
             $this->logoPath = $slide->image;
@@ -60,10 +68,10 @@ class SlideForm extends Component
 
         if ($this->image) {
             if ($this->slide && $this->logoPath) {
-                Storage::disk('public')->delete($this->logoPath);
+                Storage::disk('r2')->delete($this->logoPath);
             }
-            $this->logoPath = $this->image->store('slides', 'public');
-        }        
+            $this->logoPath = $this->image->store('slides', 'r2');
+        }
 
         $data = [
             'title' => $this->title,
@@ -73,7 +81,7 @@ class SlideForm extends Component
             'content' => $this->content,
             'expired_at' => $this->expired_at,
             'status' => $this->status,
-            'image' => $this->logoPath
+            'image' => $this->logoPath,
         ];
 
         if ($this->slide) {
@@ -94,5 +102,4 @@ class SlideForm extends Component
 
         return redirect()->route('slides.edit', $this->slide);
     }
-    
 }

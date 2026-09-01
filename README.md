@@ -43,7 +43,7 @@ Sistema web desenvolvido para imobiliárias do Litoral Norte de São Paulo, com 
 
 | Tecnologia | Versão |
 |---|---|
-| PHP | 8.1 |
+| PHP | 8.3 |
 | Laravel | 10.x |
 | Livewire | 3.x |
 | TailwindCSS | 3.x |

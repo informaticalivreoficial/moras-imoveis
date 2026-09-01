@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use App\Support\ImageService;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use App\Support\Cropper;
-use Carbon\Carbon;
 
 class Slide extends Model
 {
@@ -25,12 +25,12 @@ class Slide extends Model
         'expired_at',
         'status',
         'view_title',
-        'category'
+        'category',
     ];
 
     /**
      * Scopes
-    */
+     */
     public function scopeAvailable($query)
     {
         return $query->where('status', 1);
@@ -43,19 +43,19 @@ class Slide extends Model
 
     /**
      * Accerssors and Mutators
-    */
+     */
     public function getimagem()
     {
-        if (empty($this->image) || !Storage::disk('public')->exists($this->image)) {
+        if (empty($this->image) || ! Storage::disk('r2')->exists($this->image)) {
             return asset('theme/images/image.jpg');
         }
 
-        return Storage::url(Cropper::thumb($this->image, 2200, 1200));
+        return ImageService::makeThumb($this->image, 2200, 1200);
     }
 
     public function setExpiredAtAttribute($value)
     {
-        $this->attributes['expired_at'] = (!empty($value) ? $this->convertStringToDate($value) : null);
+        $this->attributes['expired_at'] = (! empty($value) ? $this->convertStringToDate($value) : null);
     }
 
     public function setTargetAttribute($value)
@@ -67,14 +67,14 @@ class Slide extends Model
     {
         $this->attributes['status'] = ($value == '1' ? 1 : 0);
     }
-    
+
     public function getExpiredAtAttribute($value): ?string
     {
         if (empty($value)) {
             return null;
         }
 
-        return \Carbon\Carbon::parse($value)->format('d/m/Y');
+        return Carbon::parse($value)->format('d/m/Y');
     }
 
     public function getCreatedAtAttribute($value)
@@ -82,28 +82,29 @@ class Slide extends Model
         if (empty($value)) {
             return null;
         }
-        return \Carbon\Carbon::parse($value)->format('d/m/Y');
+
+        return Carbon::parse($value)->format('d/m/Y');
     }
 
     public function setSlug()
     {
-        if(!empty($this->title)){
-            $slide = Slide::where('title', $this->title)->first(); 
-            if(!empty($slide) && $slide->id != $this->id){
-                $this->attributes['slug'] = Str::slug($this->title) . '-' . $this->id;
-            }else{
+        if (! empty($this->title)) {
+            $slide = Slide::where('title', $this->title)->first();
+            if (! empty($slide) && $slide->id != $this->id) {
+                $this->attributes['slug'] = Str::slug($this->title).'-'.$this->id;
+            } else {
                 $this->attributes['slug'] = Str::slug($this->title);
-            }            
+            }
             $this->save();
         }
     }
 
-    private function convertStringToDate(?string $param): ?\Carbon\Carbon
+    private function convertStringToDate(?string $param): ?Carbon
     {
         if (empty($param)) {
             return null;
         }
 
-        return \Carbon\Carbon::createFromFormat('d/m/Y', $param);
+        return Carbon::createFromFormat('d/m/Y', $param);
     }
 }

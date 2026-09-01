@@ -7,8 +7,9 @@ use App\Models\Property;
 use App\Models\PropertyGb;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
-use Livewire\Component;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\On;
+use Livewire\Component;
 use Livewire\WithFileUploads;
 
 class PropertyForm extends Component
@@ -20,59 +21,216 @@ class PropertyForm extends Component
     public array $types = ['venda', 'locacao'];
 
     public array $images = [];
+
     public $savedImages = [];
 
-    public string $currentTab = 'dados'; 
+    public string $currentTab = 'dados';
+
     public ?string $expired_at = null;
 
-    public $category, $type,
-       $sale_value, $rental_value, $location_period, $iptu, $construction_year,
-       $reference, $condominium, $description, $additional_notes,
-       $dormitories, $suites, $bathrooms, $rooms, $garage, $covered_garage,
-       $total_area, $useful_area, $measures,
-       $latitude, $longitude, 
-       // Address
-       $zipcode, $street, $number, $complement,
-       $neighborhood, $state, $city,
-       
-       // Acessórios
-       $ar_condicionado, $aquecedor_solar, $bar, $biblioteca, $churrasqueira, $estacionamento,
-       $cozinha_americana, $cozinha_planejada, $dispensa, $edicula, $espaco_fitness,
-       $escritorio, $fornodepizza, $armarionautico, $portaria24hs, $quintal, $zeladoria,
-       $salaodejogos, $saladetv, $areadelazer, $balcaoamericano, $varandagourmet,
-       $banheirosocial, $brinquedoteca, $pertodeescolas, $condominiofechado,
-       $interfone, $sistemadealarme, $jardim, $salaodefestas, $permiteanimais,
-       $quadrapoliesportiva, $geradoreletrico, $banheira, $lareira, $lavabo, $lavanderia,
-       $elevador, $mobiliado, $vista_para_mar, $piscina, $sauna, $ventilador_teto,
-       $internet, $geladeira,
+    public $category;
 
-       $title, $slug, $url_booking, $url_arbnb, $status, $views,
-       $headline, $youtube_video, $caption_img_cover,
-       $google_map, $experience, $highlight, $publication_type;
+    public $type;
+
+    public $sale_value;
+
+    public $rental_value;
+
+    public $location_period;
+
+    public $iptu;
+
+    public $construction_year;
+
+    public $reference;
+
+    public $condominium;
+
+    public $description;
+
+    public $additional_notes;
+
+    public $dormitories;
+
+    public $suites;
+
+    public $bathrooms;
+
+    public $rooms;
+
+    public $garage;
+
+    public $covered_garage;
+
+    public $total_area;
+
+    public $useful_area;
+
+    public $measures;
+
+    public $latitude;
+
+    public $longitude;
+
+    // Address
+    public $zipcode;
+
+    public $street;
+
+    public $number;
+
+    public $complement;
+
+    public $neighborhood;
+
+    public $state;
+
+    public $city;
+
+    // Acessórios
+    public $ar_condicionado;
+
+    public $aquecedor_solar;
+
+    public $bar;
+
+    public $biblioteca;
+
+    public $churrasqueira;
+
+    public $estacionamento;
+
+    public $cozinha_americana;
+
+    public $cozinha_planejada;
+
+    public $dispensa;
+
+    public $edicula;
+
+    public $espaco_fitness;
+
+    public $escritorio;
+
+    public $fornodepizza;
+
+    public $armarionautico;
+
+    public $portaria24hs;
+
+    public $quintal;
+
+    public $zeladoria;
+
+    public $salaodejogos;
+
+    public $saladetv;
+
+    public $areadelazer;
+
+    public $balcaoamericano;
+
+    public $varandagourmet;
+
+    public $banheirosocial;
+
+    public $brinquedoteca;
+
+    public $pertodeescolas;
+
+    public $condominiofechado;
+
+    public $interfone;
+
+    public $sistemadealarme;
+
+    public $jardim;
+
+    public $salaodefestas;
+
+    public $permiteanimais;
+
+    public $quadrapoliesportiva;
+
+    public $geradoreletrico;
+
+    public $banheira;
+
+    public $lareira;
+
+    public $lavabo;
+
+    public $lavanderia;
+
+    public $elevador;
+
+    public $mobiliado;
+
+    public $vista_para_mar;
+
+    public $piscina;
+
+    public $sauna;
+
+    public $ventilador_teto;
+
+    public $internet;
+
+    public $geladeira;
+
+    public $title;
+
+    public $slug;
+
+    public $url_booking;
+
+    public $url_arbnb;
+
+    public $status;
+
+    public $views;
+
+    public $headline;
+
+    public $youtube_video;
+
+    public $caption_img_cover;
+
+    public $google_map;
+
+    public $experience;
+
+    public $highlight;
+
+    public $publication_type;
 
     public array $metatags = [];
 
     public bool $sale = false;
+
     public bool $location = false;
 
     public ?int $display_address = 0; // 0 = Não, 1 = Sim
+
     public int $display_values = 0; // 0 = Não, 1 = Sim
+
     public ?int $display_marked_water = 0; // 0 = Não, 1 = Sim
 
     protected $booleanFields = [
-        'ar_condicionado','aquecedor_solar','bar','biblioteca',
-        'churrasqueira','estacionamento','cozinha_americana','cozinha_planejada','dispensa','edicula',
-        'espaco_fitness','escritorio','fornodepizza','armarionautico','portaria24hs','quintal','zeladoria',
-        'salaodejogos','saladetv','areadelazer','balcaoamericano','varandagourmet','banheirosocial',
-        'brinquedoteca','pertodeescolas','condominiofechado','interfone','sistemadealarme','jardim',
-        'salaodefestas','permiteanimais','quadrapoliesportiva','geradoreletrico','banheira','lareira',
-        'lavabo','lavanderia','elevador','mobiliado','vista_para_mar','piscina','sauna','ventilador_teto',
-        'internet','geladeira'
+        'ar_condicionado', 'aquecedor_solar', 'bar', 'biblioteca',
+        'churrasqueira', 'estacionamento', 'cozinha_americana', 'cozinha_planejada', 'dispensa', 'edicula',
+        'espaco_fitness', 'escritorio', 'fornodepizza', 'armarionautico', 'portaria24hs', 'quintal', 'zeladoria',
+        'salaodejogos', 'saladetv', 'areadelazer', 'balcaoamericano', 'varandagourmet', 'banheirosocial',
+        'brinquedoteca', 'pertodeescolas', 'condominiofechado', 'interfone', 'sistemadealarme', 'jardim',
+        'salaodefestas', 'permiteanimais', 'quadrapoliesportiva', 'geradoreletrico', 'banheira', 'lareira',
+        'lavabo', 'lavanderia', 'elevador', 'mobiliado', 'vista_para_mar', 'piscina', 'sauna', 'ventilador_teto',
+        'internet', 'geladeira',
     ];
 
     public function render()
     {
         $titlee = $this->property->exists ? 'Editar Imóvel' : 'Cadastrar Imóvel';
+
         return view('livewire.dashboard.properties.property-form')->with([
             'titlee' => $titlee,
         ]);
@@ -106,35 +264,34 @@ class PropertyForm extends Component
                 ? explode(',', $property->metatags)
                 : [];
         } else {
-            $this->property = new Property();
+            $this->property = new Property;
         }
     }
 
     // Salvar (create ou update)
     public function save(string $mode = 'draft')
     {
-        try {            
-            // Validação principal            
-            $validated = $this->validate((new StoreUpdatePropertyRequest())->rules()); 
+        try {
+            // Validação principal
+            $validated = $this->validate((new StoreUpdatePropertyRequest)->rules());
             // Converte array de metatags em string para o banco
             $validated['metatags'] = implode(',', $this->metatags ?? []);
             // status depende do botão
-            $validated['status'] = $mode === 'published' ? 1 : 0;  
-                      
+            $validated['status'] = $mode === 'published' ? 1 : 0;
 
             foreach ($this->booleanFields as $field) {
                 $validated[$field] = (bool) $this->{$field};
-            }            
+            }
 
-            if($this->property->exists){
-                //Atualizar
+            if ($this->property->exists) {
+                // Atualizar
 
                 $this->property->update($validated);
 
                 // Validação das imagens
                 $this->validate([
                     'images.*' => 'image|max:2048',
-                ]);                
+                ]);
 
                 $maxImages = env('MAX_PROPERTY_IMAGES', 40);
                 $existingImages = $this->property->images()->count();
@@ -145,14 +302,17 @@ class PropertyForm extends Component
                         'text' => "Você já atingiu o limite máximo de {$maxImages} imagens para este imóvel.",
                         'icon' => 'warning',
                     ]);
+
                     return;
                 }
 
                 // Salvar imagens
                 foreach ($this->images as $index => $image) {
-                    if ($index >= $allowed) break; // garante que só serão salvas as permitidas
+                    if ($index >= $allowed) {
+                        break;
+                    } // garante que só serão salvas as permitidas
 
-                    $path = $image->store('properties/' . $this->property->id, 'public');
+                    $path = $image->store('properties/'.$this->property->id, 'r2');
 
                     $maxOrder = PropertyGb::where('property', $this->property->id)->max('order_img') ?? 0;
 
@@ -163,50 +323,50 @@ class PropertyForm extends Component
                         'order_img' => $maxOrder + $index + 1,
                     ]);
                 }
-    
+
                 // Limpar imagens temporárias
                 $this->reset('images');
                 $this->dispatch(['atualizado']);
-            }else{
-                //Criar
-                if (!$this->sale && !$this->location) {
+            } else {
+                // Criar
+                if (! $this->sale && ! $this->location) {
                     $this->dispatch('swal', [
                         'title' => 'Erro!',
-                        'icon'  => 'error',
-                        'text'  => 'Selecione pelo menos uma finalidade (Venda ou Locação).'
+                        'icon' => 'error',
+                        'text' => 'Selecione pelo menos uma finalidade (Venda ou Locação).',
                     ]);
-                    throw \Illuminate\Validation\ValidationException::withMessages([
+                    throw ValidationException::withMessages([
                         'sale' => 'Selecione pelo menos uma finalidade (Venda ou Locação).',
                     ]);
                 }
-                
+
                 $property = Property::create($validated);
                 $this->reset('images');
                 $this->dispatch(['cadastrado']);
                 $this->property = $property; // Atualiza a propriedade para o novo registro
             }
 
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            //dd($e->errors());
+        } catch (ValidationException $e) {
+            // dd($e->errors());
             // Muda para a aba "dados" se houver erro
             $this->currentTab = 'dados';
             throw $e; // Deixa Livewire lidar com os erros e mostrar mensagens
-        }        
+        }
     }
 
-    //Remover imagem temporária
+    // Remover imagem temporária
     public function removeTempImage($index)
     {
         unset($this->images[$index]);
         $this->images = array_values($this->images);
     }
 
-    //Remover imagem do Bd
+    // Remover imagem do Bd
     public function removeSavedImage($id)
     {
         $image = PropertyGb::find($id);
         if ($image) {
-            Storage::disk('public')->delete($image->path);
+            Storage::disk('r2')->delete($image->path);
             $image->delete();
             $this->savedImages = collect($this->savedImages)->filter(fn ($img) => $img->id !== $id);
             $this->property->refresh(); // Para garantir que os dados estejam atualizados
@@ -233,19 +393,19 @@ class PropertyForm extends Component
     }
 
     public function updatedZipcode(string $value)
-    {        
+    {
         $this->zipcode = preg_replace('/[^0-9]/', '', $value);
 
-        if(strlen($this->zipcode) === 8){
-            $response = Http::get("https://viacep.com.br/ws/{$this->zipcode}/json/")->json();            
-            if(!isset($response['erro'])){                
+        if (strlen($this->zipcode) === 8) {
+            $response = Http::get("https://viacep.com.br/ws/{$this->zipcode}/json/")->json();
+            if (! isset($response['erro'])) {
                 $this->street = $response['logradouro'] ?? '';
                 $this->neighborhood = $response['bairro'] ?? '';
                 $this->state = $response['uf'] ?? '';
                 $this->city = $response['localidade'] ?? '';
-                $this->complement = $response['complemento'] ?? '';      
-            }else{                
-                $this->addError('zipcode', 'CEP não encontrado.'); 
+                $this->complement = $response['complemento'] ?? '';
+            } else {
+                $this->addError('zipcode', 'CEP não encontrado.');
             }
         }
     }
@@ -264,12 +424,12 @@ class PropertyForm extends Component
                     ->where('property', $this->property->id)
                     ->update(['order_img' => $item['position']]);
             }
-            
+
             // Atualiza a propriedade para refletir a nova ordem
             $this->property->refresh();
-            
+
         } catch (\Exception $e) {
-            $this->toastError('Erro ao atualizar ordem das imagens: ' . $e->getMessage());
+            $this->toastError('Erro ao atualizar ordem das imagens: '.$e->getMessage());
         }
     }
 }
